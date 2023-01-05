@@ -1,0 +1,47 @@
+/* home */
+
+#home{
+    background-color: burlywood;
+}
+
+.item-list{
+    background-color: brown;
+}
+
+.item{
+    list-style: none;
+    background-color: rgb(205, 169, 50);
+    margin-block: 1rem;
+    padding: 0.6rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.character-img{
+    height: clamp(3rem, 10vw, 5rem);
+    width: clamp(3rem, 10vw, 5rem);
+    overflow: hidden;
+    background-color: red;
+    display: flex;
+    align-items: center;
+    margin-inline: 1.5rem;
+    border-radius: 50%;
+}
+
+.character-img img{
+    transform: scale(1.5);
+    transform-origin: 50%;
+} /*this is for cut those blank spaces*/
+
+
+.list-border{
+    height: clamp(3.8rem, 12vw, 5.8rem);
+    width: clamp(3.8rem, 12vw, 5.8rem);
+    position: absolute;
+    z-index: 1;
+    margin-inline: 1.1rem;
+    top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
+}
+
+

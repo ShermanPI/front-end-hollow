@@ -1,0 +1,78 @@
+/* my reset */
+
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+img, picture, svg, video{
+    display: block;
+    max-width: 100%;
+}
+
+input, textarea, button, select{
+    font: inherit;
+}
+
+:root{
+    font-size: 62.5%;
+
+    /* color pallete */
+    
+}
+
+body{
+    font-size: 1.6rem;
+}
+
+/* general css */
+
+.slider-container{
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    
+    max-height: 100vh;
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none;
+}
+
+.section-container{
+    min-width: 100%;
+    scroll-snap-align: center;
+
+    min-height: 100vh;
+}
+
+.section-header{
+    background-color: black;
+    color: #fff;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-icon {
+    width: clamp(1.2rem, 6%, 3rem);
+    margin-right: 1rem;
+}
+
+.left-side{
+    display: flex;
+    align-items: center;
+}
+
+.divisor{
+    width:100%;
+    height: 2px;
+    background: rgb(255,255,255);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
+}
