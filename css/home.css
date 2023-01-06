@@ -6,6 +6,11 @@
 
 .item-list{
     background-color: brown;
+    height: 28vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    scroll-snap-type: y mandatory;
 }
 
 .item{
@@ -16,6 +21,8 @@
     display: flex;
     align-items: center;
     position: relative;
+
+    scroll-snap-align: center;
 }
 
 .character-img{
@@ -44,4 +51,41 @@
     top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
 }
 
+.hollow{
+    justify-self: center;
+}
 
+.first-item{
+    margin-top: 28vh; /*this overflows the list of elements, so when the first and last elements have tried to pass them the snap center behavior will always place them in the center of the div */
+}
+
+.last{
+    margin-bottom: 28vh;
+}
+
+.character-full-info{
+    background-color: rgb(153, 255, 80);
+    overflow-y: scroll;
+}
+
+.character-img-container{
+    display: flex;
+    justify-content: center;
+    background-color: cadetblue;
+    padding: 2rem;
+    position: relative;
+}
+
+.character-full-img{
+    background-color: green;
+    max-width: 50%;
+}
+.favorite-icon{
+    position: absolute;
+    width: clamp(4rem, 12%, 5rem);
+    right: 6%;
+}
+
+.character-info{
+    padding: 1rem;
+}
