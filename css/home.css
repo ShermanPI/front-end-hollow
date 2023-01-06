@@ -5,7 +5,7 @@
 }
 
 .item-list{
-    background-color: brown;
+    /* background-color: brown; */
     height: 28vh;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
@@ -32,7 +32,8 @@
     background-color: red;
     display: flex;
     align-items: center;
-    margin-inline: 1.5rem;
+    margin-inline: var(--item-img-inline);
+    margin-right: 2rem;
     border-radius: 50%;
 }
 
@@ -47,7 +48,7 @@
     width: clamp(3.8rem, 12vw, 5.8rem);
     position: absolute;
     z-index: 1;
-    margin-inline: 1.1rem;
+    margin-inline: calc(var(--item-img-inline) - 0.4rem);
     top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
 }
 
@@ -64,20 +65,20 @@
 }
 
 .character-full-info{
-    background-color: rgb(153, 255, 80);
+    /* background-color: rgb(153, 255, 80); */
     overflow-y: scroll;
 }
 
 .character-img-container{
     display: flex;
     justify-content: center;
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
     padding: 2rem;
     position: relative;
 }
 
 .character-full-img{
-    background-color: green;
+    /* background-color: green; */
     max-width: 50%;
 }
 .favorite-icon{
@@ -87,5 +88,5 @@
 }
 
 .character-info{
-    padding: 1rem;
+    padding: 3rem;
 }

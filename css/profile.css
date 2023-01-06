@@ -1,0 +1,26 @@
+/* Profile */
+
+.profile-container{
+    background-color: red;
+
+}
+
+.profile-info{
+    background-color: chartreuse;
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.profile-pfp{
+    width: clamp(15rem, 30vw, 17rem); /*min, normal, max -> phone, tablet, computer */
+    height: clamp(15rem, 30vw, 17rem);
+    background-color: aqua;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+#user-name{
+    margin-top: 1rem;
+}
