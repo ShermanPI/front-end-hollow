@@ -1,8 +1,9 @@
 /* Profile */
 
 .profile-container{
-    background-color: red;
-
+    background-color: black;
+    max-height: 88vh;
+    overflow-y: scroll;
 }
 
 .profile-info{
@@ -14,8 +15,8 @@
 }
 
 .profile-pfp{
-    width: clamp(15rem, 30vw, 17rem); /*min, normal, max -> phone, tablet, computer */
-    height: clamp(15rem, 30vw, 17rem);
+    width: clamp(10rem, 22vw, 13rem); /*min, normal, max -> phone, tablet, computer */
+    height: clamp(10rem, 22vw, 13rem);
     background-color: aqua;
     overflow: hidden;
     border-radius: 50%;
@@ -23,4 +24,61 @@
 
 #user-name{
     margin-top: 1rem;
+}
+
+.favorite-title{
+    display: flex;
+    padding: 1rem 3rem;  
+    justify-content: space-between;
+    color: var(--pure-color);
+}
+
+.share-btn{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.share-img{
+    width: 1.5rem;
+    margin-left: 0.5rem;
+}
+
+.share-btn:hover{
+    opacity: 0.5;
+}
+
+.character-favorite-img{
+    height: clamp(2rem, 9vw, 5rem);
+    width: clamp(2rem, 9vw, 5rem);
+    overflow: hidden;
+    background-color: red;
+    display: flex;
+    align-items: center;
+    margin-inline: var(--item-img-inline);
+    margin-right: 2rem;
+    border-radius: 50%;
+}
+
+.character-favorite-img img{
+    transform: scale(1.5);
+    transform-origin: 50%;
+} /*this is for cut those blank spaces*/
+
+
+.list-favorite-border{
+    height: clamp(2.8rem, 11vw, 5.8rem);
+    width: clamp(2.8rem, 11vw, 5.8rem);
+    position: absolute;
+    z-index: 1;
+    margin-inline: calc(var(--item-img-inline) - 0.4rem);
+    top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
+}
+
+.last-favorite{
+    margin-bottom: 4vh;
+}
+
+.first-favorite-item{
+    margin-top: 0rem;
 }

@@ -21,11 +21,14 @@ input, textarea, button, select{
 :root{
     font-size: 62.5%;
 
-    --item-img-inline: 3rem;
+    --item-img-inline: 2rem;
 
     /* color pallete */
 
-    
+    --abyss-blue: #0f0f1b;
+    --start-blue: #565a75;
+    --vesel-color: #c6b7be;
+    --pure-color: #fafbf6;
 }
 
 body{
