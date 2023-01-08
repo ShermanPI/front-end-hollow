@@ -2,7 +2,7 @@
 
 .profile-container{
     background-color: black;
-    max-height: 88vh;
+    max-height: 90vh;
     overflow-y: scroll;
 }
 
@@ -76,9 +76,16 @@
 }
 
 .last-favorite{
-    margin-bottom: 4vh;
+    margin-bottom: 8vh;
 }
 
 .first-favorite-item{
     margin-top: 0rem;
+}
+
+.profile-favorite-icon{
+    margin-left: auto;
+    margin-right: var(--item-img-inline);
+    
+    width: clamp(2rem, 9vw, 4rem);
 }

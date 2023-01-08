@@ -1,5 +1,6 @@
-import { setMaxHeight } from "./UI/characterInfoResize.js";
+import { selectors } from "./utils/dom-selectors.js";
+import { setMaxHeight } from "./UI/maxHeightSetter.js";
 
 window.addEventListener("DOMContentLoaded", (e)=>{
-    setMaxHeight(".character-full-info")
+    setMaxHeight(selectors.characterInfo, selectors.profileContainer)
 })
