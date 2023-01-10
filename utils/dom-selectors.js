@@ -11,6 +11,10 @@ export const selectors = {
 
     profileContainer: new ElemToResize(".profile-container", [".section-header"]),
     
-    adminContainer: new ElemToResize(".admin-container", [".section-header"])
+    adminContainer: new ElemToResize(".admin-container", [".section-header"]),
 
-}
+    addFormBtn: ".add-form-btn",
+    editFormBtn: ".edit-form-btn",
+    editForm: ".edit-form",
+    addForm: ".add-form"
+};

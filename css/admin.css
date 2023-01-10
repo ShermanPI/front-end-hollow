@@ -5,7 +5,6 @@
     overflow-y: scroll;
     padding: 1rem;
     color: white;
-    border-top: 1px dotted white;
 }
 
 .admin-btns{
@@ -30,6 +29,8 @@
 .form{
     position: absolute;
     top: 0px;
+    width: 100%;
+    padding: 1rem;
 }
 
 .add-form{
@@ -38,4 +39,42 @@
 
 .edit-form{
     background-color: blue;
+}
+
+.btn-activated{
+    background-color: black;
+}
+
+.hide-form{
+    display: none;
+}
+
+.form-group{
+    margin-block: 1rem;
+}
+
+.field-group{
+    width: 100%;
+}
+
+.fill-info-btn{
+    cursor: pointer;
+    color: white;
+    width: 100%;
+    display: block;
+    background-color: var(--abyss-blue);
+}
+
+textarea{
+    width: 100%;
+}
+
+.form-btn{
+    padding: 0.6rem;
+}
+
+.name-input{
+    width: 100%;
+    font-size: 2rem;
+    padding: 0.8rem;
 }
