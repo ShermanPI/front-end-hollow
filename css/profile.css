@@ -79,8 +79,9 @@
     margin-bottom: 8vh;
 }
 
-.first-favorite-item{
+.favorite-item{
     margin-top: 0rem;
+    text-decoration: none;
 }
 
 .profile-favorite-icon{

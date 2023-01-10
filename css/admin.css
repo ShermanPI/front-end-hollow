@@ -1,1 +1,41 @@
 /* ADMIN */
+
+.admin-container{
+    background-color: rgb(240, 142, 228);
+    overflow-y: scroll;
+    padding: 1rem;
+    color: white;
+    border-top: 1px dotted white;
+}
+
+.admin-btns{
+    display: flex;
+}
+
+.admin-btns div{
+    width: clamp(16rem, 100%, 30rem);
+    text-align: center;
+}
+
+.admin-btn{
+    background-color: green;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.forms-container{
+    position: relative;
+}
+
+.form{
+    position: absolute;
+    top: 0px;
+}
+
+.add-form{
+    background-color: red;
+}
+
+.edit-form{
+    background-color: blue;
+}

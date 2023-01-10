@@ -10,7 +10,11 @@ export function setMaxHeight(...objsToResize){
             let heightToRest = obj.elementsToRest.map(selector =>d.querySelector(selector).getBoundingClientRect().height)
                 .reduce((a, b) => a + b, 0);
             
-            $objResize.style.maxHeight = `calc(100vh - ${heightToRest}px)`;
+            if(obj.name == ".admin-container") {
+                $objResize.style.height = `calc(100vh - ${heightToRest}px)`;
+            }else{
+                $objResize.style.maxHeight = `calc(100vh - ${heightToRest}px)`;
+            }
     
         })
     }
