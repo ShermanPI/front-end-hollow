@@ -28,7 +28,7 @@
 
 .favorite-title{
     display: flex;
-    padding: 1rem 3rem;  
+    padding: 1rem var(--inner-indentation);  
     justify-content: space-between;
     color: var(--pure-color);
 }
@@ -41,7 +41,7 @@
 
 .share-img{
     width: 1.5rem;
-    margin-left: 0.5rem;
+    margin-left: calc(var(--inner-indentation)/2);
 }
 
 .share-btn:hover{
@@ -55,7 +55,6 @@
     background-color: red;
     display: flex;
     align-items: center;
-    margin-inline: var(--item-img-inline);
     margin-right: 2rem;
     border-radius: 50%;
 }
@@ -71,22 +70,49 @@
     width: clamp(2.8rem, 11vw, 5.8rem);
     position: absolute;
     z-index: 1;
-    margin-inline: calc(var(--item-img-inline) - 0.4rem);
+    margin-inline: -0.4rem;
     top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
-}
-
-.last-favorite{
-    margin-bottom: 8vh;
 }
 
 .favorite-item{
     margin-top: 0rem;
     text-decoration: none;
+    display: flex;
+    justify-content: space-between;
 }
 
 .profile-favorite-icon{
-    margin-left: auto;
-    margin-right: var(--item-img-inline);
+    margin-right: calc(var(--inner-indentation) / 2);
     
     width: clamp(2rem, 9vw, 4rem);
+}
+
+.favorite-item-info{
+    display: flex;
+    align-items: center;
+    margin-block: auto;
+}
+
+.profile-control-panel{
+    display: flex;
+    flex-direction: column;
+}
+
+/* MENU */
+
+.menu{
+    padding-inline: var(--inner-indentation);
+    background-color: var(--abyss-blue);
+    color: var(--pure-color);
+    backdrop-filter: blur(0.5rem);
+    line-height: 4rem;
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+}
+
+.menu h4{
+    padding-left: var(--inner-indentation);
 }

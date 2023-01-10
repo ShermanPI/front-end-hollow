@@ -22,6 +22,7 @@ input, textarea, button, select{
     font-size: 62.5%;
 
     --item-img-inline: 2rem;
+    --inner-indentation: 2.5rem;
 
     /* color pallete */
 
@@ -52,21 +53,22 @@ body{
 
 .section-container{
     min-width: 100%;
+    max-width: 100%;
     scroll-snap-align: center;
     height: 100vh;
+    
 }
 
 .section-header{
     background-color: black;
     color: #fff;
-    padding: 1.5rem;
+    padding: 2rem;
     display: flex;
     align-items: center;
 }
 
 .logo-icon {
     width: clamp(2.5rem, 8%, 3rem);
-
 }
 
 .left-side{
@@ -76,6 +78,7 @@ body{
     display: flex;
     justify-content: end;
     background-color: black;
+    z-index: 3;
 }
 
 .right-side{
@@ -84,10 +87,13 @@ body{
     position: absolute;
     width: 10%;
     right: 0;
+    z-index: 3;
 }
 
 .container-name{
-    margin-left: calc(10% + 1rem);
+    margin-left: 10%;
+    position: relative;
+    z-index: 1;
 }
 
 .divisor{

@@ -18,6 +18,7 @@
     background-color: rgb(205, 169, 50);
     margin-block: 1rem;
     padding: 0.6rem;
+    padding-left: var(--inner-indentation);
     display: flex;
     align-items: center;
     position: relative;
@@ -32,7 +33,6 @@
     background-color: red;
     display: flex;
     align-items: center;
-    margin-inline: var(--item-img-inline);
     margin-right: 2rem;
     border-radius: 50%;
 }
@@ -48,7 +48,7 @@
     width: clamp(3.8rem, 12vw, 5.8rem);
     position: absolute;
     z-index: 1;
-    margin-inline: calc(var(--item-img-inline) - 0.4rem);
+    margin-inline: -0.4rem;
     top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
 }
 
@@ -72,9 +72,9 @@
 .character-img-container{
     display: flex;
     justify-content: center;
-    /* background-color: cadetblue; */
     padding: 2rem;
     position: relative;
+    margin-block: 1rem;
 }
 
 .character-full-img{
@@ -88,5 +88,5 @@
 }
 
 .character-info{
-    padding: 3rem;
+    padding: var(--inner-indentation);
 }
