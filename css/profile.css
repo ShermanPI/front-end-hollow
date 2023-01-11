@@ -102,9 +102,9 @@
 
 .menu{
     padding-inline: var(--inner-indentation);
-    background-color: var(--abyss-blue);
+    background-color: #0f0f1be4;
     color: var(--pure-color);
-    backdrop-filter: blur(0.5rem);
+    backdrop-filter: blur(0.3rem);
     line-height: 4rem;
     width: 100%;
     position: fixed;
