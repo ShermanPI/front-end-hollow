@@ -102,17 +102,32 @@
 
 .menu{
     padding-inline: var(--inner-indentation);
-    background-color: #0f0f1be4;
+    background-color: #0f0f1bf6;
     color: var(--pure-color);
-    backdrop-filter: blur(0.3rem);
-    line-height: 4rem;
+    backdrop-filter: blur(0.5rem);
+    line-height: 6rem;
     width: 100%;
     position: fixed;
     z-index: 2;
-    top: 0;
+    top: calc(var(----inner-indentation)*2);
     left: 0;
+    backdrop-filter: blur(0.6rem);
+    max-height: 75vh;
+    overflow-y: scroll;
+
+    transition: 800ms transform ease-in-out;
+    z-index: 99;
 }
 
 .menu h4{
     padding-left: var(--inner-indentation);
+    cursor: pointer;
+}
+.menu h4:hover{
+    background: rgb(198,183,190);
+    background: linear-gradient(90deg, rgba(198,183,190,0) 0%, rgba(198,183,190,0.4) 50%, rgba(198,183,190,0) 100%);
+}
+
+.hide-menu{
+    transform: translateY(-100vh);
 }
