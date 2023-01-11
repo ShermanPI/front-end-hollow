@@ -17,6 +17,6 @@ export const selectors = {
     editFormBtn: ".edit-form-btn",
     editForm: ".edit-form",
     addForm: ".add-form",
-    menuBtn: ".burger-btn img",
+    menuBtn: ".burger-icon",
     menu: ".menu"
 };
