@@ -25,6 +25,8 @@ input, textarea, button, select{
     --inner-indentation: 2.5rem;
 
     /* color pallete */
+    /* --header-color: #0f0f1bf6; */
+    --header-color: black;
 
     --abyss-blue: #0f0f1b;
     --start-blue: #565a75;
@@ -60,11 +62,13 @@ body{
 }
 
 .section-header{
-    background-color: black;
+    background-color: var(--header-color);
     color: #fff;
     padding: 2rem;
     display: flex;
     align-items: center;
+
+    transition: 800ms all ease-in-out;
 }
 
 
@@ -74,9 +78,11 @@ body{
     max-width: 2.5rem;
     padding-left: var(--inner-indentation);
     position: absolute;
-    background-color: black;
+    background-color: var(--header-color);
     z-index: 3;
     left: 0;
+    transition: 800ms background ease-in-out;
+    
 }
 
 .burger-icon{
@@ -90,34 +96,37 @@ body{
     flex-direction: column;
     padding-right: var(--inner-indentation);
     
-    background-color: black;
+    background-color: var(--header-color);
     position: absolute;
     right: 0;
     z-index: 3;
-
+    gap: 0.4rem;
+    
+    transition: 800ms background ease-in-out;
 }
 
-.burger-icon img{
+.burger-icon svg{
     transition: all 800ms ease-in-out;
 }
 /*animation*/
 
-/* .burger-icon.open img:nth-child(2){
+.burger-icon.open svg:nth-child(2){
     transform: translateX(-3rem);
     opacity: 0;
+    visibility: hidden;
 }
 
-.burger-icon.open img:nth-child(1){
-    transform: rotate(-45deg) translate(-0.2rem, 0.8rem);
+.burger-icon.open svg:nth-child(1){
+    transform: rotate(-45deg) translate(-0.6rem, 1rem);
 }
 
-.burger-icon.open img:nth-child(3){
-    transform: rotate(45deg) translate(-0.2rem, -0.8rem);
-} */
+.burger-icon.open svg:nth-child(3){
+    transform: rotate(45deg) translate(-0.6rem, -1rem);
+}
 
 
 .container-name{
-    margin-left: calc(8% + var(--inner-indentation));
+    margin-left: calc(4% + var(--inner-indentation));
     position: relative;
     z-index: 1;
 }
@@ -128,4 +137,3 @@ body{
     background: rgb(255,255,255);
     background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
 }
-

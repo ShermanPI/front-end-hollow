@@ -111,11 +111,11 @@
     z-index: 2;
     top: calc(var(----inner-indentation)*2);
     left: 0;
-    backdrop-filter: blur(0.6rem);
+    backdrop-filter: blur(0.3rem);
     max-height: 75vh;
     overflow-y: scroll;
 
-    transition: 800ms transform ease-in-out;
+    transition: 800ms all ease-in-out;
     z-index: 99;
 }
 
@@ -129,5 +129,7 @@
 }
 
 .hide-menu{
-    transform: translateY(-100vh);
+    opacity: 0;
+    transform: translateX(-100%);
 }
+
