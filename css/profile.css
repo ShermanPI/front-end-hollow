@@ -1,4 +1,4 @@
-/* Profile */
+/*Profile*/
 
 .profile-container{
     background-color: black;
@@ -11,6 +11,7 @@
     display: flex;
     padding: 1rem;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
 }
 
@@ -20,10 +21,6 @@
     background-color: aqua;
     overflow: hidden;
     border-radius: 50%;
-}
-
-#user-name{
-    margin-top: 1rem;
 }
 
 .favorite-title{
@@ -105,7 +102,6 @@
     background-color: #0f0f1bf6;
     color: var(--pure-color);
     backdrop-filter: blur(0.5rem);
-    line-height: 6rem;
     width: 100%;
     position: fixed;
     z-index: 2;
@@ -119,13 +115,17 @@
     z-index: 99;
 }
 
-.menu h4{
+.menu-item{
     padding-left: var(--inner-indentation);
     cursor: pointer;
 }
-.menu h4:hover{
+.menu-item:hover{
     background: rgb(198,183,190);
     background: linear-gradient(90deg, rgba(198,183,190,0) 0%, rgba(198,183,190,0.4) 50%, rgba(198,183,190,0) 100%);
+}
+
+.menu-item{
+    line-height: 4;
 }
 
 .hide-menu{
@@ -133,3 +133,30 @@
     transform: translateX(-100%);
 }
 
+
+@media (min-width: 900px) {
+    .menu{
+        position: static;
+    }
+
+    .burger-icon{
+        display: none;
+    }
+
+    .profile-control-panel{
+        flex-direction: row;
+    }
+
+    .profile-info{
+        width: 100%;
+    }
+
+    .menu{
+        width: 100%;
+        max-height: auto;
+    }
+
+    .menu-item{
+        line-height: 2.5;
+    }
+}

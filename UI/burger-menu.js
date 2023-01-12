@@ -5,9 +5,7 @@ export function burgerMenu(btnSelector, menuSelector){
     const $menuBtn = d.querySelector(btnSelector),
         $menu = d.querySelector(menuSelector)
         
-    d.addEventListener("click", (e)=>{
-
-        if(e.path[1] == $menuBtn){
+        $menuBtn.addEventListener("click", (e)=>{
             if($menu.classList.contains("hide-menu")){
                 $menu.classList.remove("hide-menu");
                 $menuBtn.classList.add('open');
@@ -18,9 +16,14 @@ export function burgerMenu(btnSelector, menuSelector){
                 root.style.setProperty('--header-color', "black");
 
             }
-            
-        }
+        })
 
+        window.addEventListener("resize", (e)=>{
+            if(window.innerWidth >= 700){
+                $menu.classList.remove("hide-menu");
+                $menuBtn.classList.add('open');
+                root.style.setProperty('--header-color', "black");
 
-    })
+            }
+        })
 }
