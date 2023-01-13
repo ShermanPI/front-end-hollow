@@ -1,9 +1,9 @@
 /*Profile*/
 
 .profile-container{
-    background-color: black;
-    max-height: 90vh;
-    overflow-y: scroll;
+    background-color: #010101;
+    height: 92%;
+    overflow-y: hidden;
 }
 
 .profile-info{
@@ -28,6 +28,7 @@
     padding: 1rem var(--inner-indentation);  
     justify-content: space-between;
     color: var(--pure-color);
+    background-color: red;
 }
 
 .share-btn{
@@ -93,6 +94,14 @@
 .profile-control-panel{
     display: flex;
     flex-direction: column;
+    height: 25%;
+    background-color: rgb(78, 190, 95);
+}
+
+.profile-favorite-items{
+    max-height: 75%;
+    overflow-y: scroll;
+    background-color: aqua;
 }
 
 /* MENU */

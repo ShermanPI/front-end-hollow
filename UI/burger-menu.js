@@ -16,14 +16,5 @@ export function burgerMenu(btnSelector, menuSelector){
                 root.style.setProperty('--header-color', "black");
 
             }
-        })
-
-        window.addEventListener("resize", (e)=>{
-            if(window.innerWidth >= 700){
-                $menu.classList.remove("hide-menu");
-                $menuBtn.classList.add('open');
-                root.style.setProperty('--header-color', "black");
-
-            }
-        })
+        }) 
 }

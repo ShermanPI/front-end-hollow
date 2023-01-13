@@ -22,10 +22,11 @@ input, textarea, button, select{
     font-size: 62.5%;
 
     --inner-indentation: 2.5rem;
+    --outer-container-border: 4vw;
 
     /* color pallete */
     /* --header-color: #0f0f1bf6; */
-    --header-color: black;
+    --header-color: rgb(103, 92, 187);
 
     --abyss-blue: #0f0f1b;
     --start-blue: #565a75;
@@ -41,9 +42,10 @@ input, textarea, button, select{
 
 body{
     font-size: var(--fs-300);
+    color: #fff;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 768px) {
         
     body{
         font-size: var(--fs-400);
@@ -62,7 +64,7 @@ body{
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     
-    max-height: 100vh;
+    height: 100vh;
 }
 
 *::-webkit-scrollbar {
@@ -73,18 +75,18 @@ body{
     min-width: 100%;
     max-width: 100%;
     scroll-snap-align: center;
-    height: 100vh;
-    
+    height: 100%;
+    border: var(--outer-container-border) solid rgb(225, 110, 110);
 }
 
 .section-header{
     background-color: var(--header-color);
     color: #fff;
-    padding: 2rem;
+    height: 8%;
     display: flex;
     align-items: center;
 
-    transition: 800ms all ease-in-out;
+    transition: 800ms background-color ease-in-out;
 }
 
 .logo-icon{
@@ -97,7 +99,6 @@ body{
     z-index: 3;
     left: 0;
     transition: 800ms background ease-in-out;
-    
 }
 
 .burger-icon{
@@ -139,7 +140,6 @@ body{
 
 
 .container-name{
-    margin-left: calc(4% + var(--inner-indentation));
     position: relative;
     z-index: 1;
 }
@@ -147,25 +147,26 @@ body{
 .divisor{
     width:100%;
     height: 0.2rem;
+    margin-block: 1rem;
     background: rgb(255,255,255);
     background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
 }
 
 @media (min-width: 900px) {
-    .home-container{
-        display: flex;
+    :root{
+        --inner-indentation: 1rem;
     }
 
-    .home-container *{
-        width: 100%;
-        height: 1005;
-    }
-
-    .section-header{
+    /* .section-header{
         justify-content: center;
-    }
+        padding: 1.5rem;
+    } */
     
     .container-name{
         margin-left: 0px;
+    }
+
+    .logo-icon{
+        display: none;
     }
 }
