@@ -4,9 +4,15 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: perpetua;
+    src: url(/utils/fonts/Perpetua.ttf);
+}
+
 *{
     margin: 0;
     padding: 0;
+    font-family: perpetua;
 }
 
 img, picture, svg, video{
@@ -14,26 +20,26 @@ img, picture, svg, video{
     max-width: 100%;
 }
 
-input, textarea, button, select{
-    font: inherit;
-}
-
 :root{
     font-size: 62.5%;
 
     --inner-indentation: 2.5rem;
-    --outer-container-border: 4vw;
+    --divisor-spaces: ; /* space between items and container and divisors*/
 
     /* color pallete */
     /* --header-color: #0f0f1bf6; */
     --header-color: rgb(103, 92, 187);
+
+
 
     --abyss-blue: #0f0f1b;
     --start-blue: #565a75;
     --vesel-color: #c6b7be;
     --pure-color: #fafbf6;
 
-    --fs-500: 2.25rem;
+    --fs-600: 3.3rem;
+    --fs-500: 2.8rem;
+    --fs-450: 2.5rem;
     --fs-400: 2rem;
     --fs-300: 1.5rem;
     --fs-200: 1.25rem;
@@ -42,7 +48,7 @@ input, textarea, button, select{
 
 body{
     font-size: var(--fs-300);
-    color: #fff;
+    color: var(--pure-color);
 }
 
 @media (min-width: 768px) {
@@ -76,7 +82,9 @@ body{
     max-width: 100%;
     scroll-snap-align: center;
     height: 100%;
-    border: var(--outer-container-border) solid rgb(225, 110, 110);
+    border-inline: 4vw solid rgb(225, 110, 110);
+    border-block: 5vw solid rgb(225, 110, 110);
+
 }
 
 .section-header{
@@ -84,6 +92,7 @@ body{
     color: #fff;
     height: 8%;
     display: flex;
+    justify-content: center;
     align-items: center;
 
     transition: 800ms background-color ease-in-out;
@@ -138,12 +147,6 @@ body{
     transform: rotate(45deg) translate(-0.6rem, -1rem);
 }
 
-
-.container-name{
-    position: relative;
-    z-index: 1;
-}
-
 .divisor{
     width:100%;
     height: 0.2rem;
@@ -152,21 +155,36 @@ body{
     background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
     :root{
-        --inner-indentation: 1rem;
+        --inner-indentation: 4rem;
     }
 
     /* .section-header{
         justify-content: center;
         padding: 1.5rem;
     } */
-    
+/*     
     .container-name{
         margin-left: 0px;
+    } */
+
+    .container-name{
+        font-size: var(--fs-600);
     }
+
+
 
     .logo-icon{
         display: none;
+    }
+
+    .divisor{
+        width: 0.3rem;
+        height: 85%;
+        margin-block: auto;
+        background: var(--vesel-color);
+
+        background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%);
     }
 }

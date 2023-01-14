@@ -4,7 +4,6 @@
     background-color: rgb(240, 142, 228);
     overflow-y: scroll;
 
-    color: white;
 }
 
 .admin-btns{
@@ -59,7 +58,6 @@
 
 .fill-info-btn{
     cursor: pointer;
-    color: white;
     width: 100%;
     display: block;
     background-color: var(--abyss-blue);
