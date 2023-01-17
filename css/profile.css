@@ -16,7 +16,7 @@
 }
 
 .profile-pfp{
-    width: clamp(10rem, 22vw, 13rem); /*min, normal, max -> phone, tablet, computer */
+    width: clamp(10rem, 22vw, 13rem);
     height: clamp(10rem, 22vw, 13rem);
     background-color: aqua;
     overflow: hidden;
@@ -60,7 +60,7 @@
 .character-favorite-img img{
     transform: scale(1.5);
     transform-origin: 50%;
-} /*this is for cut those blank spaces*/
+}
 
 
 .list-favorite-border{
@@ -69,7 +69,7 @@
     position: absolute;
     z-index: 1;
     margin-inline: -0.4rem;
-    top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2)); /*to center the div verticaly */
+    top: calc(50%-(clamp(3.8rem, 12vw, 5.8rem)/2));
 }
 
 .favorite-item{
