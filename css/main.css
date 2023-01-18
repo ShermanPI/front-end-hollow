@@ -26,7 +26,7 @@ img, picture, svg, video{
     --inner-indentation: 2.5rem;
     --divisor-spaces: ; /* space between items and container and divisors*/
 
-    --header-color: rgb(103, 92, 187);
+    --header-color: rgb(0, 0, 0);
     --header-hight: 8%; 
     --border-size: 4vw;
     
@@ -75,6 +75,29 @@ body{
     }    
 }
 
+.general-background{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    z-index: -1;
+    background-color: black;
+}
+
+.general-background img{
+    width: 100%;
+}
+
+.background-overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000dc;
+}
+
 /* general css */
 
 .slider-container{
@@ -109,7 +132,9 @@ body{
     position: fixed;
     display: flex;
     justify-content: center;
+    z-index: 4;
     margin-top: calc(var(--border-size) - 0.7rem);
+    display: none;
 }
 
 .under-title-img img{
@@ -189,7 +214,11 @@ body{
 
 @media (min-width: 1024px) {
     :root{
-        --inner-indentation: 3.5rem;
+        --inner-indentation: 3rem;
+    }
+
+    .under-title-img{
+        display: flex;
     }
 
     .content-container-hover{
@@ -198,6 +227,7 @@ body{
         margin-top: auto;
         display: flex;
         align-items: center;
+        background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0.04245448179271705) 50%, rgba(0,0,0,0) 90%, rgba(0,0,0,1) 100%);
     }
 
     .borders-container{
@@ -205,8 +235,7 @@ body{
         position: fixed;
         height: 100vh;
         width: 100%;
-        border: var(--border-size) solid white;
-        background-color: rgba(199, 152, 240, 0.496);
+        border: var(--border-size) solid transparent;
         z-index: 4;
         pointer-events: none;
     }
@@ -228,6 +257,7 @@ body{
 
     .full-arrows img{
         width: 3%;
+        transition: all 500ms ease-in-out;
     }
 
     .full-arrows img:nth-child(2){
@@ -286,7 +316,6 @@ body{
         margin-right:0.5rem;
         margin-block: auto;
         background: var(--vesel-color);
-
         background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%);
     }
 }
