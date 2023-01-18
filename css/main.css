@@ -28,7 +28,7 @@ img, picture, svg, video{
 
     --header-color: rgb(103, 92, 187);
     --header-hight: 8%; 
-    --border-size: 3vw;
+    --border-size: 4vw;
     
     
     /* color pallete */
@@ -38,7 +38,7 @@ img, picture, svg, video{
     --pure-color: #fafbf6;
 
     --fs-600: 3.3rem;
-    --fs-500: 2.8rem;
+    --fs-500: 3rem;
     --fs-450: 2.5rem;
     --fs-400: 2rem;
     --fs-300: 1.5rem;
@@ -60,13 +60,7 @@ body{
 }
 
 .borders-container{
-    background-color: rgba(95, 158, 160, 0.584);
-    position: fixed;
-    height: 100vh;
-    width: 100%;
-    border: var(--border-size) solid #fafbf6;
-    z-index: 4;
-    pointer-events: none;
+    display: none;
 }
 
 
@@ -119,7 +113,7 @@ body{
 }
 
 .under-title-img img{
-    width: 58%;
+    width: 54%;
 }
 
 .section-header{
@@ -195,12 +189,89 @@ body{
 
 @media (min-width: 1024px) {
     :root{
-        --inner-indentation: 4rem;
+        --inner-indentation: 3.5rem;
+    }
+
+    .content-container-hover{
+        height: 92%;
+        width: 100%;
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+    }
+
+    .borders-container{
+        display: flex;
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        border: var(--border-size) solid white;
+        background-color: rgba(199, 152, 240, 0.496);
+        z-index: 4;
+        pointer-events: none;
+    }
+    .corner-img{
+        width: 11%;
+        position: absolute;
+        z-index: 3;
+    }
+
+    .full-arrows{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        /* background-color: #ff000062; */
+        top: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    .full-arrows img{
+        width: 3%;
+    }
+
+    .full-arrows img:nth-child(2){
+        transform: scaleX(-1);
+    }
+
+    .corner-img:nth-child(1){
+        top: var(--header-hight);
+    }
+
+    .corner-img:nth-child(2){
+        bottom: 0;
+        transform: scaleY(-1);
+    }
+
+    .corner-img:nth-child(3){
+        bottom: 0;
+        right: 0;
+        transform: scale(-1);
+    }
+
+    .corner-img:nth-child(4){
+        top: 8%;
+        right: 0;
+        transform: scaleX(-1);
+    }
+
+    .under-page-img{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-inline: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .under-page-img img{
+        width: 35%;
     }
 
     .container-name{
         font-size: var(--fs-600);
-        letter-spacing: 2px;
+        letter-spacing: 1px;
     }
 
     .logo-icon{
@@ -211,8 +282,8 @@ body{
         width: 0.3rem;
         max-width: 0.3rem;
         height: 85%;
-        margin-left: 0.8rem;
-        margin-right:0.8rem;
+        margin-left: 0.5rem;
+        margin-right:0.5rem;
         margin-block: auto;
         background: var(--vesel-color);
 
