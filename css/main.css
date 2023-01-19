@@ -26,9 +26,9 @@ img, picture, svg, video{
     --inner-indentation: 2.5rem;
     --divisor-spaces: ; /* space between items and container and divisors*/
 
-    --header-color: rgb(0, 0, 0);
+    --header-color: #000;
     --header-hight: 8%; 
-    --border-size: 4vw;
+    --border-size: 3.5vw;
     
     
     /* color pallete */
@@ -57,6 +57,45 @@ body{
     font-size: var(--fs-300);
     color: var(--pure-color);
     height: 100vh;
+}
+
+/* MOBILE MENU */
+
+.menu{
+    padding-inline: var(--inner-indentation);
+    background-color: #0f0f1bf6;
+    color: var(--pure-color);
+    backdrop-filter: blur(0.5rem);
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+    top: calc(var(--border-size) + 8%);
+    left: 0;
+    backdrop-filter: blur(0.3rem);
+    max-height: 75vh;
+    overflow-y: scroll;
+
+    transition: 800ms all ease-in-out;
+    z-index: 99;
+}
+
+.menu-item{
+    padding-left: var(--inner-indentation);
+    cursor: pointer;
+}
+
+.menu-item:hover{
+    background: rgb(198,183,190);
+    background: linear-gradient(90deg, rgba(198,183,190,0) 0%, rgba(198,183,190,0.4) 50%, rgba(198,183,190,0) 100%);
+}
+
+.menu-item{
+    line-height: 4;
+}
+
+.hide-menu{
+    opacity: 0;
+    transform: translateX(-100%);
 }
 
 .borders-container{
@@ -132,12 +171,12 @@ body{
     display: flex;
     justify-content: center;
     z-index: 4;
-    margin-top: calc(var(--border-size) - 0.7rem);
-    display: none;
+    margin-top: calc(var(--border-size) + 2.5rem);
+    pointer-events: none;
 }
 
 .under-title-img img{
-    width: 54%;
+    width: 100%;
 }
 
 .section-header{
@@ -151,7 +190,6 @@ body{
 
     transition: 800ms background-color ease-in-out;
 }
-
 
 
 .logo-icon{
@@ -218,6 +256,10 @@ body{
 
     .under-title-img{
         display: flex;
+        margin-top: calc(var(--border-size) - 0.7rem);
+    }
+    .under-title-img img{
+        width: 54%;
     }
 
     .content-container-hover{
@@ -254,11 +296,7 @@ body{
 
     .full-arrows img{
         width: 3%;
-        transition: all 500ms ease-in-out;
-    }
-
-    .full-arrows img:nth-child(2){
-        transform: scaleX(-1);
+        transition: ease-in-out;
     }
 
     .corner-img:nth-child(1){
