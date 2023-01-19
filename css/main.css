@@ -76,6 +76,7 @@ body{
 }
 
 .general-background{
+    background-color: black;
     position: fixed;
     width: 100%;
     height: 100vh;
@@ -84,7 +85,6 @@ body{
     justify-content: center;
     top: 0;
     z-index: -1;
-    background-color: black;
 }
 
 .general-background img{
@@ -95,7 +95,7 @@ body{
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #000000dc;
+    background-color: #000000e8;
 }
 
 /* general css */
@@ -107,8 +107,6 @@ body{
     scroll-snap-type: x mandatory;
     
     height: 100vh;
-
-
 }
 
 *::-webkit-scrollbar {
@@ -121,6 +119,7 @@ body{
     scroll-snap-align: center;
     height: 100%;
     border: var(--border-size) solid rgb(0, 0, 0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0) 90%, rgba(0,0,0,1) 100%);
 }
 
 .under-title-img{
@@ -227,7 +226,7 @@ body{
         margin-top: auto;
         display: flex;
         align-items: center;
-        background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0.04245448179271705) 50%, rgba(0,0,0,0) 90%, rgba(0,0,0,1) 100%);
+        background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 12%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0) 88%, rgba(0,0,0,1) 100%);
     }
 
     .borders-container{
@@ -250,8 +249,6 @@ body{
         justify-content: space-between;
         width: 100%;
         /* background-color: #ff000062; */
-        top: 0;
-        bottom: 0;
         pointer-events: none;
     }
 

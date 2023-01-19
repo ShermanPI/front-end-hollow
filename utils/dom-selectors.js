@@ -18,5 +18,8 @@ export const selectors = {
     editForm: ".edit-form",
     addForm: ".add-form",
     menuBtn: ".burger-icon",
-    menu: ".menu"
+    menu: ".menu",
+
+    leftFullArrow: ".left-full-arrow",
+    rightFullArrow: ".right-full-arrow",
 };
