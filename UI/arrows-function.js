@@ -27,6 +27,8 @@ export function navigationArrows(leftArrowSelector, rightArrowSelector){
     }
 
     window.addEventListener("keydown", (e)=>{
+        console.log(e)
+
         if(e.key == "ArrowRight"){
             console.log("derecha")
             animateArrow($rightArrow)

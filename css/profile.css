@@ -7,7 +7,7 @@
 
 .favorite-title{
     display: flex;
-    padding: 0.4rem var(--inner-indentation);  
+    padding: 1rem var(--inner-indentation);  
     justify-content: space-between;
     color: var(--pure-color);
 }
