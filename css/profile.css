@@ -2,6 +2,7 @@
 
 .profile-container{
     height: 92%;
+    width: 100%;
     overflow-y: scroll;
 }
 
@@ -20,35 +21,15 @@
 
 .share-img{
     width: 1.5rem;
-    margin-left: calc(var(--inner-indentation)/2);
+    margin-left: 0.8rem;
 }
 
 .share-btn:hover{
     opacity: 0.5;
 }
 
-.favorite-item{
-    margin-top: 0rem;
-    text-decoration: none;
-    display: flex;
-    justify-content: space-between;
-}
-
-.profile-favorite-icon{
-    margin-right: calc(var(--inner-indentation) / 2);
-    
-    width: clamp(2rem, 9vw, 4rem);
-}
-
-.favorite-item-info{
-    display: flex;
-    align-items: center;
-    margin-block: auto;
-}
-
 .profile-control-panel{
     display: flex;
-    min-height: 25%;
 }
 
 .profile-info{
@@ -78,6 +59,16 @@
     position: absolute;
 }
 
+.item-info{
+    display: flex;
+    align-items: center;
+}
+
+.favorite-item{
+    display: flex;
+    justify-content: space-between;
+}
+
 @media (min-width: 1024px) {
     .burger-icon{
         display: none;
@@ -88,6 +79,34 @@
     }
 
     .profile-control-panel{
-        flex-direction: row;
+        flex-direction: column;
+        width: 30%;
+        height: 100%;
+    }
+
+    .profile-favorite-items{
+        height: 100%;
+        width: 70%;
+    }
+
+    .favorite-title{
+        margin-inline: var(--inner-indentation);
+    }
+
+    .profile-container{
+        display: flex;
+        overflow-y:hidden;
+        padding: 4%;
+    }
+    /* .borders-container{
+        display: none;
+    } */
+
+    .panel-div{
+        height: 30%;
+    }
+
+    .control-div{
+        display: none;
     }
 }

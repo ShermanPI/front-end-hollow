@@ -78,6 +78,10 @@
     margin-bottom: 100vh;
 }
 
+.last-favorite{
+    margin-bottom: 8rem;
+}
+
 .character-full-info{
     overflow-y: scroll;
     height: 65%;
@@ -118,10 +122,9 @@
 }
 
 .favorite-icon{
-    position: absolute;
+
     width: 12%;
-    max-width: 4rem;
-    top: 0;
+    max-width: 4.5rem;
     cursor: pointer;
 }
 
@@ -157,7 +160,9 @@
         padding-right: 2rem;
         font-size: var(--fs-500);
     }
-    
+    .favorites-list{
+        width: 100%;
+    }
     .character-full-info{
         width: 70%;
         height: 100%;
@@ -187,6 +192,7 @@
         padding-block: 3rem;
     }
 
-
-
+    .item{
+        padding-right: var(--inner-indentation);
+    }
 }

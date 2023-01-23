@@ -22,4 +22,5 @@ export const selectors = {
 
     leftFullArrow: ".left-full-arrow",
     rightFullArrow: ".right-full-arrow",
+    favoriteIcon: ".favorite-icon img"
 };

@@ -30,7 +30,6 @@ export function navigationArrows(leftArrowSelector, rightArrowSelector){
         console.log(e)
 
         if(e.key == "ArrowRight"){
-            console.log("derecha")
             animateArrow($rightArrow)
         }
 
