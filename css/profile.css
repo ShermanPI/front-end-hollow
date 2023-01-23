@@ -11,6 +11,8 @@
     padding: 1rem var(--inner-indentation);  
     justify-content: space-between;
     color: var(--pure-color);
+    background: rgb(15,15,27);
+background: linear-gradient(90deg, rgba(15,15,27,0) 0%, #565a75 50%, rgba(15,15,27,0) 100%);
 }
 
 .share-btn{
@@ -39,7 +41,6 @@
     flex-direction: column;
     align-items: center;
     padding-block: 1rem;
-    justify-content: space-between;
     gap: 1rem;
 }
 
@@ -101,12 +102,77 @@
     /* .borders-container{
         display: none;
     } */
+    .profile-info{
+        padding-block: 0rem;
+        height: 25%;
+        min-height: 15rem;
+    }
 
     .panel-div{
-        height: 30%;
+        min-height: 22rem;
+        height: 35%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        padding-inline: var(--inner-indentation);
     }
 
     .control-div{
         display: none;
+    }
+
+    .volume-control{
+        display: flex;
+        /* background-color: red; */
+        padding: 1.5rem;
+        height: 1rem;
+        align-items: center;
+    }
+
+    .volume-bar{
+        height: 0.4rem;
+        width: 90%;
+        background-color: var(--pure-color);
+    }
+
+    .filler{
+        filter: invert(98%) sepia(22%) saturate(293%) hue-rotate(346deg) brightness(116%) contrast(100%);
+        width: 5%;
+        margin-left: auto;
+        cursor: pointer;
+    }
+
+    .song-playlist{
+        padding: 1.5rem;
+        display: flex;
+    }
+    
+    .reverse-play{
+        transform: scaleX(-1);
+    }
+    
+    .background-box{
+        padding: 1.5rem;
+        display: flex;
+        cursor: pointer;
+        justify-content: space-between;   
+    }
+
+    .sign-btn{
+        display: flex;
+        padding: 1.5rem;
+        cursor: pointer;
+    }
+
+    .minigame-container{
+        height: 100%;
+        background-color: red;
+    }
+
+    .minigame-container{
+        height: 7rem;
+        width: 7rem;
+        margin: auto;
+        cursor: pointer;
     }
 }

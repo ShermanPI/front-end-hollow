@@ -46,13 +46,6 @@ img, picture, svg, video{
     --fs-100: 1rem;
 }
 
-
-
-h3{
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
 body{
     font-size: var(--fs-300);
     color: var(--pure-color);
@@ -351,7 +344,7 @@ body{
 
     .container-name{
         font-size: var(--fs-600);
-        letter-spacing: 1px;
+        /* letter-spacing: 1px; */
     }
 
     .logo-icon{
