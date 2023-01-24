@@ -132,6 +132,7 @@
     padding-inline: var(--inner-indentation);
     position: relative;
     z-index: 4; /*delete*/
+    padding-bottom: 8rem;
 }
 
 .info-divisor-img{
