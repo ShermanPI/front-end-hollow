@@ -1,9 +1,10 @@
 /* ADMIN */
 
 .admin-container{
-    background-color: rgb(240, 142, 228);
     overflow-y: scroll;
-
+    min-height: 90%;
+    width: 100%;
+    margin-inline: auto;
 }
 
 .admin-btns{
@@ -11,12 +12,12 @@
 }
 
 .admin-btns div{
-    width: clamp(16rem, 100%, 30rem);
+    width: 50%;
     text-align: center;
 }
 
 .admin-btn{
-    background-color: green;
+    background-color: var(--abyss-blue);
     padding: 1rem;
     cursor: pointer;
 }
@@ -29,19 +30,20 @@
     position: absolute;
     top: 0px;
     width: 100%;
+    color: #fff;
+    padding-bottom: 6rem;
+}
+
+.form-container{
+    background-color: #565a7552;
+    backdrop-filter: blur(0.3rem);
+    width: 100%;
     padding: 1rem;
 }
 
-.add-form{
-    background-color: red;
-}
-
-.edit-form{
-    background-color: blue;
-}
-
 .btn-activated{
-    background-color: black;
+    background: rgb(86,90,117);
+    background: linear-gradient(0, #565a7552 0%, rgba(15,15,27,1) 100%);
 }
 
 .hide-form{
@@ -69,10 +71,19 @@ textarea{
 
 .form-btn{
     padding: 0.6rem;
+    color: #fff;
+
 }
 
 .name-input{
     width: 100%;
     font-size: 2rem;
     padding: 0.8rem;
+}
+
+@media (min-width: 1024px) {
+    .admin-container{
+        padding-block: 4%;
+        width: 50%;
+    }
 }

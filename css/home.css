@@ -130,8 +130,6 @@
 
 .character-info{
     padding-inline: var(--inner-indentation);
-    position: relative;
-    z-index: 4; /*delete*/
     padding-bottom: 8rem;
 }
 
@@ -179,7 +177,7 @@
         width: 50%;
         height: 100%;
         overflow-y: scroll;
-        padding: 1rem 4.5rem 1rem 4.5rem;
+        padding: 5rem 7rem 1rem 4.5rem;
         font-size: var(--fs-400);
     }
 

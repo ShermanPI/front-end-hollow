@@ -5,8 +5,8 @@ import { navigationArrows } from "./UI/arrows-function.js";
 import { markAsFavorite } from "./UI/favorite-btn.js";
 
 window.addEventListener("DOMContentLoaded", (e)=>{
-    // changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
-    // burgerMenu(selectors.menuBtn, selectors.menu)
     navigationArrows(selectors.leftFullArrow, selectors.rightFullArrow)
+    changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
+    // burgerMenu(selectors.menuBtn, selectors.menu)
     markAsFavorite(selectors.favoriteIcon)
 })
