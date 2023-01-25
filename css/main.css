@@ -371,4 +371,13 @@ body{
         cursor: pointer;
         pointer-events: initial;
     }
+
+    .prueba-random{
+        background-color: red;
+        position: fixed;
+        width: 10rem;
+        height: 10rem;
+        z-index: 9999;
+        cursor: pointer;
+    }
 }
