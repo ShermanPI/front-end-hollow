@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: perpetua;
-    src: url(/utils/fonts/Perpetua.ttf);
+    src: url(../utils/fonts/Perpetua.ttf);
 }
 
 *{
@@ -372,12 +372,4 @@ body{
         pointer-events: initial;
     }
 
-    .prueba-random{
-        background-color: red;
-        position: fixed;
-        width: 10rem;
-        height: 10rem;
-        z-index: 9999;
-        cursor: pointer;
-    }
 }

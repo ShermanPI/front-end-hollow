@@ -1,11 +1,70 @@
-const d = document
+const d = document,
+w = window;
 
-
-export function navigationArrows(leftArrowSelector, rightArrowSelector){
-    const $leftArrow = d.querySelector(leftArrowSelector),
+export function homeNavigation(leftArrowSelector, rightArrowSelector){
+    
+    const $sections = document.querySelectorAll(".section-container"),
+        $leftArrow = d.querySelector(leftArrowSelector),
         $rightArrow = d.querySelector(rightArrowSelector),
-        $sections = d.querySelectorAll(".section-container")
+        $items = d.querySelectorAll(".item-list > .item")
+    
+    let actualItem = 0;
+    $items[actualItem].classList.add("selected-item")
 
+    const navigateItems = (e)=>{
+        e.preventDefault()
+        if(e.key == "ArrowDown"){
+
+            if(actualItem < $items.length - 1){
+                actualItem++;
+            }
+
+            console.log($items[actualItem])
+            $items[actualItem].scrollIntoView({block: "center"})
+            $items[actualItem].classList.add("selected-item")
+            $items[actualItem - 1].classList.remove("selected-item")
+        }
+
+        if(e.key == "ArrowUp"){
+
+            if(actualItem > 0){
+                actualItem--;
+            }
+            
+            console.log($items[actualItem])
+            $items[actualItem].scrollIntoView({block: "center"})
+            $items[actualItem].classList.add("selected-item")
+            $items[actualItem + 1].classList.remove("selected-item")
+        }
+    }
+    
+    const observerOptions = {
+        threshold: 0.9
+    }
+    const observerCallback = (entries)=>{
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                if(entry.target.getAttribute("id") == "home"){
+                    w.addEventListener("keydown", navigateItems)
+                }else{
+                    w.removeEventListener("keydown", navigateItems)
+                }
+
+                // if(entry.target.getAttribute("id") == "profile")console.log("This is the profile");
+                // if(entry.target.getAttribute("id") == "admin")console.log("This is the admin");
+            }
+        });        
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    $sections.forEach(el=>observer.observe(el));
+    
+
+
+    // for(let i = 0; i<$sections.length; i++){
+    //     $sections[i].setAttribute("data-id", i);
+    // } set the number of the page
+ 
     let currentIndex = 0;
 
     const animateArrow = function(arrow){

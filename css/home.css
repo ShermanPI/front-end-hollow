@@ -8,9 +8,36 @@
     height: 92%; /*header has the other 8%*/
     display: flex;
     flex-direction: column;
+    position: relative;
+
 }
 
 .item-list{
+    height: 35%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+}
+
+.list-overlay{
+    position: absolute;
+    background-color: rgba(0, 0, 255, 0.29);
+    z-index: 99;
+    width: 100%;
+}
+
+.mid-item{
+    position: absolute;
+    background-color: rgba(255, 0, 0, 0.418);
+    height: 5rem;
+    width: 10rem;
+    z-index: 999999;
+    top: 0;
+    bottom: 0;
+    margin-block: auto;
+    pointer-events: none;
+}
+
+.favorite-item-list{
     height: 35%;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
@@ -134,6 +161,8 @@
 .character-info{
     padding-inline: var(--inner-indentation);
     padding-bottom: 8rem;
+    position: relative;
+    z-index: 98;
 }
 
 .info-divisor-img{
@@ -152,7 +181,6 @@
     .home-container{
         display: flex;
         flex-direction: row;
-        position: relative;
     }
 
     .item-list{
@@ -162,6 +190,16 @@
         padding-right: 2rem;
         font-size: var(--fs-500);
     }
+
+    .favorite-item-list{
+        width: 30%;
+        height: 100%;
+        padding-left: 4.5rem;
+        padding-right: 2rem;
+        font-size: var(--fs-500);
+    }
+
+
     .favorites-list{
         width: 100%;
     }
