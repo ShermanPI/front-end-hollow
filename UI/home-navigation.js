@@ -6,9 +6,86 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
     const $sections = document.querySelectorAll(".section-container"),
         $leftArrow = d.querySelector(leftArrowSelector),
         $rightArrow = d.querySelector(rightArrowSelector),
-        $items = d.querySelectorAll(".item-list > .item")
+        $items = d.querySelectorAll(".item-list > .item"),
+        $itemList = d.getElementById("home-list")
+
+        
+        for(let i = 0; i<$items.length; i++){
+            $items[i].setAttribute("data-item-id", i);
+        }
+
+    // to know if the user stopped scroll
+    // let timeOut;
+    // $itemList.addEventListener("scroll", (e)=>{
+    //     clearTimeout(timeOut)
+    //     timeOut = setTimeout(()=>{
+    //         console.log("se ha parado de escrollear")
+    //     }, 100)
+    //     e.stopPropagation()
+    // })
+
+    $itemList.addEventListener("wheel", (e)=>{
+        e.preventDefault()
+        console.log("hola")
+    })
+    
+    // know the active items in the middle of item-list
+
+    let getTheMiddle = ()=>{
+        let itemHeight = $items[0].getBoundingClientRect().height,
+        listHeight = $itemList.getBoundingClientRect().height
+        
+        return  `-${((listHeight/2) - (itemHeight/2))}px 0px -${((listHeight/2) - (itemHeight/2))}px 0px`
+    }
     
     let actualItem = 0;
+
+    const moveToItem = (actualItem)=>{
+        $items[actualItem].classList.add("selected-item")
+
+        if(actualItem !== 0){
+            $items[(actualItem - 1)].classList.remove("selected-item")
+        }
+
+        if(((actualItem+1) < $items.length)){
+            $items[(actualItem + 1)].classList.remove("selected-item")
+        }
+            
+
+    }
+
+    let observeItemFunc = (entries)=>{
+        entries.forEach(entry=>{
+            if(entry.isIntersecting){
+                console.log(entry.target, " esta en el medio")
+                actualItem = entry.target.getAttribute("data-item-id")
+                console.log(actualItem)
+                moveToItem(actualItem)
+            }
+        })
+    }
+
+    let itemsObserver = new IntersectionObserver(observeItemFunc, 
+        {root: $itemList, rootMargin: getTheMiddle()});
+    
+    $items.forEach(el=>{
+        itemsObserver.observe(el)
+    })
+
+    w.addEventListener("resize", (e)=>{
+        itemsObserver.disconnect() //stop the last intersectionObserver and re make it with the new values of observation
+        itemsObserver = new IntersectionObserver(observeItemFunc, 
+            {root: $itemList, rootMargin: getTheMiddle()});
+        
+
+        $items.forEach(el=>{
+            itemsObserver.observe(el)
+        })
+    })
+
+
+    // console.log(document.querySelector(`[data-item-id="${2}"]`))
+
     $items[actualItem].classList.add("selected-item")
 
     const navigateItems = (e)=>{
@@ -19,19 +96,16 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
                 actualItem++;
             }
 
-            console.log($items[actualItem])
             $items[actualItem].scrollIntoView({block: "center"})
             $items[actualItem].classList.add("selected-item")
             $items[actualItem - 1].classList.remove("selected-item")
         }
 
         if(e.key == "ArrowUp"){
-
             if(actualItem > 0){
                 actualItem--;
             }
             
-            console.log($items[actualItem])
             $items[actualItem].scrollIntoView({block: "center"})
             $items[actualItem].classList.add("selected-item")
             $items[actualItem + 1].classList.remove("selected-item")
@@ -58,12 +132,6 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     $sections.forEach(el=>observer.observe(el));
-    
-
-
-    // for(let i = 0; i<$sections.length; i++){
-    //     $sections[i].setAttribute("data-id", i);
-    // } set the number of the page
  
     let currentIndex = 0;
 
@@ -133,7 +201,6 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
     }
 
     d.addEventListener("click", (e)=>{
-        
         if(e.target == $rightArrow){
             animateArrow($rightArrow)
             moveToRight()
