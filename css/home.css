@@ -74,7 +74,7 @@
     position: absolute;
     z-index: 1;
     margin-left: -0.4rem;
-    top: calc(50%-(clamp(3.8rem, 10vw, 5.8rem)/2)); /*to center the div verticaly */
+    top: calc(50%-(clamp(3.8rem, 10vw, 5.8rem)/2));
 }
 
 .hollow{
@@ -82,7 +82,7 @@
 }
 
 .first-item{
-    margin-top: 100vh; /*this overflows the list of elements, so when the first and last elements have tried to pass them the snap center behavior will always place them in the center of the div */
+    margin-top: 100vh;
 }
 
 .last-item{
@@ -172,6 +172,7 @@
         font-size: var(--fs-500);
     }
 
+
     .favorite-item-list{
         width: 30%;
         height: 100%;
@@ -212,6 +213,10 @@
     .character-name{
         font-size: var(--fs-450);
         padding-block: 3rem;
+    }
+
+    .mb-4{
+        margin-block: 4rem;
     }
 
 }
