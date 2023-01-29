@@ -64,19 +64,36 @@
         <div class="background-overlay"></div>
         <img src="img/background/background-sample.jpg" alt="">
     </div>
-
+    
+    <div class="page-indicator-container">
+        <div class="page-indicator prev-page computer-design">
+            <img src="img/UI/Expandarrow.png" alt="">
+            Previous
+        </div>
+        <div class="page-indicator next-page computer-design">
+            Next
+            <img src="img/UI/Expandarrow.png" alt="">
+        </div>
+    </div>
+    
+    
     <section class="slider-container">
-
+        
         <section class = "section-container" id="home">
+
 
             <header class="section-header">
                 <!-- <div class="logo-icon">
                     <img src="img/icons/hollow-knight.png" alt="">
                 </div> -->
-                <p class="container-name">Home</p>
+                <h1 class="container-name">Home</h1>
+
                 <div class="divisor header-divisor"></div>
 
-                <div class="under-title-img">
+                
+                
+                
+                <div class="under-title-img"> <!--this item is absolute, doesn't affect other in the general header div-->
                     <img src="img/UI/image.png" alt="">
                 </div>
                 <!-- <div class="burger-icon">
@@ -89,8 +106,17 @@
             
             <div class="home-container">
 
+                <div class="item-list item-arrows-overlay">
+                    <div class="navigate-item-arrow">
+                        <img src="img/icons/arrow-item-navigation.png" class = "navigate-item navigate-item-up" alt="">
+                    </div>
+                    <div id="actual-item-height"></div>
+                    <div class="navigate-item-arrow">
+                        <img src="img/icons/arrow-item-navigation-down.png" class = "navigate-item navigate-item-down" alt="">
+                    </div>
+                </div>
+                
                 <ul class="item-list" id="home-list">
-                    
                     <li class="item first-item">
                         
                         <div class="list-border">
@@ -228,7 +254,9 @@
 
         <section class = "section-container" id="profile">
             <header class="section-header">
+                <div class="prev-page computer-design"></div>
                 <h1 class="container-name">Profile</h1>
+                <div class="next-page computer-design"></div>
                 <div class="divisor header-divisor"></div>
             </header>
 
@@ -451,7 +479,9 @@
 
         <section class = "section-container" id="admin">
             <header class="section-header">
+                <div class="prev-page computer-design"></div>
                 <h1 class="container-name">Admin</h1>
+                <div class="next-page computer-design"></div>
                 <div class="divisor header-divisor"></div>
             </header>
 

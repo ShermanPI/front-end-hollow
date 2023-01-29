@@ -7,76 +7,108 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
         $sections = document.querySelectorAll(".section-container"),
         $firstItem = d.querySelector(".first-item"),
         $lastItem = d.querySelector(".last-item"),
-        $itemList = d.getElementById("home-list")
-
+        $itemList = d.getElementById("home-list"),
+        $arrowsDivisor = d.getElementById("actual-item-height"),
+        $arrowUp = d.querySelector(".navigate-item-up"),
+        $arrowDown = d.querySelector(".navigate-item-down")
         
-        for(let i = 0; i<$items.length; i++){
-            $items[i].setAttribute("data-item-id", i);
+    const resizeArrowDivisor = ()=>{
+        $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
+    } 
+
+    for(let i = 0; i<$items.length; i++){
+        $items[i].setAttribute("data-item-id", i);
+    }
+    
+    // NAVIGATE ITEMS IN computer
+    const animationTiming = {
+        duration: 250,
+        iterations: 1,
+    }
+    //NavigateItemDown
+    const navigateItemDown = ()=>{
+        if(actualItem < $items.length - 1){
+            actualItem++;
         }
 
-    // NAVIGATE ITEMS IN computer
+        resizeArrowDivisor()
+        $arrowDown.animate([
+            {transform: 'translateY(1rem)'},
+            {transform: 'translate(0)'}], animationTiming)
+
+        console.log("actual item by wheel event: ", actualItem)
+
+        $items[actualItem].scrollIntoView({block: "center"})
+        $items[actualItem].classList.add("selected-item")
+        $items[actualItem - 1].classList.remove("selected-item")
+
+        if(actualItem == 1){
+            $items[actualItem].style.marginBlock = "5rem";
+            $firstItem.style.marginBottom = "1rem";
+            return;
+        }
+
+        if(actualItem == $items.length - 1){
+            $lastItem.style.marginTop = "5rem"
+            $lastItem.previousElementSibling.style.marginBlock = "1rem";
+            return;
+        }
+
+        $items[actualItem].style.marginBlock = "5rem"
+        $items[actualItem].previousElementSibling.style.marginBlock = "1rem"
+    }
+    //NavigateItemUp
+    const navigateItemUp = ()=>{
+        if(actualItem > 0){
+            actualItem--;
+        }
+
+        resizeArrowDivisor()
+        $arrowUp.animate([
+            {transform: 'translateY(-1rem)'},
+            {transform: 'translate(0)'}], animationTiming)
+
+        console.log("item actual by wheel event: ", actualItem)
+
+        $items[actualItem].scrollIntoView({block: "center"})
+        $items[actualItem].classList.add("selected-item")
+        $items[parseInt(actualItem) + 1].classList.remove("selected-item")
+
+        if(actualItem == $items.length - 2){
+            $lastItem.style.marginTop = "1rem";
+            $items[actualItem].style.marginBlock = "5rem";
+            return;
+        }
+
+        if(actualItem == 0){
+            $firstItem.style.marginBottom = "5rem"
+            $items[actualItem].nextElementSibling.style.marginBlock = "1rem";
+            return;
+        }
+        
+        $items[actualItem].style.marginBlock = "5rem"
+        $items[actualItem].nextElementSibling.style.marginBlock = "1rem"
+    }
+
     let actualItem = 0;
-    $items[actualItem].style.marginBottom = "4rem"
+
+    if(innerWidth >= 1024){
+        $items[actualItem].style.marginBottom = "5rem"
+        resizeArrowDivisor()
+    }
     
     $itemList.addEventListener("wheel", (e)=>{
         e.preventDefault()
         if (e.deltaY > 0) { //wheels down
-            if(actualItem < $items.length - 1){
-                actualItem++;
-            }
-
-            $items[actualItem].scrollIntoView({block: "center"})
-            $items[actualItem].classList.add("selected-item")
-            $items[actualItem - 1].classList.remove("selected-item")
-
-            if(actualItem == 1){
-                $firstItem.style.marginBottom = "4rem";
-                $items[actualItem].style.marginBlock = "4rem";
-                $items[actualItem].previousElementSibling.style.marginBottom = "1rem";
-                return;
-            }
-
-            if(actualItem == $items.length - 1){
-                $lastItem.style.marginTop = "4rem"
-                $lastItem.previousElementSibling.style.marginBlock = "1rem";
-                return;
-            }
-
-            $items[actualItem].style.marginBlock = "4rem"
-            $items[actualItem].previousElementSibling.style.marginBlock = "1rem"
-
+            navigateItemDown()
         } else { //wheels up
-            
-            if(actualItem > 0){
-                actualItem--;
-            }
-
-            $items[actualItem].scrollIntoView({block: "center"})
-            $items[actualItem].classList.add("selected-item")
-            $items[actualItem + 1].classList.remove("selected-item")
-
-            if(actualItem == $items.length - 2){
-                $lastItem.style.marginTop = "1rem";
-                $items[actualItem].style.marginBlock = "4rem";
-                return;
-            }
-
-            if(actualItem == 0){
-                $firstItem.style.marginBottom = "4rem"
-                $items[actualItem].nextElementSibling.style.marginBlock = "1rem";
-                return;
-            }
-            
-            $items[actualItem].style.marginBlock = "4rem"
-            $items[actualItem].nextElementSibling.style.marginBlock = "1rem"
-            
-
+            navigateItemUp()
         }
 
     })
 
 
-    // the next observer is only for cellPhone users
+    // NAVIGATE ITEMS in cellphone
     const moveToItem = (actualItem)=>{
         if($items[parseInt(actualItem) - 1]){
             $items[parseInt(actualItem) - 1].classList.remove("selected-item")
@@ -100,7 +132,7 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
         entries.forEach(entry=>{
             if(entry.isIntersecting){
                 actualItem = entry.target.getAttribute("data-item-id")
-                // console.log("actual item: ", actualItem)
+                console.log("actual item detected by intersection: ", actualItem)
                 moveToItem(actualItem)
             }
         })
@@ -115,6 +147,7 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
     })
 
     w.addEventListener("resize", (e)=>{
+        resizeArrowDivisor()
         itemsObserver.disconnect() //stop the last intersectionObserver and re make it with the new values of observation
         itemsObserver = new IntersectionObserver(observeItemFunc, 
             {root: $itemList, rootMargin: getTheMiddle(), threshold: 0.6});
@@ -124,32 +157,16 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
         })
     })
 
-
-    // console.log(document.querySelector(`[data-item-id="${2}"]`))
-
     $items[actualItem].classList.add("selected-item")
 
     const navigateItems = (e)=>{
         e.preventDefault()
         if(e.key == "ArrowDown"){
-
-            if(actualItem < $items.length - 1){
-                actualItem++;
-            }
-
-            $items[actualItem].scrollIntoView({block: "center"})
-            $items[actualItem].classList.add("selected-item")
-            $items[actualItem - 1].classList.remove("selected-item")
+            navigateItemDown()
         }
 
         if(e.key == "ArrowUp"){
-            if(actualItem > 0){
-                actualItem--;
-            }
-            
-            $items[actualItem].scrollIntoView({block: "center"})
-            $items[actualItem].classList.add("selected-item")
-            $items[actualItem + 1].classList.remove("selected-item")
+            navigateItemUp()
         }
     }
     
@@ -174,5 +191,9 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     $sections.forEach(el=>observer.observe(el));
  
+    d.addEventListener("click", (e)=>{
+        if(e.target == $arrowUp)navigateItemUp();
+        if(e.target == $arrowDown) navigateItemDown();
+    })
 
 }

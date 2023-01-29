@@ -179,7 +179,7 @@ body{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    position: relative;
+    /* position: relative; */
 
     transition: 800ms background-color ease-in-out;
 }
@@ -370,6 +370,34 @@ body{
     .right-full-arrow{
         cursor: pointer;
         pointer-events: initial;
+    }
+    
+    .page-indicator-container{
+        position: fixed;
+        display: flex;
+        width: 100vw;
+        padding: var(--border-size);
+        padding-top: calc(var(--border-size) + 1rem);
+        justify-content: space-between;
+    }
+
+    .page-indicator{
+        display: flex;
+        align-items: center;
+        font-size:x-large;
+        gap: 0.5rem;
+    }
+    .prev-page img{
+        transform: rotate(90deg);
+        max-width: 3.3rem;
+    }
+
+    .next-page{
+        right: 0;
+    }
+    .next-page img{
+        transform: rotate(-90deg);
+        max-width: 3.3rem;
     }
 
 }

@@ -4,7 +4,11 @@ const d = document,
 export function navigatePages(leftArrowSelector, rightArrowSelector){
     const $sections = document.querySelectorAll(".section-container"),
         $leftArrow = d.querySelector(leftArrowSelector),
-        $rightArrow = d.querySelector(rightArrowSelector)
+        $rightArrow = d.querySelector(rightArrowSelector),
+        $nextPageIndicator = d.querySelector(".next-page"),
+        $prevPageIndicator = d.querySelector(".prev-page")
+
+        
 
     const animateArrow = function(arrow){
         const animationTiming = {
@@ -27,50 +31,47 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         }
 
     }
-
-    function hideArrow(arrow){
-        arrow.style.visibility = "hidden"
-    }
     
     let currentIndex = 0;
 
-    if(currentIndex == 0) hideArrow($leftArrow);
-    if(currentIndex == ($sections.length - 1)) hideArrow($rightArrow);
+    const showSideSections = ()=>{
+        if($sections[parseInt(currentIndex) + 1]){
+            $nextPageIndicator.innerHTML = 
+            `${$sections[parseInt(currentIndex) + 1].getAttribute("id")}
+            <img src="img/UI/Expandarrow.png" alt="">`
+        }else{
+            $nextPageIndicator.innerHTML = ""
+        }
+
+        if($sections[parseInt(currentIndex) - 1]){
+            $prevPageIndicator.innerHTML = 
+            `<img src="img/UI/Expandarrow.png" alt="">
+            ${$sections[parseInt(currentIndex) - 1].getAttribute("id")}`
+        }else{
+            $prevPageIndicator.innerHTML = ""
+        }
+    }
+
+    showSideSections()
 
     function moveToRight(){
-
-        if(currentIndex < $sections.length) {
+        if(currentIndex !== $sections.length - 1) {
             currentIndex++;
         }
 
-        if(currentIndex > 0)$leftArrow.style.visibility = "visible";
-        
-        if(currentIndex == ($sections.length - 1)){
-            currentIndex = $sections.length - 1;
-            hideArrow($rightArrow);
-        }
-
         $sections[currentIndex].scrollIntoView()
+        showSideSections()
 
     }
 
     function moveToLeft(){
-        
-        if(currentIndex > 0) {
+        if(currentIndex !== 0) {
             currentIndex--;
         }
 
-        if(currentIndex == 0){
-            hideArrow($leftArrow)
-            currentIndex = 0;
-        }
-
-        if(currentIndex < ($sections.length - 1)){
-            $rightArrow.style.visibility = "visible"
-        }
-
         $sections[currentIndex].scrollIntoView()
-            
+        showSideSections()
+
     }
 
     d.addEventListener("click", (e)=>{
