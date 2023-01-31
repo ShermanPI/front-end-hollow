@@ -139,6 +139,13 @@
     cursor: pointer;
 }
 
+.home-favorite-icon{
+    position: absolute;
+    right: 1rem;
+    top: 20%; bottom: 0;
+
+}
+
 .character-info{
     padding-inline: var(--inner-indentation);
     padding-bottom: 8rem;

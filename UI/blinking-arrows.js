@@ -28,7 +28,6 @@ export const makeThemBlink = ()=>{
 
 
     d.addEventListener("click", (e)=>{
-        console.log("askhjdfbvk")
         leftArrowAnimation.finish();
         rightArrowAnimation.finish();
     })

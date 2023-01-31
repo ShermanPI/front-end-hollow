@@ -6,9 +6,12 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         $leftArrow = d.querySelector(leftArrowSelector),
         $rightArrow = d.querySelector(rightArrowSelector),
         $nextPageIndicator = d.querySelector(".next-page"),
-        $prevPageIndicator = d.querySelector(".prev-page")
+        $prevPageIndicator = d.querySelector(".prev-page"),
+        $actualPageTitle = d.querySelector(".actual-page")
 
-        
+    for(let i = 0; i <=$sections.length - 1; i++){
+        $sections[i].setAttribute("data-page-number", i)
+    }
 
     const animateArrow = function(arrow){
         const animationTiming = {
@@ -32,7 +35,25 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     }
     
-    let currentIndex = 0;
+    let currentIndex = 1;
+    $sections[currentIndex].scrollIntoView()
+
+    let pageObserverCallback = function(entries){
+        entries.forEach(entry=>{
+            if(entry.isIntersecting){
+                currentIndex = entry.target.getAttribute("data-page-number")
+                showSideSections()
+                $actualPageTitle.textContent = $sections[currentIndex].id
+                console.log("Actual page id: ", entry.target.getAttribute("data-page-number"))
+            }
+        })
+    }
+
+    let pageObserver = new IntersectionObserver(pageObserverCallback, {threshold: 0.9})
+
+    $sections.forEach(el=>{
+        pageObserver.observe(el)
+    })
 
     const showSideSections = ()=>{
         if($sections[parseInt(currentIndex) + 1]){
@@ -54,34 +75,24 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     showSideSections()
 
-    function moveToRight(){
-        if(currentIndex !== $sections.length - 1) {
-            currentIndex++;
-        }
+    const movePages = (steps)=>{ //me quedé aquí XD
+        if((steps + parseInt(currentIndex)) < 0) return;
+        if(steps + parseInt(currentIndex) > $sections.length - 1)  return;    
+        currentIndex = steps + parseInt(currentIndex)
 
         $sections[currentIndex].scrollIntoView()
         showSideSections()
-
-    }
-
-    function moveToLeft(){
-        if(currentIndex !== 0) {
-            currentIndex--;
-        }
-
-        $sections[currentIndex].scrollIntoView()
-        showSideSections()
-
+        
     }
 
     d.addEventListener("click", (e)=>{
         if(e.target == $rightArrow){
             animateArrow($rightArrow)
-            moveToRight()
+            movePages(1)
         }
         if(e.target == $leftArrow){
             animateArrow($leftArrow)
-            moveToLeft()
+            movePages(-1)
         }
     })
 
@@ -90,12 +101,12 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
         if(e.key == "ArrowRight"){
             animateArrow($rightArrow)
-            moveToRight()
+            movePages(1)
         }
 
         if(e.key == "ArrowLeft"){
             animateArrow($leftArrow)
-            moveToLeft()
+            movePages(-1)
         }
 
     })
