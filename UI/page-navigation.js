@@ -37,7 +37,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
     const showSideSections = ()=>{
         if($sections[parseInt(currentIndex) + 1]){
             $nextPageIndicator.innerHTML = 
-            `${$sections[parseInt(currentIndex) + 1].getAttribute("id")}
+            `${$sections[parseInt(currentIndex) + 1].id.charAt(0).toUpperCase() + $sections[parseInt(currentIndex) + 1].id.slice(1)}
             <img src="img/UI/Expandarrow.png" alt="">`
         }else{
             $nextPageIndicator.innerHTML = ""
@@ -46,7 +46,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         if($sections[parseInt(currentIndex) - 1]){
             $prevPageIndicator.innerHTML = 
             `<img src="img/UI/Expandarrow.png" alt="">
-            ${$sections[parseInt(currentIndex) - 1].getAttribute("id")}`
+            ${$sections[parseInt(currentIndex) - 1].id.charAt(0).toUpperCase() + $sections[parseInt(currentIndex) - 1].id.slice(1)}`
         }else{
             $prevPageIndicator.innerHTML = ""
         }
@@ -85,7 +85,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         }
     })
 
-    window.addEventListener("keydown", (e)=>{
+    w.addEventListener("keydown", (e)=>{
         e.preventDefault()
 
         if(e.key == "ArrowRight"){

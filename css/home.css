@@ -144,6 +144,7 @@
     padding-bottom: 8rem;
     position: relative;
     z-index: 98;
+    overflow-y: scroll;
 }
 
 .info-divisor-img{
@@ -219,7 +220,7 @@
     .character-info{
         width: 50%;
         height: 100%;
-        overflow-y: scroll;
+
         padding: 5rem 7rem 1rem 4.5rem;
         font-size: var(--fs-400);
         z-index: 0;
