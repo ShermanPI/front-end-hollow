@@ -36,7 +36,7 @@ export function homeNavigation(leftArrowSelector, rightArrowSelector){
             {transform: 'translateY(1rem)'},
             {transform: 'translate(0)'}], animationTiming)
 
-        console.log("actual item by wheel event: ", actualItem)
+        console.log("actual item by wheel event or keyboard: ", actualItem)
 
         $items[actualItem].scrollIntoView({block: "center"})
         $items[actualItem].classList.add("selected-item")

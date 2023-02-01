@@ -141,9 +141,9 @@
 
 .home-favorite-icon{
     position: absolute;
-    right: 1rem;
+    right: 3rem;
     top: 20%; bottom: 0;
-
+    max-width: 5rem;
 }
 
 .character-info{
