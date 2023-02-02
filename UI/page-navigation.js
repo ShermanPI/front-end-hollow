@@ -13,6 +13,14 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         $sections[i].setAttribute("data-page-number", i)
     }
 
+    if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600) ) {
+        // navigate in "mobile"
+    }
+    else{
+        // navigate in "computer"
+
+    }
+
     const animateArrow = function(arrow){
         const animationTiming = {
             duration: 300,

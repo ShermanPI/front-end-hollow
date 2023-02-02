@@ -354,7 +354,6 @@ body{
         display: flex;
         justify-content: space-between;
         width: 100%;
-        /* background-color: #ff000062; */
         pointer-events: none;
     }
 

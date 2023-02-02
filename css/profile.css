@@ -123,7 +123,6 @@ background: linear-gradient(90deg, rgba(15,15,27,0) 0%, #565a75 50%, rgba(15,15,
 
     .volume-control{
         display: flex;
-        /* background-color: red; */
         padding: 1.5rem;
         height: 1rem;
         align-items: center;
