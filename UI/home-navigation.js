@@ -5,23 +5,34 @@ export function homeNavigation(){
     
     const $items = d.querySelectorAll(".item-list > .item"),
         $sections = document.querySelectorAll(".section-container"),
-        $itemList = d.getElementById("home-list")
-
+        $itemList = d.getElementById("home-list"),
+        $arrowsDivisor = d.getElementById("actual-item-height")
+    
+    let actualItem = 0;
     
     for(let i = 0; i<$items.length; i++){
         $items[i].setAttribute("data-item-id", i);
-    }   
+    }
+
+    const resizeArrowDivisor = ()=>{
+        $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
+    }
 
     if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600) ) {
         // navigate in "mobile"
-        let actualItem = 0;
+        $arrowsDivisor.style.width = "100%"
+        $arrowsDivisor.classList.add("selected-item")
 
-        $items[actualItem].classList.add("selected-item")
+
+        // background: ;
+        // border-image: linear-gradient(to left, rgba(0, 0, 0, 0) 1%, rgba(198,183,190,1) 50%, rgba(0, 0, 0, 0) 100%) 
+        // 100% 0 100% 0/2px 0 2px 0 stretch;
+
+        console.log($arrowsDivisor)
 
         let getTheMiddle = ()=>{
             let itemHeight = $items[0].getBoundingClientRect().height,
             listHeight = $itemList.getBoundingClientRect().height
-            
             return  `-${((listHeight/2) - (itemHeight/2))}px 0px -${((listHeight/2) - (itemHeight/2))}px 0px`
         }
 
@@ -29,6 +40,7 @@ export function homeNavigation(){
             entries.forEach(entry=>{
                 if(entry.isIntersecting){
                     actualItem = entry.target.getAttribute("data-item-id")
+                    resizeArrowDivisor()
                     console.log("actual item detected by intersection: ", actualItem)
                 }
             })
@@ -44,11 +56,11 @@ export function homeNavigation(){
     } else {
         // navigate in "computer"        
         let $arrowUp = d.querySelector(".navigate-item-up"),
-            $arrowDown = d.querySelector(".navigate-item-down"),
-            actualItem = 0,
-            $arrowsDivisor = d.getElementById("actual-item-height")
+            $arrowDown = d.querySelector(".navigate-item-down")
 
         $items[actualItem].classList.add("selected-item")
+
+        resizeArrowDivisor()
 
         const navigateItems = (e)=>{
             e.preventDefault()
@@ -78,10 +90,6 @@ export function homeNavigation(){
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
         $sections.forEach(el=>observer.observe(el));
-
-        const resizeArrowDivisor = ()=>{
-            $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
-        } 
 
         const animationTiming = {
             duration: 250,
@@ -155,7 +163,6 @@ export function homeNavigation(){
 
         
         $items[actualItem].style.marginBottom = "5rem"
-        resizeArrowDivisor()
 
         $itemList.addEventListener("wheel", (e)=>{
             e.preventDefault()

@@ -36,17 +36,18 @@ background: linear-gradient(90deg, rgba(15,15,27,0) 0%, #565a75 50%, rgba(15,15,
 
 .profile-info{
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-block: 1rem;
-    gap: 1rem;
+    gap: 0.8rem;
 }
 
 .profile-pfp{
     width: 11rem;
     height: 11rem;
+    min-width: 11rem;
+    min-height: 11rem;
 
     overflow: hidden;
     border-radius: 50%;
@@ -83,6 +84,8 @@ background: linear-gradient(90deg, rgba(15,15,27,0) 0%, #565a75 50%, rgba(15,15,
         flex-direction: column;
         width: 30%;
         height: 100%;
+        overflow-y: scroll;
+        gap: 1rem;
     }
 
     .profile-favorite-items{
@@ -109,9 +112,6 @@ background: linear-gradient(90deg, rgba(15,15,27,0) 0%, #565a75 50%, rgba(15,15,
     }
 
     .panel-div{
-        min-height: 22rem;
-        height: 35%;
-        overflow: hidden;
         display: flex;
         flex-direction: column;
         padding-inline: var(--inner-indentation);
@@ -165,10 +165,11 @@ background: linear-gradient(90deg, rgba(15,15,27,0) 0%, #565a75 50%, rgba(15,15,
 
     .minigame-container{
         height: 100%;
-        background-color: red;
+        padding: 2rem;
     }
-
-    .minigame-container{
+    
+    .mini-game{
+        background-color: red;
         height: 7rem;
         width: 7rem;
         margin: auto;

@@ -6,12 +6,7 @@ export function burgerMenu(btnSelector, menuSelector){
         $menu = d.querySelector(menuSelector)
         
         $menuBtn.addEventListener("click", (e)=>{
-            if($menu.classList.contains("hide-menu")){
-                $menu.classList.remove("hide-menu");
-                $menuBtn.classList.add('open');
-            }else{
-                $menu.classList.add("hide-menu");
-                $menuBtn.classList.remove('open');
-            }
+            $menu.classList.toggle("hide-menu");
+            $menuBtn.classList.toggle('open');
         }) 
 }

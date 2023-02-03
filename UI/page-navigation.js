@@ -13,14 +13,6 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         $sections[i].setAttribute("data-page-number", i)
     }
 
-    if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600) ) {
-        // navigate in "mobile"
-    }
-    else{
-        // navigate in "computer"
-
-    }
-
     const animateArrow = function(arrow){
         const animationTiming = {
             duration: 300,
@@ -43,7 +35,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     }
     
-    let currentIndex = 0;
+    let currentIndex = 1;
     $sections[currentIndex].scrollIntoView()
 
     let pageObserverCallback = function(entries){
@@ -52,7 +44,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
                 currentIndex = entry.target.getAttribute("data-page-number")
                 showSideSections()
                 $actualPageTitle.textContent = $sections[currentIndex].id
-                console.log("Actual page id: ", entry.target.getAttribute("data-page-number"))
+                console.log("Actual page id by intersection: ", entry.target.getAttribute("data-page-number"))
             }
         })
     }
