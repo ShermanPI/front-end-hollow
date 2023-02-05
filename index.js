@@ -5,6 +5,7 @@ import { homeNavigation } from "./UI/home-navigation.js";
 import { markAsFavorite } from "./UI/favorite-btn.js";
 import { navigatePages } from "./UI/page-navigation.js";
 import { makeThemBlink } from "./UI/blinking-arrows.js";
+import { scrollsBtn } from "./UI/scroll-btn.js";
 
 window.addEventListener("DOMContentLoaded", (e)=>{
     homeNavigation()
@@ -13,4 +14,5 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     burgerMenu(selectors.menuBtn, selectors.menu)
     markAsFavorite(selectors.favoriteIcon)
     makeThemBlink()
+    scrollsBtn()
 })

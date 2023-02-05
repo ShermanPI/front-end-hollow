@@ -50,7 +50,6 @@
 }
 
 .selected-item{
-    background: rgb(198,183,190);
     background: linear-gradient(90deg, transparent 0%, #fafbf629 30%, #fafbf629 70%, transparent 100%);
     border-image: linear-gradient(to left, rgba(0, 0, 0, 0) 1%, rgba(198,183,190,1) 50%, rgba(0, 0, 0, 0) 100%) 
     100% 0 100% 0/2px 0 2px 0 stretch;
@@ -92,7 +91,7 @@
 }
 
 .last-favorite{
-    margin-bottom: 8rem;
+    margin-bottom: 10rem;
 }
 
 .character-full-info{
@@ -209,8 +208,6 @@
     .favorite-item-list{
         width: 30%;
         height: 100%;
-        padding-left: 4.5rem;
-        padding-right: 2rem;
     }
 
     .navigate-item{
@@ -218,7 +215,6 @@
         cursor: pointer;
         animation-timing-function: ease-in-out;
     }
-
 
     .favorites-list{
         width: 100%;

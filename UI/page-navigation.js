@@ -35,7 +35,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     }
     
-    let currentIndex = 1;
+    let currentIndex = 0;
     $sections[currentIndex].scrollIntoView()
 
     let pageObserverCallback = function(entries){
@@ -43,7 +43,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
             if(entry.isIntersecting){
                 currentIndex = entry.target.getAttribute("data-page-number")
                 showSideSections()
-                $actualPageTitle.textContent = $sections[currentIndex].id
+                $actualPageTitle.textContent = $sections[currentIndex].id.toUpperCase()
                 console.log("Actual page id by intersection: ", entry.target.getAttribute("data-page-number"))
             }
         })
