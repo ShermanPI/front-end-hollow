@@ -5,10 +5,10 @@ name: Deploy to Firebase Hosting on merge
 'on':
   push:
     branches:
-      - 'yes'
+      - 'main'
 jobs:
   build_and_deploy:
-    runs-on: windows-latest # For Linux, use ubuntu-latest
+    runs-on: use windows-latest 
     steps:
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
