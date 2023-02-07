@@ -9,6 +9,11 @@
     src: url(../utils/fonts/Perpetua.ttf);
 }
 
+@font-face {
+    font-family: trajan;
+    src: url(../utils/fonts/Trajan\ Pro\ Regular.ttf);
+}
+
 *{
     margin: 0;
     padding: 0;

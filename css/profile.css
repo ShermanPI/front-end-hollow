@@ -68,6 +68,38 @@
     position: absolute;
 }
 
+.filler{
+    filter: invert(98%) sepia(22%) saturate(293%) hue-rotate(346deg) brightness(116%) contrast(100%);
+    width: 5%;
+    min-width: 2.2rem;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.filler:hover{
+    filter: invert(76%) sepia(1%) saturate(1587%) hue-rotate(279deg) brightness(101%) contrast(85%);
+}
+
+
+.setting-item{
+    padding: 1.5rem;
+    display: flex;
+}
+
+.background-box{
+    width: 100%;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.bcknd-btn{
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+
 .item-info{
     display: flex;
     align-items: center;
@@ -102,6 +134,7 @@
     opacity: 0;
     transform: translateY(-2rem);
 }
+
 
 @media (min-width: 1024px) {
     .favorite-list-container{
@@ -161,8 +194,6 @@
     }
 
     .volume-control{
-        display: flex;
-        padding: 1.5rem;
         height: 1rem;
         align-items: center;
     }
@@ -172,35 +203,12 @@
         width: 90%;
         background-color: var(--pure-color);
     }
-
-    .filler{
-        filter: invert(98%) sepia(22%) saturate(293%) hue-rotate(346deg) brightness(116%) contrast(100%);
-        width: 5%;
-        margin-left: auto;
-        cursor: pointer;
-    }
-
-    .song-playlist{
-        padding: 1.5rem;
-        display: flex;
-    }
     
     .reverse-play{
         transform: scaleX(-1);
     }
-    
-    .background-box{
-        width: 100%;
-        padding: 1.5rem;
-        display: flex;
-        cursor: pointer;
-        justify-content: space-between;
-        align-content: center;
-    }
 
     .sign-btn{
-        display: flex;
-        padding: 1.5rem;
         cursor: pointer;
     }
 

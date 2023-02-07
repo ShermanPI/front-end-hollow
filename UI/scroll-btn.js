@@ -3,7 +3,6 @@ export function scrollsBtn() {
         $scrollBtn = document.querySelector(".scroll-btn")
     
     $favoriteListContainer.addEventListener("scroll", (e)=>{
-        console.log($favoriteListContainer.scrollTop)
         if($favoriteListContainer.scrollTop > 300){
             $scrollBtn.classList.remove("hide-scroll-btn")
         }else{

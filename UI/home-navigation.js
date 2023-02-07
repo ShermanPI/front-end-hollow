@@ -36,12 +36,17 @@ export function homeNavigation(){
             return  `-${((listHeight/2) - (itemHeight/2))}px 0px -${((listHeight/2) - (itemHeight/2))}px 0px`
         }
 
+        let timeOut;
+
         let observeItemFunc = (entries)=>{
             entries.forEach(entry=>{
                 if(entry.isIntersecting){
-                    actualItem = entry.target.getAttribute("data-item-id")
                     resizeArrowDivisor()
-                    console.log("actual item detected by intersection: ", actualItem)
+                    clearTimeout(timeOut)
+                    timeOut = setTimeout(()=>{
+                        actualItem = entry.target.getAttribute("data-item-id")
+                        console.log("actual item detected by intersection: ", actualItem)
+                    }, 500)
                 }
             })
         }

@@ -7,6 +7,8 @@ import { navigatePages } from "./UI/page-navigation.js";
 import { makeThemBlink } from "./UI/blinking-arrows.js";
 import { scrollsBtn } from "./UI/scroll-btn.js";
 import { resizeItemToHeight } from "./UI/resize-elem-height.js";
+import { bckChanger } from "./UI/background-changer.js";
+import { controlPlaylist } from "./UI/playlist.js";
 
 window.addEventListener("DOMContentLoaded", (e)=>{
     homeNavigation()
@@ -17,4 +19,5 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     makeThemBlink()
     resizeItemToHeight(selectors.favoritesListContainer, selectors.header, selectors.profileControlPanel, selectors.favoritesTitle)
     scrollsBtn()
+    bckChanger()
 })
