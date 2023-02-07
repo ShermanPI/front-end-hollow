@@ -5,6 +5,14 @@ name: Deploy to Firebase Hosting on merge
 push:
 branches:
 - main
+paths-ignore:
+- "doc/**"
+- "scripts/*"
+- "**/*.md"
+
+# pull_request: # not sure if this is needed
+# a oeh Aged
+
 jobs:
 build_and_deploy:
 runs-on: windows-latest
