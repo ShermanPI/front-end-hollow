@@ -22,5 +22,9 @@ export const selectors = {
 
     leftFullArrow: ".left-full-arrow",
     rightFullArrow: ".right-full-arrow",
-    favoriteIcon: ".favorite-icon img"
+    favoriteIcon: ".favorite-icon img",
+    header: ".section-header",
+    profileControlPanel: ".profile-control-panel",
+    favoritesTitle: ".favorite-title",
+    favoritesListContainer: ".favorite-list-container"
 };

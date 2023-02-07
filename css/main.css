@@ -178,8 +178,8 @@ body{
     scroll-snap-align: center;
     overflow-x: scroll;
     height: 100%;
-    border-left: var(--border-size) solid rgb(0, 0, 0);
-    border-right: var(--border-size) solid rgb(0, 0, 0);
+    border-left: calc(var(--border-size) - 2vw) solid rgb(0, 0, 0);
+    border-right: calc(var(--border-size) - 2vw) solid rgb(0, 0, 0);
     background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0) 90%, rgba(0,0,0,1) 100%);
 }
 
@@ -235,6 +235,7 @@ body{
     right: var(--border-size);
     top: var(--border-size);
     gap: 0.4rem;
+    background-color: #000;
 }
 
 

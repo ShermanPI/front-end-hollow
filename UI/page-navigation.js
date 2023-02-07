@@ -32,7 +32,6 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
                 {transform: 'translateX(-1.5rem)'},
                 {transform: 'translateX(0)'}], animationTiming)
         }
-
     }
     
     let currentIndex = 0;
@@ -75,14 +74,12 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     showSideSections()
 
-    const movePages = (steps)=>{ //me quedé aquí XD
+    const movePages = (steps)=>{
         if((steps + parseInt(currentIndex)) < 0) return;
         if(steps + parseInt(currentIndex) > $sections.length - 1)  return;    
         currentIndex = steps + parseInt(currentIndex)
-
         $sections[currentIndex].scrollIntoView()
         showSideSections()
-        
     }
 
     d.addEventListener("click", (e)=>{
