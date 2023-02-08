@@ -20,4 +20,5 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     resizeItemToHeight(selectors.favoritesListContainer, selectors.header, selectors.profileControlPanel, selectors.favoritesTitle)
     scrollsBtn()
     bckChanger()
+    controlPlaylist()
 })

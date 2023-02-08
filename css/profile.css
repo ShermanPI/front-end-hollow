@@ -71,7 +71,7 @@
 .filler{
     filter: invert(98%) sepia(22%) saturate(293%) hue-rotate(346deg) brightness(116%) contrast(100%);
     width: 5%;
-    min-width: 2.2rem;
+    min-width: 2rem;
     margin-left: auto;
     cursor: pointer;
 }
@@ -86,6 +86,7 @@
     display: flex;
 }
 
+
 .background-box{
     width: 100%;
     justify-content: space-between;
@@ -99,6 +100,11 @@
     cursor: pointer;
 }
 
+.control-music{
+    display: flex;
+    width: 45%;
+    margin-left: auto;
+}
 
 .item-info{
     display: flex;
@@ -186,7 +192,7 @@
     .panel-div{
         display: flex;
         flex-direction: column;
-        padding-inline: var(--inner-indentation);
+        padding-inline: 1rem;
     }
 
     .control-div{
