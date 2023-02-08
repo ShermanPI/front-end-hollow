@@ -12,12 +12,15 @@ export function controlPlaylist(){
         $songName = d.querySelector(".song-name"),
         $volumeBar = d.querySelector(".volume-bar"),
         $audio = d.createElement("audio")
+    
+
 
     const songNames = ['Enter Hollownest', 'Hollow Knight', 'The White Lady']
     
     let actualSong = Math.floor(Math.random() * songNames.length),
         isPlaying = false,
-        isMuted = false;
+        isMuted = false,
+        volume = $volumeBar.value;
         
     const putDisc = (discNum)=>{
         $songName.innerHTML = songNames[discNum]
@@ -43,6 +46,19 @@ export function controlPlaylist(){
         isPlaying = false
     }
 
+    const playNextSong = ()=>{
+        if(actualSong == songNames.length - 1){
+            actualSong = 0;
+            putDisc(actualSong)
+            playDisc()
+            return;
+        }
+
+        actualSong++;
+        putDisc(actualSong)
+        playDisc()
+    }
+
 
     d.addEventListener("click", (e)=>{        
         if(e.target.matches(".playlist-btn")){
@@ -58,9 +74,12 @@ export function controlPlaylist(){
             
             if (!isMuted) {
                 $audio.muted = true
+                volume = $volumeBar.value 
+                $volumeBar.value = 0
                 isMuted = true
                 $soundBtn.innerHTML = iconMutedSvgContent
             } else {
+                $volumeBar.value = volume
                 $audio.muted = false
                 isMuted = false
                 $soundBtn.innerHTML = iconUnmutedSvgContent
@@ -81,16 +100,7 @@ export function controlPlaylist(){
         }
         
         if (e.target.matches(".next-song")) {
-            if(actualSong == songNames.length - 1){
-                actualSong = 0;
-                putDisc(actualSong)
-                playDisc()
-                return;
-            }
-
-            actualSong++;
-            putDisc(actualSong)
-            playDisc()
+            playNextSong()
         }
     })
 
@@ -106,7 +116,14 @@ export function controlPlaylist(){
 
     $volumeBar.addEventListener("input",()=>{
         adjustVolume($volumeBar.value)
+        $audio.muted = false
+        isMuted = false
+        $soundBtn.innerHTML = iconUnmutedSvgContent
         console.log("el volumen ahora es: ", $volumeBar.value)
+    })
+
+    $audio.addEventListener("ended", ()=>{
+        playNextSong()
     })
 
 
