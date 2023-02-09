@@ -2,7 +2,6 @@ export function resizeItemToHeight(itemToResize, ...elemToRest){
     const $elemToResize = document.querySelector(itemToResize)
     
 
-    console.log("inner With",window.innerWidth)
     const resizeElement = ()=>{
         if(window.innerWidth < 1024){
             let totalHeightToRest = 0;
@@ -13,7 +12,6 @@ export function resizeItemToHeight(itemToResize, ...elemToRest){
             })
 
             $elemToResize.style.height = `calc(100vh - ${totalHeightToRest}px)`
-            console.log("hola, se hizo resize yu este es el heoight as restar", totalHeightToRest)
         }else{
             if ($elemToResize.hasAttribute("style")){
                 $elemToResize.removeAttribute("style");

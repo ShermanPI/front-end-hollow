@@ -35,7 +35,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
     }
     
     let currentIndex = 1;
-    $sections[currentIndex].scrollIntoView()
+    $sections[currentIndex].scrollIntoView({behavior: "auto"})
 
     let pageObserverCallback = function(entries){
         entries.forEach(entry=>{
@@ -78,7 +78,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         if((steps + parseInt(currentIndex)) < 0) return;
         if(steps + parseInt(currentIndex) > $sections.length - 1)  return;    
         currentIndex = steps + parseInt(currentIndex)
-        $sections[currentIndex].scrollIntoView()
+        $sections[currentIndex].scrollIntoView({behavior: "smooth"})
         showSideSections()
     }
 
@@ -104,6 +104,27 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         if(e.key == "ArrowLeft"){
             animateArrow($leftArrow)
             movePages(-1)
+        }
+
+    })
+
+    const menuItems = d.querySelectorAll(".menu-anchor") 
+
+    d.addEventListener("click", (e)=>{
+
+        if(e.target.matches(".menu-anchor")){
+            e.preventDefault()
+            
+            let pageToMoveInto = document.getElementById(e.target.getAttribute("href").slice(1))
+            console.log(pageToMoveInto)
+
+            // removing the hover from all items
+            menuItems.forEach(el=>{
+                el.classList.remove("menu-item-selected")
+            })
+
+            e.target.classList.add("menu-item-selected")
+            $sections[pageToMoveInto.getAttribute("data-page-number")].scrollIntoView();
         }
 
     })

@@ -69,9 +69,7 @@ export function controlPlaylist(){
             }
         }
 
-        if (e.target.matches(".sound-btn")) {
-            console.log("hola")
-            
+        if (e.target.matches(".sound-btn")) {            
             if (!isMuted) {
                 $audio.muted = true
                 volume = $volumeBar.value 
@@ -105,7 +103,6 @@ export function controlPlaylist(){
     })
 
     d.addEventListener("visibilitychange", e=>{
-        console.log(isPlaying)
         if(d.visibilityState == "hidden"){
             $audio.pause()
             $playBtn.innerHTML = playSvgContent
@@ -119,12 +116,9 @@ export function controlPlaylist(){
         $audio.muted = false
         isMuted = false
         $soundBtn.innerHTML = iconUnmutedSvgContent
-        console.log("el volumen ahora es: ", $volumeBar.value)
     })
 
     $audio.addEventListener("ended", ()=>{
         playNextSong()
     })
-
-
 }

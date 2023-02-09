@@ -28,8 +28,6 @@ export function homeNavigation(){
         // border-image: linear-gradient(to left, rgba(0, 0, 0, 0) 1%, rgba(198,183,190,1) 50%, rgba(0, 0, 0, 0) 100%) 
         // 100% 0 100% 0/2px 0 2px 0 stretch;
 
-        console.log($arrowsDivisor)
-
         let getTheMiddle = ()=>{
             let itemHeight = $items[0].getBoundingClientRect().height,
             listHeight = $itemList.getBoundingClientRect().height
@@ -45,7 +43,6 @@ export function homeNavigation(){
                     clearTimeout(timeOut)
                     timeOut = setTimeout(()=>{
                         actualItem = entry.target.getAttribute("data-item-id")
-                        console.log("actual item detected by intersection: ", actualItem)
                     }, 500)
                 }
             })
@@ -81,7 +78,7 @@ export function homeNavigation(){
         const observerOptions = {
             threshold: 0.9
         }
-        const observerCallback = (entries)=>{ //to know the actual page
+        const observerCallback = (entries)=>{
             entries.forEach(entry => {
                 if(entry.isIntersecting){
                     if(entry.target.getAttribute("id") == "home"){
@@ -112,8 +109,6 @@ export function homeNavigation(){
                 {transform: 'translateY(1rem)'},
                 {transform: 'translate(0)'}], animationTiming)
 
-            console.log("actual item by wheel event or keyboard: ", actualItem)
-
             $items[actualItem].scrollIntoView({block: "center"})
             $items[actualItem].classList.add("selected-item")
             $items[actualItem - 1].classList.remove("selected-item")
@@ -143,8 +138,6 @@ export function homeNavigation(){
             $arrowUp.animate([
                 {transform: 'translateY(-1rem)'},
                 {transform: 'translate(0)'}], animationTiming)
-
-            console.log("item actual by wheel event: ", actualItem)
 
             $items[actualItem].scrollIntoView({block: "center"})
             $items[actualItem].classList.add("selected-item")

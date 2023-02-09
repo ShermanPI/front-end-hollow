@@ -99,28 +99,28 @@ body{
     z-index: 99;
 }
 
-
-.menu-item{
-    padding-inline: var(--inner-indentation);
-    cursor: pointer;
-    line-height: 3;
-}
-
 .menu-anchor{
+    padding: 2rem;
+    cursor: pointer;
+    width: 100%;
+    display: block;
     text-decoration: none;
     color: var(--pure-color);
+}
+
+.menu-item{
+    padding: 2rem;
+}
+
+.menu-item-selected{
+    background: rgb(198,183,190);
+    background: linear-gradient(90deg, rgba(198,183,190,0) 0%, rgba(198,183,190,0.4) 50%, rgba(198,183,190,0) 100%);
 }
 
 .actual-page{
     pointer-events: none;
     text-align: center;
 }
-
-.menu-item:hover{
-    background: rgb(198,183,190);
-    background: linear-gradient(90deg, rgba(198,183,190,0) 0%, rgba(198,183,190,0.4) 50%, rgba(198,183,190,0) 100%);
-}
-
 
 .hide-menu{
     opacity: 0;
@@ -170,7 +170,6 @@ body{
     scroll-snap-type: x mandatory;
     
     height: 100vh;
-    scroll-behavior: smooth;
 }
 
 *::-webkit-scrollbar {

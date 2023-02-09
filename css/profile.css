@@ -39,6 +39,7 @@
 
 .profile-control-panel{
     display: flex;
+    padding-top: 1.5rem;
 }
 
 .profile-info{
@@ -58,8 +59,23 @@
 
     overflow: hidden;
     border-radius: 50%;
-    background-color: blue;
+    background-color:cadetblue;
     position: relative;
+    box-shadow: 0px -1px 9px -1px var(--pure-color);
+    animation: glowingAnimation 4500ms ease-in-out 0ms infinite normal forwards;
+}
+
+@keyframes glowingAnimation{
+    0%,
+	50%,
+	100% {
+        box-shadow: 0px -1px 10px -1px var(--pure-color);
+	}
+
+	25%,
+	75% {
+        box-shadow: 0px -1px 19px -1px var(--pure-color);
+	}
 }
 
 .profile-pfp img{
@@ -91,6 +107,7 @@
     width: 100%;
     justify-content: space-between;
     align-content: center;
+    padding: 1.5rem;
 }
 
 .bcknd-btn{
@@ -219,15 +236,74 @@
     }
 
     .minigame-container{
-        height: 100%;
-        padding: 2rem;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
     }
     
     .mini-game{
         background-color: red;
-        height: 7rem;
-        width: 7rem;
+        height: 20vh;
+        width: 100%;
+        display: flex;
         margin: auto;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .game-icon{
+        width: 20%;
         cursor: pointer;
+    }
+
+    .game-btn-container{
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .game-btn{
+        cursor: pointer;
+        position: relative;
+        text-align: center;
+    }
+
+    .game-btn:hover{
+        background: linear-gradient(90deg, rgba(198,183,190,0) 10%, rgba(198, 183, 190, 0.208) 50%, rgba(198,183,190,0) 90%);
+    }
+
+    .game-btn::before{
+        content: "";
+    
+        opacity: 0;
+        background-image: url("../img/icons/Hk_left_arrow.webp");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .game-btn::after{
+        content: "";
+        opacity: 0;
+        background-image: url("../img/icons/Hk_right_arrow.webp");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .game-btn::after,
+    .game-btn::before{
+        display: inline-block;
+        transition: 450ms all ease;
+        width: calc(1.6rem + 1vw);
+        height: calc(1.6rem + 0.2vw);
+    }
+
+    .game-btn:hover::before,
+    .game-btn:hover::after{
+        opacity: 1;
+    }
+
+    .background-box{
+        padding: 1.5rem;
     }
 }
