@@ -242,15 +242,34 @@
         width: 100%;
         gap: 1rem;
     }
+
+    .scores{
+        display: flex;
+        justify-content: space-between;
+    }
     
     .mini-game{
         background-color: red;
-        height: 20vh;
+        height: 30vh;
         width: 100%;
         display: flex;
         margin: auto;
         align-items: center;
         justify-content: center;
+
+        background:
+            linear-gradient(to right, white 4px, transparent 4px) 0 0,
+            linear-gradient(to right, white 4px, transparent 4px) 0 100%,
+            linear-gradient(to left, white 4px, transparent 4px) 100% 0,
+            linear-gradient(to left, white 4px, transparent 4px) 100% 100%,
+            linear-gradient(to bottom, white 4px, transparent 4px) 0 0,
+            linear-gradient(to bottom, white 4px, transparent 4px) 100% 0,
+            linear-gradient(to top, white 4px, transparent 4px) 0 100%,
+            linear-gradient(to top, white 4px, transparent 4px) 100% 100%;
+        
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+
     }
 
     .game-icon{
@@ -305,5 +324,13 @@
 
     .background-box{
         padding: 1.5rem;
+    }
+    #game-time{
+        display: inline-block;
+    }
+
+    .little-time{
+        color:rgb(170, 0, 0);
+        font-weight: 700;
     }
 }

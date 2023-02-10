@@ -9,6 +9,7 @@ import { scrollsBtn } from "./UI/scroll-btn.js";
 import { resizeItemToHeight } from "./UI/resize-elem-height.js";
 import { bckChanger } from "./UI/background-changer.js";
 import { controlPlaylist } from "./UI/playlist.js";
+import { miniGameScore } from "./UI/mini-game.js";
 
 window.addEventListener("DOMContentLoaded", (e)=>{
     homeNavigation()
@@ -21,4 +22,5 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     scrollsBtn()
     bckChanger()
     controlPlaylist()
+    miniGameScore()
 })
