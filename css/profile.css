@@ -256,6 +256,7 @@
         margin: auto;
         align-items: center;
         justify-content: center;
+        position: relative;
 
         background:
             linear-gradient(to right, white 4px, transparent 4px) 0 0,
@@ -278,6 +279,7 @@
     }
 
     .game-btn-container{
+        margin-top: 2.5rem;
         display: flex;
         justify-content: space-evenly;
     }
@@ -333,4 +335,52 @@
         color:rgb(170, 0, 0);
         font-weight: 700;
     }
+
+    .item-to-click{
+        top: 0px;
+        left: 0px;
+        background: red;
+        height: 2vw;
+        width: 2vw;
+        position: absolute;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 80;
+    }
+
+    .actual-multiplier{
+        pointer-events: none;
+        bottom: 0;
+        left: 1rem;
+        position: absolute;
+    }
+
+    .hide-multiplier{
+        visibility:hidden;
+        pointer-events: none;
+    }
+
+    .multiplier-txt{
+        position: absolute;
+        color: #5060cb;
+        z-index: 50;
+        pointer-events: none;
+        bottom: 0;
+        left: 1rem;
+        animation: slide-top 700ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+
+    @keyframes slide-top {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-1.5rem);
+        }
+    }
+
+    .hide-multiplier-txt{
+        display: none;
+    }
+
 }

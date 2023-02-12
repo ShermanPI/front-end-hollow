@@ -7,15 +7,17 @@ export function miniGameScore (){
         $gameTimeContainer = d.getElementById("game-time"),
         $playBtn = d.getElementById("play-btn"),
         $restartBtn = d.getElementById("restart-btn"),
-        $miniGameContainer = d.querySelector(".mini-game")
-
-    console.log($miniGameContainer.getBoundingClientRect())
+        $miniGameContainer = d.querySelector(".mini-game"),
+        $itemToClick = d.querySelector(".item-to-click"),
+        $multiplierTxt = d.querySelector(".multiplier-txt"),
+        $actualMultiplierContainer = d.querySelector(".actual-multiplier")
             
     const gameDuration = 20;
 
     let actualScore = 0, 
         isPlaying = false,
-        gameTime = gameDuration;
+        gameTime = gameDuration,
+        scoreMultiplier = 1;
 
     let highScore = 0
     
@@ -53,6 +55,8 @@ export function miniGameScore (){
     }
 
     const restartGame = ()=>{
+        $multiplierTxt.innerHTML = `x1`
+        $actualMultiplierContainer.innerHTML= "x1"
         checkNewRecord()
         $gameTimeContainer.classList.remove("little-time")
         actualScore = 0
@@ -60,19 +64,57 @@ export function miniGameScore (){
         gameTime = gameDuration;
         $gameTimeContainer.innerHTML = gameTime
         clearInterval(gameTimeInterval)
+        clearInterval(multiplierItemInterval)
         isPlaying = false
     }
 
-    let gameTimeInterval;
+    let gameTimeInterval,
+        multiplierItemInterval;
+    
+    const hideItemToClick = ()=>{
+        $itemToClick.classList.add("hide-multiplier");
+    }
+
+    const showItemToClick = (leftPxls, topPxls)=>{
+        $itemToClick.style.left = leftPxls;
+        $itemToClick.style.top = topPxls;
+        $itemToClick.classList.remove("hide-multiplier");
+    }
+
+    const generateRandomCoord = ()=>{
+        let x = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().width - $itemToClick.getBoundingClientRect().width))
+        let y = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().height - $itemToClick.getBoundingClientRect().height))
+        
+        showItemToClick(`${x}px`, `${y}px`)
+    }
+
+    const generateRandomMultiplierCoord = ()=>{
+        let x = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().width - $itemToClick.getBoundingClientRect().width))
+        let y = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().height - $itemToClick.getBoundingClientRect().height))
+        
+        
+    }
+
 
     d.addEventListener("click", (e)=>{
+
         if(e.target == $playBtn){ // # when play btn is pressed
             restartGame()
+            scoreMultiplier = 1
             isPlaying = true
+
+            multiplierItemInterval = setInterval(()=>{
+                generateRandomCoord()
+
+                setTimeout(()=>{
+                    hideItemToClick()
+                }, 750)
+            }, 3000)
 
             gameTimeInterval = setInterval(()=>{
                 if(gameTime <= 0){
                     clearInterval(gameTimeInterval)
+                    clearInterval(multiplierItemInterval)
                     isPlaying = false
                     $gameTimeContainer.classList.remove("little-time")
                     checkNewRecord()
@@ -96,7 +138,7 @@ export function miniGameScore (){
         if(e.target == $totemImg){ // # when totem btn is pressed
             
             if(isPlaying){
-                actualScore += 3;
+                actualScore += (3 * scoreMultiplier);
                 checkNewRecord()
                 setScoreInScreen(actualScore)
             }
@@ -108,6 +150,16 @@ export function miniGameScore (){
             setScoreInScreen(0)
         }
 
-
+        if(e.target == $itemToClick){
+            hideItemToClick()
+            scoreMultiplier += 1;
+            $multiplierTxt.innerHTML = `x${scoreMultiplier}`;
+            $actualMultiplierContainer.innerHTML = `x${scoreMultiplier}`;
+            $multiplierTxt.classList.remove("hide-multiplier-txt");
+            setTimeout(()=>{
+                $multiplierTxt.classList.add("hide-multiplier-txt");
+            }, 700)
+            console.log("se ha dado click al multiplier", scoreMultiplier)
+        }
     })
 }
