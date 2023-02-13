@@ -10,6 +10,7 @@ import { resizeItemToHeight } from "./UI/resize-elem-height.js";
 import { bckChanger } from "./UI/background-changer.js";
 import { controlPlaylist } from "./UI/playlist.js";
 import { miniGameScore } from "./UI/mini-game.js";
+import {minigameExplodeParticles} from "./UI/minigame-particles.js"
 
 window.addEventListener("DOMContentLoaded", (e)=>{
     homeNavigation()
@@ -23,4 +24,5 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     bckChanger()
     controlPlaylist()
     miniGameScore()
+    minigameExplodeParticles()
 })

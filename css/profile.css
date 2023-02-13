@@ -339,13 +339,19 @@
     .item-to-click{
         top: 0px;
         left: 0px;
-        background: red;
-        height: 2vw;
-        width: 2vw;
+        /* background: red; */
+        height: 3.5vw;
+        width: 3.5vw;
         position: absolute;
-        border-radius: 50%;
+        /* border-radius: 50%; */
         cursor: pointer;
         z-index: 80;
+        display: flex;
+        align-items: center;
+    }
+
+    .item-to-click img{
+        pointer-events: none;
     }
 
     .actual-multiplier{

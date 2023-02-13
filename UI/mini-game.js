@@ -73,9 +73,20 @@ export function miniGameScore (){
     
     const hideItemToClick = ()=>{
         $itemToClick.classList.add("hide-multiplier");
+        $itemToClick.firstElementChild.src = ""
+
     }
 
     const showItemToClick = (leftPxls, topPxls)=>{
+        let randomNum = Math.floor(Math.random() * 4)
+
+        if(randomNum !== 2){
+            $itemToClick.setAttribute("data-item-type", 'multiplier')
+            $itemToClick.firstElementChild.src = "../img/character/Vengefly.webp"
+        }else{
+            $itemToClick.setAttribute("data-item-type", 'addTime')
+            $itemToClick.firstElementChild.src = "../img/character/Lifeseed.webp"
+        }
         $itemToClick.style.left = leftPxls;
         $itemToClick.style.top = topPxls;
         $itemToClick.classList.remove("hide-multiplier");
@@ -86,13 +97,6 @@ export function miniGameScore (){
         let y = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().height - $itemToClick.getBoundingClientRect().height))
         
         showItemToClick(`${x}px`, `${y}px`)
-    }
-
-    const generateRandomMultiplierCoord = ()=>{
-        let x = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().width - $itemToClick.getBoundingClientRect().width))
-        let y = Math.floor(Math.random() * ($miniGameContainer.getBoundingClientRect().height - $itemToClick.getBoundingClientRect().height))
-        
-        
     }
 
 
@@ -108,8 +112,8 @@ export function miniGameScore (){
 
                 setTimeout(()=>{
                     hideItemToClick()
-                }, 750)
-            }, 3000)
+                }, 1000)
+            }, 3500)
 
             gameTimeInterval = setInterval(()=>{
                 if(gameTime <= 0){
@@ -151,15 +155,23 @@ export function miniGameScore (){
         }
 
         if(e.target == $itemToClick){
+            if($itemToClick.getAttribute("data-item-type") == "addTime"){
+                console.log($itemToClick.getAttribute("data-item-type"))
+                gameTime+= 8
+                $gameTimeContainer.classList.remove("little-time")
+            }
+            if($itemToClick.getAttribute("data-item-type") == "multiplier"){
+                scoreMultiplier += 1;
+                $multiplierTxt.innerHTML = `x${scoreMultiplier}`;
+                $actualMultiplierContainer.innerHTML = `x${scoreMultiplier}`;
+                $multiplierTxt.classList.remove("hide-multiplier-txt");
+            }
+
             hideItemToClick()
-            scoreMultiplier += 1;
-            $multiplierTxt.innerHTML = `x${scoreMultiplier}`;
-            $actualMultiplierContainer.innerHTML = `x${scoreMultiplier}`;
-            $multiplierTxt.classList.remove("hide-multiplier-txt");
+
             setTimeout(()=>{
                 $multiplierTxt.classList.add("hide-multiplier-txt");
             }, 700)
-            console.log("se ha dado click al multiplier", scoreMultiplier)
         }
     })
 }
