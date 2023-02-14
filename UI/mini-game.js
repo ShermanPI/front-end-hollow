@@ -10,7 +10,9 @@ export function miniGameScore (){
         $miniGameContainer = d.querySelector(".mini-game"),
         $itemToClick = d.querySelector(".item-to-click"),
         $multiplierTxt = d.querySelector(".multiplier-txt"),
-        $actualMultiplierContainer = d.querySelector(".actual-multiplier")
+        $actualMultiplierContainer = d.querySelector(".actual-multiplier"),
+        $timeSum = d.querySelector(".time-sum"),
+        $gameIconContainer = d.querySelector(".icon-container")
             
     const gameDuration = 20;
 
@@ -99,6 +101,7 @@ export function miniGameScore (){
         showItemToClick(`${x}px`, `${y}px`)
     }
 
+    let hideItemTimeOut;
 
     d.addEventListener("click", (e)=>{
 
@@ -110,10 +113,10 @@ export function miniGameScore (){
             multiplierItemInterval = setInterval(()=>{
                 generateRandomCoord()
 
-                setTimeout(()=>{
+                hideItemTimeOut = setTimeout(()=>{
                     hideItemToClick()
                 }, 1000)
-            }, 3500)
+            }, Math.random() * (3000 - 2000) + 2000)
 
             gameTimeInterval = setInterval(()=>{
                 if(gameTime <= 0){
@@ -145,6 +148,7 @@ export function miniGameScore (){
                 actualScore += (3 * scoreMultiplier);
                 checkNewRecord()
                 setScoreInScreen(actualScore)
+                
             }
 
         }
@@ -157,21 +161,56 @@ export function miniGameScore (){
         if(e.target == $itemToClick){
             if($itemToClick.getAttribute("data-item-type") == "addTime"){
                 console.log($itemToClick.getAttribute("data-item-type"))
-                gameTime+= 8
+                gameTime+= 5
                 $gameTimeContainer.classList.remove("little-time")
+                $timeSum.classList.remove("hide-multiplier-txt")
+
+                setTimeout(()=>{
+                    $timeSum.classList.add("hide-multiplier-txt")
+                }, 700)
             }
             if($itemToClick.getAttribute("data-item-type") == "multiplier"){
                 scoreMultiplier += 1;
                 $multiplierTxt.innerHTML = `x${scoreMultiplier}`;
                 $actualMultiplierContainer.innerHTML = `x${scoreMultiplier}`;
                 $multiplierTxt.classList.remove("hide-multiplier-txt");
+
+                setTimeout(()=>{
+                    $multiplierTxt.classList.add("hide-multiplier-txt");
+                }, 700)
             }
 
             hideItemToClick()
+            clearTimeout(hideItemTimeOut)
 
-            setTimeout(()=>{
-                $multiplierTxt.classList.add("hide-multiplier-txt");
-            }, 700)
+
         }
     })
+
+    const initialGradient = 28;
+    let gradientSumGap = initialGradient;
+    let maxGradientValue = 53;
+    let decreaseBackground;
+
+    d.addEventListener("click", function(e) {
+        if(e.target == $totemImg && isPlaying){
+            if(gradientSumGap <= maxGradientValue){
+                gradientSumGap+=3
+                $gameIconContainer.style.background = `radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0) ${gradientSumGap}%)`    
+            }
+
+            clearInterval(decreaseBackground);
+
+            decreaseBackground = setInterval(()=>{
+                if(gradientSumGap <= initialGradient){
+                    clearInterval(decreaseBackground)
+                }else{
+                    gradientSumGap -= 1;
+                    $gameIconContainer.style.background = `radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0) ${gradientSumGap}%)`   
+                }
+            }, 200)
+
+        }
+
+    });
 }

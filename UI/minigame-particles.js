@@ -9,13 +9,18 @@ export const minigameExplodeParticles = () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 
+  addEventListener("resize", ()=>{
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+  })
+
   const mouse = {
     x: innerWidth / 2,
     y: innerHeight / 2,
   };
 
-  const gravity = -0.2;
-  const friction = 0.94;
+  const gravity = -0.08;
+  const friction = 0.92;
 
   class Particle {
     constructor(x, y, radius, color, velocity) {
@@ -25,13 +30,15 @@ export const minigameExplodeParticles = () => {
       this.color = color;
       this.velocity = velocity;
       this.alpha = 1; // initial opppasity
-      this.shrink = Math.random() * 0.05 + 0.01;
+      this.shrink = Math.random() * 0.05 + 0.02;
     }
 
     draw() {
       c.save();
       c.globalAlpha = this.alpha;
       c.beginPath();
+      c.shadowBlur = 45;
+      c.shadowColor = this.color;
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
       c.fillStyle = this.color;
       c.fill();
@@ -46,7 +53,7 @@ export const minigameExplodeParticles = () => {
       this.velocity.y += gravity;
       this.x += this.velocity.x;
       this.y += this.velocity.y;
-      this.alpha -= 0.02; //opacity wich control the times of particles in the screen
+      this.alpha -= 0.006; //opacity wich control the times of particles in the screen
 
       this.radius -= this.shrink;
       if (this.radius < 0.1) {
@@ -81,12 +88,12 @@ export const minigameExplodeParticles = () => {
       mouse.y = e.clientY;
 
       const particleCount = 40;
-      const shootVelocity = 40;
+      const shootVelocity = 23;
       
       const angleIncrement = Math.PI * 2 / particleCount;
       
       for (let i = 0; i < particleCount; i++) {
-        let radius = Math.random() * (8 - 3) + 3; //Math.random() * (max - min) + min
+        let radius = Math.random() * (10 - 5) + 5; //Math.random() * (max - min) + min
 
         particles.push(
           new Particle(
