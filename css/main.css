@@ -245,6 +245,7 @@ body{
 
 .burger-icon svg{
     transition: all 800ms ease-in-out;
+    pointer-events: none;
 }
 /*animation*/
 

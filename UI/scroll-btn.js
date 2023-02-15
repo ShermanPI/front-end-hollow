@@ -1,7 +1,7 @@
 export function scrollsBtn() {
     const $favoriteListContainer = document.querySelector(".favorite-list-container"),
         $scrollBtn = document.querySelector(".scroll-btn")
-    
+
     $favoriteListContainer.addEventListener("scroll", (e)=>{
         if($favoriteListContainer.scrollTop > 300){
             $scrollBtn.classList.remove("hide-scroll-btn")
@@ -10,9 +10,10 @@ export function scrollsBtn() {
         }
     })
 
-    $scrollBtn.addEventListener("click", (e)=>{
-        e.stopPropagation()
-        $favoriteListContainer.scrollTo({top: 0, behavior: "smooth"})
-    })
-
+    document.addEventListener("click", (e)=>{
+        if(e.target == $scrollBtn){
+            e.stopPropagation()
+            $favoriteListContainer.scrollTo({top: 0, behavior: "smooth"})
+        }
+    });
 }

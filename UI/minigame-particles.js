@@ -37,7 +37,7 @@ export const minigameExplodeParticles = () => {
       c.save();
       c.globalAlpha = this.alpha;
       c.beginPath();
-      c.shadowBlur = 45;
+      c.shadowBlur = 50;
       c.shadowColor = this.color;
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
       c.fillStyle = this.color;
@@ -88,19 +88,24 @@ export const minigameExplodeParticles = () => {
       mouse.y = e.clientY;
 
       const particleCount = 40;
-      const shootVelocity = 23;
+      const shootVelocity = 22;
       
       const angleIncrement = Math.PI * 2 / particleCount;
-      
+
+      let particlesColors = ["white"]
+
+      if($itemToClick.getAttribute("data-item-type") == "addTime"){
+        particlesColors = ["#2c93b1", "#2c93b1","#2c93b1", "#2c93b1", "#05427c"]
+      }
+
       for (let i = 0; i < particleCount; i++) {
         let radius = Math.random() * (10 - 5) + 5; //Math.random() * (max - min) + min
-
         particles.push(
           new Particle(
             mouse.x,
             mouse.y,
             radius,
-            "white",
+            particlesColors[Math.floor(Math.random() * (particlesColors.length))],
             {
               x: Math.cos(angleIncrement * i) * Math.random() * shootVelocity,
               y: Math.sin(angleIncrement * i) * Math.random() * shootVelocity,
