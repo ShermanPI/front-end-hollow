@@ -6,6 +6,107 @@
     overflow-y: hidden;
 }
 
+.edit-profile-container{
+    width: 100%;
+    height: 100%;
+    background-color: #00000045;
+    position: fixed;
+    z-index: 1000;
+    backdrop-filter: blur(0.2rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide-edit-profile{
+    display: none;
+}
+
+.change-profile-container{
+    width: 90%;
+    background-color: #565a759a;
+    backdrop-filter: blur(0.3rem);
+    padding: 1rem;
+    height: 80%;
+    border-radius: 2rem;
+}
+
+.edit-options-container{
+    border: 0.4rem solid var(--pure-color);
+    width: 100%;
+    border-radius: 1rem;
+    height: 100%;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.edit-profile-title{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.pfps-selector-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pfps-container{
+    width: 100%;
+    height: 60%;
+    overflow-y: scroll;
+}
+
+.pfps-grid{
+    background-color: #565a75c4;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    padding: 1rem;
+}
+
+.pfp-pic-container{
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.pfp-pic-container > *{
+    pointer-events: none;
+}
+
+.pfp-pic-selected{
+    background-color: #c6b7be96;
+    border: 0.2rem solid #c6b7be;
+}
+
+.pfp-pic-container:hover{
+    border: 0.2rem solid #c6b7be;
+}
+
+.profile-pic{
+    aspect-ratio: 1 / 1;
+    background-color: var(--abyss-blue);
+    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+
+.pfp-preview{
+    width: 100%;
+    height: 40%;
+    /* background-color:aquamarine; */
+}
+
 .favorite-title{
     display: flex;
     padding: 1rem var(--inner-indentation);  
@@ -57,12 +158,66 @@
     min-width: 11rem;
     min-height: 11rem;
 
-    overflow: hidden;
     border-radius: 50%;
     background-color:cadetblue;
     position: relative;
     box-shadow: 0px -1px 9px -1px var(--pure-color);
     animation: glowingAnimation 4500ms ease-in-out 0ms infinite normal forwards;
+}
+
+.change-pfp-text{
+    background-color: #000000a7;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 400ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.edit-pfp{
+    font-size: calc(0.2vw + 15px);
+    pointer-events: none;
+}
+
+
+.change-pfp-text:hover{
+    opacity: 1;
+}
+
+.pfp{
+    overflow: hidden;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.edit-profile-icon{
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 1rem;
+    background-color: var(--pure-color);
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    border-radius: 50%;
+    right: 1rem;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.edit-profile-icon:hover{
+    background-color: #c6b7bedc;
+}
+
+.edit-profile-icon img{
+    width: 50%;
+    pointer-events: none;
 }
 
 @keyframes glowingAnimation{
@@ -158,8 +313,16 @@
     transform: translateY(-2rem);
 }
 
-
 @media (min-width: 1024px) {
+
+    .edit-options-container{
+        padding: 0.5rem 1rem;
+    }
+
+    .change-profile-container{
+        padding: 2rem;
+    }
+
     .favorite-list-container{
         height: 100%;
     }
@@ -241,6 +404,10 @@
         flex-direction: column;
         width: 100%;
         gap: 1rem;
+    }
+
+    .minigame-container{
+        user-select: none;
     }
 
     .scores{

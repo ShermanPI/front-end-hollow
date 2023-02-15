@@ -220,7 +220,7 @@ body{
 .burger-icon-container{
     height: 6%;
     width: 100%;
-    z-index: 5000;
+    z-index: 100;
     position: fixed;
     display: flex;
     top: calc(var(--border-size) / 3.2);
