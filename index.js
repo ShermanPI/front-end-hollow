@@ -21,6 +21,7 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     markAsFavorite(selectors.favoriteIcon)
     makeThemBlink()
     resizeItemToHeight(selectors.favoritesListContainer, selectors.header, selectors.profileControlPanel, selectors.favoritesTitle)
+    // resizeItemToHeight(".pfps-selector-container", ".edit-profile-title")
     scrollsBtn()
     bckChanger()
     controlPlaylist()
