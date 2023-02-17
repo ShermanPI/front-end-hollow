@@ -121,18 +121,25 @@
     justify-content: space-evenly;
     align-items: center;
     overflow-y: hidden;
-    /* background-color:aquamarine; */
     padding: 1rem;
 }
 
 .pfp-preview{
     /* width: 10rem; */
     height: 60%;
-    background-color: red;
+    background-color: var(--abyss-blue);
     border-radius: 50%;
     aspect-ratio: 1/1;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0px -1px 9px -1px var(--pure-color);
     animation: glowingAnimation 4500ms ease-in-out 0ms infinite normal forwards;
+}
+
+.pfp-preview img{
+    width: 100%;
 }
 
 .save-profile-changes{
@@ -204,7 +211,7 @@
     min-height: 11rem;
 
     border-radius: 50%;
-    background-color:cadetblue;
+    background-color:var(--abyss-blue);
     position: relative;
     box-shadow: 0px -1px 9px -1px var(--pure-color);
     animation: glowingAnimation 4500ms ease-in-out 0ms infinite normal forwards;
