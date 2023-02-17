@@ -136,8 +136,20 @@
 }
 
 .save-profile-changes{
-    width: 50%;
+    width: 70%;
     padding: 0.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-size: medium;
+    color: white;
+    background-color: var(--abyss-blue);
+    border: 0.2rem solid var(--start-blue);
+    transition: all 0.3s ease;
+}
+
+.save-profile-changes:hover{
+    background-color: var(--start-blue);
+    border: 0.2rem solid var(--abyss-blue);
 }
 
 .favorite-title{
