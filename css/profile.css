@@ -24,23 +24,84 @@
 
 .change-profile-container{
     width: 90%;
-    background-color: #565a759a;
+    background-color: #0f0f1bb2;
     backdrop-filter: blur(0.3rem);
-    padding: 1rem;
+    padding: 1.5rem;
     height: 90%;
     border-radius: 0.5rem;
+    position: relative;
+}
+
+.change-profile-container svg{
+    position: absolute;
+    width: 8rem;
+    height: auto;
+}
+
+.pfp-corners{
+    filter: invert(98%) sepia(22%) saturate(293%) hue-rotate(346deg) brightness(116%) contrast(100%);
+    pointer-events: none;
+}
+
+.change-profile-container svg:nth-child(1){
+    left: -0.4rem;
+    top: -0.4rem;
+}
+
+.change-profile-container svg:nth-child(2){
+    right: -0.4rem;
+    top: -0.4rem;
+    transform: scaleX(-1);
+}
+
+.change-profile-container svg:nth-child(3){
+    right: -0.4rem;
+    bottom: -0.4rem;
+    transform: scale(-1);
+}
+
+.change-profile-container svg:nth-child(4){
+    left: -0.4rem;
+    bottom: -0.4rem;
+    transform: scaleY(-1);
 }
 
 .edit-options-container{
-    border: 0.4rem solid var(--pure-color);
     width: 100%;
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     height: 100%;
     padding: 0.5rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    border: 0.3rem solid #fafbf6e7;
+    background-color: #585c732f;
     justify-content: space-between;
+    box-shadow: rgb(0 0 0 / 30%) 0px 0px 0px 8px;
+    position: relative;
+}
+
+.close-icon{
+    width: 6%;
+    height: auto;
+    position: absolute;
+    right: -1.5rem;
+    top: 3rem;
+    min-width: 3.5rem;
+    cursor: pointer;
+}
+
+.close-icon *{
+    width: 100%;
+    /* pointer-events: none; */
+}
+
+.close-icon svg:first-child{
+    transform: translate(-50%, -50%) rotate(225deg);
+}
+
+.close-icon svg:last-child{
+    transform: translate(-70%, -50%) rotate(-45deg);
 }
 
 .edit-profile-title{
@@ -63,11 +124,11 @@
     width: 100%;
     height: 60%;
     overflow-y: scroll;
+    background-color: #565a75c4;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
 }
 
 .pfps-grid{
-    background-color: #565a75c4;
-    border-radius: 0.5rem 0.5rem 0rem 0rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
@@ -107,7 +168,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    border: 0.2rem solid #575b74;
+    border: 0.2rem solid var(--pure-color);
     box-shadow: 0px 0px 0px 5px rgba(0,0,0,0.30);
 }
 
@@ -116,7 +177,6 @@
     flex-direction: column;
     width: 100%;
     height: 40%;
-    max-height: 40%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -335,8 +395,8 @@
     align-items: center;
 }
 
-.favorite-item-list{
-    padding-bottom: 5rem;
+.favorite-list-container{
+    padding-bottom: 4rem;
 }
 
 .favorite-item{
@@ -348,10 +408,10 @@
 
 .scroll-btn{
     position: sticky;
-    bottom: 4rem;
+    bottom: 4.4rem;
     rotate: 180deg;
     z-index: 99;
-    width: 4rem;
+    width: 3.5rem;
     left: 0;
     right: 0;
     margin-inline: auto;
@@ -367,8 +427,17 @@
 
 @media (min-width: 1024px) {
 
+    .close-icon{
+        top: 3.2rem;
+    }
+
+    .close-icon svg:last-child{
+        transform: translate(-65%, -50%) rotate(-45deg);
+    }
+
     .edit-options-container{
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 2rem;
+        box-shadow: rgb(0 0 0 / 30%) 0px 0px 0px 10px;
     }
 
     .change-profile-container{
@@ -413,6 +482,64 @@
         display: flex;
         overflow-y:hidden;
         padding: 4%;
+    }
+
+    .change-profile-container svg{
+        position: absolute;
+        width: 11rem;
+        height: auto;
+
+    }
+
+    .edit-profile-title{
+        justify-content: flex-start;
+        margin-bottom: 2rem;
+    }
+
+    .pfps-selector-container{
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .pfps-grid{
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .profile-pic{
+        box-shadow: 0px 0px 0px 7px rgba(0,0,0,0.30);
+    }
+
+    .pfps-container{
+        height: calc(100% - 4rem);
+        width: 60%;
+        border-radius: 0.5rem;        
+    }
+
+    .pfp-preview-container{
+        height: 100%;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 2rem;
+    }
+
+    .pfp-preview{
+        width: 50%;
+        height: auto;
+    }
+
+    .save-profile-changes{
+        width: 85%;
+        padding: 0.6rem;
+        font-size: 2rem;
+    }
+
+    .change-profile-container{
+        width: 50%;
+        height: 60%;
+        
     }
 
     .profile-info{
