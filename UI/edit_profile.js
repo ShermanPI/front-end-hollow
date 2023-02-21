@@ -9,7 +9,17 @@ export function editProfile(){
         $pfpPreview = d.querySelector(".pfp-preview"),
         $saveBtn = d.querySelector(".save-profile-changes"),
         $userPfp = d.querySelector("#user-pfp"),
-        $closeBtn = d.querySelector(".close-icon")
+        $closeBtn = d.querySelector(".close-icon"),
+        $inUseBox = d.createElement("div"),
+        $inUseBoxTxt = d.createElement("div")
+        
+    
+    $inUseBoxTxt.classList.add("pfp-in-use-text")
+    $inUseBoxTxt.innerHTML = "<p>In use</p>"
+    $inUseBox.classList.add("pfp-in-use")
+    $inUseBox.appendChild($inUseBoxTxt)
+
+    console.log($inUseBox)
 
     for(let i = 0; i < $AllprofilePicCont.length; i++){
         $AllprofilePicCont[i].setAttribute('data-pfp', i)
@@ -35,10 +45,18 @@ export function editProfile(){
         }
     }
 
+    const setInUsePfp = ()=>{
+        let $selectedPfp = d.querySelector(`div[data-pfp="${actualImg}"]`)
+        $selectedPfp.classList.add("pfp-pic-selected")
+        $selectedPfp.classList.add("pfp-in-use-border")
+        $selectedPfp.firstElementChild.appendChild($inUseBox)
+    }
+    setInUsePfp()
     setPfp(actualImg)
 
     d.addEventListener("click", (e)=>{
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
+            setInUsePfp()
             $editProfileContainer.classList.remove("hide-edit-profile")
         }
 

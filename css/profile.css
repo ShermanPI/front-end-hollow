@@ -122,10 +122,35 @@
     padding: 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
+    position: relative;
 }
 
-.pfp-pic-container > *{
+
+.pfp-pic-container > div:nth-child(1){
     pointer-events: none;
+}
+
+.pfp-in-use-border{
+    background-color: #c6b7be96;
+    border: 0.2rem solid #c6b7be;
+}
+
+.pfp-in-use{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    margin-top: auto;
+}
+
+.pfp-in-use p{
+    text-align: center;
+}
+
+.pfp-in-use-text{
+    background-color: #c6b7be;
+    width: 100%;
 }
 
 .pfp-pic-selected{
@@ -365,6 +390,10 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+.bcknd-btn:hover{
+    opacity: 0.5;
 }
 
 .control-music{
