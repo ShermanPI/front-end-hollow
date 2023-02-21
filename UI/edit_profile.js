@@ -8,7 +8,8 @@ export function editProfile(){
         $AllprofilePicCont = d.querySelectorAll(".pfp-pic-container"),
         $pfpPreview = d.querySelector(".pfp-preview"),
         $saveBtn = d.querySelector(".save-profile-changes"),
-        $userPfp = d.querySelector("#user-pfp")
+        $userPfp = d.querySelector("#user-pfp"),
+        $closeBtn = d.querySelector(".close-icon")
 
     for(let i = 0; i < $AllprofilePicCont.length; i++){
         $AllprofilePicCont[i].setAttribute('data-pfp', i)
@@ -56,6 +57,10 @@ export function editProfile(){
         
         if(e.target == $saveBtn){
             setPfp(actualImg)
+            $editProfileContainer.classList.add("hide-edit-profile")
+        }
+
+        if(e.target == $closeBtn){
             $editProfileContainer.classList.add("hide-edit-profile")
         }
 })

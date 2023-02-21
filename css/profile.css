@@ -81,29 +81,6 @@
     position: relative;
 }
 
-.close-icon{
-    width: 6%;
-    height: auto;
-    position: absolute;
-    right: -1.5rem;
-    top: 3rem;
-    min-width: 3.5rem;
-    cursor: pointer;
-}
-
-.close-icon *{
-    width: 100%;
-    /* pointer-events: none; */
-}
-
-.close-icon svg:first-child{
-    transform: translate(-50%, -50%) rotate(225deg);
-}
-
-.close-icon svg:last-child{
-    transform: translate(-70%, -50%) rotate(-45deg);
-}
-
 .edit-profile-title{
     display: flex;
     align-items: center;
@@ -133,6 +110,12 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
     padding: 1rem;
+}
+
+@media (min-width: 768px) {
+    .pfps-grid{
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .pfp-pic-container{
@@ -411,12 +394,18 @@
     bottom: 4.4rem;
     rotate: 180deg;
     z-index: 99;
-    width: 3.5rem;
+    min-width: 3.5rem;
+    width: 8%;
+    max-width: 5rem;
     left: 0;
     right: 0;
     margin-inline: auto;
     cursor: pointer;
     transition: 800ms all ease-in-out;
+}
+
+.scroll-btn:hover{
+    opacity: 0.4;
 }
 
 .hide-scroll-btn{
@@ -425,14 +414,28 @@
     transform: translateY(-2rem);
 }
 
+.close-icon{
+    position: absolute;
+    top: 1.2%;
+    right: 3%;
+    width: 6.8%;
+    min-width: 3.2rem;
+    cursor: pointer;
+}
+
+.close-icon:hover{
+    opacity: 0.4;
+}
+.close-icon > *{
+    pointer-events: none;
+}
+
+
 @media (min-width: 1024px) {
 
     .close-icon{
-        top: 3.2rem;
-    }
-
-    .close-icon svg:last-child{
-        transform: translate(-65%, -50%) rotate(-45deg);
+        width: 4.5%;
+        top: 2%;
     }
 
     .edit-options-container{
