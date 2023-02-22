@@ -177,9 +177,35 @@
     align-items: center;
     border-radius: 50%;
     border: 0.2rem solid var(--pure-color);
-    box-shadow: 0px 0px 0px 5px rgba(0,0,0,0.30);
+    box-shadow: 0px 0px 0px 5px rgba(0, 0, 0, 0.792);
+    
+    /* position: relative; */
 }
 
+.locked-pfp{
+    /* border-radius: 50%; */
+    position: absolute;
+    top: 0;
+    /* border-radius: 50%; */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.808);
+    backdrop-filter: blur(0.3rem);
+    pointer-events:visible;
+    border-radius: 0.4rem;
+    border: 0.2rem solid #c6b7be;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.locked-pfp:hover{
+    border: none;
+}
+
+.locked-pfp img{
+    width: 2.2rem;
+}
 
 .pfp-preview-container{
     flex-direction: column;
