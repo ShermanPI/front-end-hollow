@@ -21,11 +21,10 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     markAsFavorite(selectors.favoriteIcon)
     makeThemBlink()
     resizeItemToHeight(selectors.favoritesListContainer, selectors.header, selectors.profileControlPanel, selectors.favoritesTitle)
-    // resizeItemToHeight(".pfps-selector-container", ".edit-profile-title")
     scrollsBtn()
     bckChanger()
     controlPlaylist()
-    miniGameScore()
+    editProfile() //1 vvvv has to be first of miniGameScore vvvv
+    miniGameScore() // 2
     minigameExplodeParticles()
-    editProfile()
 })
