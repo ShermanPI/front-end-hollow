@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     scrollsBtn()
     bckChanger()
     controlPlaylist()
-    editProfile() //1 vvvv has to be first of miniGameScore vvvv
-    miniGameScore() // 2
+    miniGameScore()
+    editProfile()
     minigameExplodeParticles()
 })

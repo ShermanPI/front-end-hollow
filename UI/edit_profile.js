@@ -45,84 +45,85 @@ export function editProfile(){
         $userPfp = d.querySelector("#user-pfp"),
         $closeBtn = d.querySelector(".close-icon"),
         $inUseBox = d.createElement("div"),
-        $inUseBoxTxt = d.createElement("div")
+        $inUseBoxTxt = d.createElement("div"),
+        $pfpGrid = d.querySelector(".pfps-grid")
+        
+    const renderPfpsElement = (lockedPfps)=>{
+        const pfpsFragment = d.createDocumentFragment()
+
+        const pfpsInfo = [
+            {
+                src: "img/character/Hornet_Idle.webp",
+            },
+            {
+                src: "img/character/The_Knight.webp",
+            },
+            {
+                src: "img/character/Lifeseed.webp",
+            },
+            {
+                src: "img/character/Vengefly.webp",
+            },
+            {
+                src: "img/character/The_Knight.webp",
+            },
+            {
+                src: "img/character/Lifeseed.webp",
+            },
+            {
+                src: "img/character/Vengefly.webp",
+            },
+            {
+                src: "img/character/Vengefly.webp",
+            },
+            {
+                src: "img/character/Vengefly.webp"
+            },
+            {
+                src: "img/character/Hornet_Idle.webp"
+            },
+            {
+                src: "img/character/Hornet_Idle.webp"
+            },
+            {
+                src: "img/character/Hornet_Idle.webp"
+            }
+        ]
     
-    const pfpsInfo = [
-        {
-            src: "img/character/Hornet_Idle.webp",
-        },
-        {
-            src: "img/character/The_Knight.webp",
-        },
-        {
-            src: "img/character/Lifeseed.webp",
-        },
-        {
-            src: "img/character/Vengefly.webp",
-        },
-        {
-            src: "img/character/The_Knight.webp",
-        },
-        {
-            src: "img/character/Lifeseed.webp",
-        },
-        {
-            src: "img/character/Vengefly.webp",
-        },
-        {
-            src: "img/character/Vengefly.webp",
-        },
-        {
-            src: "img/character/Vengefly.webp",
-            blocked: true
-        },
-        {
-            src: "img/character/Hornet_Idle.webp",
-            blocked: true
-        },
-        {
-            src: "img/character/Hornet_Idle.webp",
-            blocked: true
-        },
-        {
-            src: "img/character/Hornet_Idle.webp",
-            blocked: true
+        for(let i = 1; i <= lockedPfps; i++){
+            console.log(pfpsInfo.length - i)
+            pfpsInfo[pfpsInfo.length - i].blocked = true
         }
-    ]
-    
-    const pfpsFragment = d.createDocumentFragment()
-    
-    const renderPfpsElement = (pfpsData)=>{
+
         let idCounter = 0
-        pfpsData.forEach(el=>{
+        pfpsInfo.forEach(el=>{
             let newPfp = new Pfp(idCounter, el.src, el.blocked)
             pfpsFragment.appendChild(newPfp.createPfpElement())
             idCounter++
         })
+
+        $pfpGrid.appendChild(pfpsFragment)
     }
 
-    renderPfpsElement(pfpsInfo)
+    renderPfpsElement(4)
 
-    const $pfpGrid = d.querySelector(".pfps-grid")
-    $pfpGrid.appendChild(pfpsFragment)
+    const checkIfUnlockPfps = ()=>{
+
+    } 
+    
 
     $inUseBoxTxt.classList.add("pfp-in-use-text")
     $inUseBoxTxt.innerHTML = "<p>In use</p>"
     $inUseBox.classList.add("pfp-in-use")
     $inUseBox.appendChild($inUseBoxTxt)
 
-    const setPfp = (idImg)=>{
-        localStorage.setItem("pfp-id", idImg)
-        
-        let imgSrc = d.querySelector(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
-        $pfpPreview.firstElementChild.src = imgSrc
-        $userPfp.src = imgSrc
-    }
-
     let actualImg = 0
 
+    
+    const $pfps = d.querySelectorAll(".pfp-pic-container")
+    
     if(localStorage.getItem("pfp-id")){
-        if(localStorage.getItem("pfp-id") >= 0 && localStorage.getItem("pfp-id") < pfpsFragment.length){
+        if(localStorage.getItem("pfp-id") >= 0 && localStorage.getItem("pfp-id") < $pfps.length){
             actualImg = localStorage.getItem("pfp-id")
         }else{
             localStorage.setItem("pfp-id", 0)
@@ -130,13 +131,19 @@ export function editProfile(){
         }
     }
 
-    const $pfps = d.querySelectorAll(".pfp-pic-container")
-
     const setInUsePfp = ()=>{
         let $selectedPfp = d.querySelector(`div[data-pfp="${localStorage.getItem("pfp-id") || 0}"]`)
         $pfps.forEach(el=> el.classList.remove("pfp-in-use-border"))
         $selectedPfp.classList.add("pfp-in-use-border")
         $selectedPfp.firstElementChild.appendChild($inUseBox)
+    }
+    
+    const setPfp = (idImg)=>{
+        localStorage.setItem("pfp-id", idImg)
+        
+        let imgSrc = d.querySelector(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
+        $pfpPreview.firstElementChild.src = imgSrc
+        $userPfp.src = imgSrc
     }
 
     const removeSelected = () =>{
@@ -155,6 +162,8 @@ export function editProfile(){
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
             setInUsePfp()
             $editProfileContainer.classList.remove("hide-edit-profile")
+            let imgSrc = d.querySelector(`div[data-pfp="${localStorage.getItem("pfp-id") || 0}"]`).firstElementChild.firstElementChild.getAttribute("src")
+            $pfpPreview.firstElementChild.src = imgSrc
         }
 
         if(e.target == $editProfileContainer){

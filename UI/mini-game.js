@@ -48,18 +48,28 @@ export function miniGameScore (){
         $actualScoreContainer.innerHTML = addExtraZeros(score)
     }
 
-    const checkNewRecord = ()=>{
+    if(!localStorage.getItem("unlockByTheUser")){
+        localStorage.setItem("unlockByTheUser", 0)
+    }
+
+    const checkNewRecord = (goalToNewPfp)=>{
         if(actualScore > highScore){
             highScore = actualScore
             localStorage.setItem("HScore", highScore)
             $highScoreContainer.innerHTML = addExtraZeros(highScore)
+
+            let unlockedByTheUser = Math.floor((parseInt((localStorage.getItem("HScore"))) || 0) / goalToNewPfp)
+            
+            localStorage.setItem("unlockByTheUser", unlockedByTheUser)
         }
     }
+
+    checkNewRecord(1000)
 
     const restartGame = ()=>{
         $multiplierTxt.innerHTML = `x1`
         $actualMultiplierContainer.innerHTML= "x1"
-        checkNewRecord()
+        checkNewRecord(1000)
         $gameTimeContainer.classList.remove("little-time")
         actualScore = 0
         $actualScoreContainer.innerHTML = "000"
@@ -124,7 +134,7 @@ export function miniGameScore (){
                     clearInterval(multiplierItemInterval)
                     isPlaying = false
                     $gameTimeContainer.classList.remove("little-time")
-                    checkNewRecord()
+                    checkNewRecord(1000)
                 }else{
                     gameTime -= 1;
                     if(gameTime <= 5){
@@ -146,7 +156,7 @@ export function miniGameScore (){
             
             if(isPlaying){
                 actualScore += (3 * scoreMultiplier);
-                checkNewRecord()
+                checkNewRecord(1000)
                 setScoreInScreen(actualScore)
                 
             }
@@ -160,7 +170,6 @@ export function miniGameScore (){
 
         if(e.target == $itemToClick){
             if($itemToClick.getAttribute("data-item-type") == "addTime"){
-                console.log($itemToClick.getAttribute("data-item-type"))
                 gameTime+= 5
                 $gameTimeContainer.classList.remove("little-time")
                 $timeSum.classList.remove("hide-multiplier-txt")
