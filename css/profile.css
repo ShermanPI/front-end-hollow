@@ -122,6 +122,7 @@
     padding: 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
+    user-select: none;
     position: relative;
 }
 
@@ -204,6 +205,7 @@
 }
 
 .locked-pfp img{
+    pointer-events: none;
     width: 2.2rem;
 }
 
@@ -451,7 +453,7 @@
     z-index: 99;
     min-width: 3.5rem;
     width: 8%;
-    max-width: 5rem;
+    max-width: 4rem;
     left: 0;
     right: 0;
     margin-inline: auto;

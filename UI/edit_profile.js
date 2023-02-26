@@ -1,6 +1,5 @@
 const d = document
 
-/// ALL THE THINGS TO THE INDEX.js
 export function editProfile(){
     class Pfp{
         constructor(id, imgSrc, blocked = false){
@@ -46,7 +45,10 @@ export function editProfile(){
         $closeBtn = d.querySelector(".close-icon"),
         $inUseBox = d.createElement("div"),
         $inUseBoxTxt = d.createElement("div"),
-        $pfpGrid = d.querySelector(".pfps-grid")
+        $pfpGrid = d.querySelector(".pfps-grid"),
+        PfpsLocked = 4;
+
+    let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
         
     const renderPfpsElement = (lockedPfps)=>{
         const pfpsFragment = d.createDocumentFragment()
@@ -104,13 +106,8 @@ export function editProfile(){
 
         $pfpGrid.appendChild(pfpsFragment)
     }
-
-    renderPfpsElement(4)
-
-    const checkIfUnlockPfps = ()=>{
-
-    } 
     
+    renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
     $inUseBoxTxt.classList.add("pfp-in-use-text")
     $inUseBoxTxt.innerHTML = "<p>In use</p>"
@@ -119,8 +116,25 @@ export function editProfile(){
 
     let actualImg = 0
 
-    
     const $pfps = d.querySelectorAll(".pfp-pic-container")
+
+    const checkIfUnlockedPfps = ()=>{
+        console.log("pfpsToUnlock", localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked)
+        if(initialPfpsUnlocked < localStorage.getItem("unlockByTheUser")){
+            let pfpsToUnlock = localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked,
+                $lockedDivs = d.querySelectorAll(".locked-pfp")
+            
+            console.log($lockedDivs)
+            if(pfpsToUnlock <= $lockedDivs.length){
+                for(let i = 0; i < pfpsToUnlock; i++){
+                    console.log("div to remove", $lockedDivs[i], i)
+                    $lockedDivs[i].remove()
+                }
+            }
+
+            initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
+        }
+    } 
     
     if(localStorage.getItem("pfp-id")){
         if(localStorage.getItem("pfp-id") >= 0 && localStorage.getItem("pfp-id") < $pfps.length){
@@ -160,6 +174,7 @@ export function editProfile(){
 
     d.addEventListener("click", (e)=>{
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
+            checkIfUnlockedPfps()
             setInUsePfp()
             $editProfileContainer.classList.remove("hide-edit-profile")
             let imgSrc = d.querySelector(`div[data-pfp="${localStorage.getItem("pfp-id") || 0}"]`).firstElementChild.firstElementChild.getAttribute("src")
@@ -172,12 +187,14 @@ export function editProfile(){
         }
         
         if(e.target.matches(".pfp-pic-container")){
-            removeSelected()
-            e.target.classList.add("pfp-pic-selected")
+            const $lockedDivs = d.querySelectorAll(".locked-pfp")
             
-            actualImg = e.target.getAttribute("data-pfp")
-
-            $pfpPreview.firstElementChild.src = e.target.firstElementChild.firstElementChild.getAttribute("src")
+            if(e.target.getAttribute("data-pfp") < ($pfps.length - $lockedDivs.length)){
+                removeSelected()
+                e.target.classList.add("pfp-pic-selected")
+                actualImg = e.target.getAttribute("data-pfp")
+                $pfpPreview.firstElementChild.src = e.target.firstElementChild.firstElementChild.getAttribute("src")
+            }
         }
         
         if(e.target == $saveBtn){
