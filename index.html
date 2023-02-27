@@ -26,13 +26,13 @@
     
     <!-- custom alert -->
 
-    <div class="page-overlay">
+    <div class="page-overlay hide-alert">
         <div class="alert-container">
             <img src="img/icons/Dialogue_Top.png" alt="">
             <img src="img/icons/Dialogue_Bottom.png" alt="">
-            <b>hola</b>
-            <p>hoal</p>
-            <p class="game-btn alert-ok-btn">Accept</p>
+            <b class="alert-title"></b>
+            <p class="alert-msg"></p>
+            <b class="alert-ok-btn">Accept</b>
         </div>
     </div>
 
@@ -254,8 +254,9 @@
                         <div class="pfp-preview">
                             <img src="img/character/Lifeseed.webp" alt="">
                         </div>
-                        <p>/Shermanius</p>
-
+                        <p class="edit-username">/Shermanius</p>
+                        <!-- <input type="text" id="name" name="name" required
+                        minlength="4" maxlength="8" size="10"> this is not working -->
                         <button class="save-profile-changes">Save</button>
                     </div>
 

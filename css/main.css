@@ -330,11 +330,11 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 1999;
 }
 
 .alert-container{
-    padding-inline: 3rem;
+    padding-inline: 2rem;
     padding-block: 1rem;
     position: relative;
     width: 90%;
@@ -363,8 +363,51 @@ body{
 
 .alert-ok-btn {
     display: flex;
+    width: fit-content;
     margin-left: auto;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
 }
+
+.hide-alert{
+    display: none;
+}
+
+.alert-ok-btn:hover{
+    background: linear-gradient(90deg, rgba(198,183,190,0) 10%, rgba(198, 183, 190, 0.208) 50%, rgba(198,183,190,0) 90%);
+}
+
+.alert-ok-btn::before{
+    content: "";
+
+    opacity: 0;
+    background-image: url("../img/icons/Hk_left_arrow.webp");
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+
+.alert-ok-btn::after{
+    content: "";
+    opacity: 0;
+    background-image: url("../img/icons/Hk_right_arrow.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.alert-ok-btn::after,
+.alert-ok-btn::before{
+    display: inline-block;
+    transition: 450ms all ease;
+    width: calc(2.2rem + 1vw);
+    height: calc(1.8rem + 0.2vw);
+}
+
+.alert-ok-btn:hover::before,
+.alert-ok-btn:hover::after{
+    opacity: 1;
+}
+
 
 .alert-container img{
     position: absolute;
@@ -375,15 +418,48 @@ body{
 }
 
 .alert-container img:nth-child(1){
-    top: -20%;
+    top: -1.2rem;
     width: 50%;
 }
 
 .alert-container img:nth-child(2){
-    bottom: -8%;
-    width: 40%;
+    bottom: -0.8rem;
+    width: 50%;
 }
 
+@media (min-width: 700px) {
+    .alert-container img:nth-child(1){
+        top: -2.5rem;
+    }
+    
+    .alert-container img:nth-child(2){
+        bottom: -1rem;
+    }
+
+    .alert-ok-btn::after,
+.alert-ok-btn::before{
+    display: inline-block;
+    transition: 450ms all ease;
+    width: calc(2rem + 1vw);
+    height: calc(3rem + 0.2vw);
+    background-size:contain;
+}
+}
+
+@media (min-width: 900px) {
+    .alert-container img:nth-child(1){
+        top: -3rem;
+    }
+    
+    .alert-container img:nth-child(2){
+        bottom: -1.6rem;
+    }
+
+    .alert-container{
+        padding-inline: 4rem;
+        width: 40%;
+    }
+}
 
 
 @media (min-width: 1024px) {

@@ -12,6 +12,7 @@ import { controlPlaylist } from "./UI/playlist.js";
 import { miniGameScore } from "./UI/mini-game.js";
 import {minigameExplodeParticles} from "./UI/minigame-particles.js"
 import { editProfile } from "./UI/edit_profile.js";
+import { customAlert } from "./UI/custom_alerts.js";
 
 window.addEventListener("DOMContentLoaded", (e)=>{
     homeNavigation()
@@ -25,6 +26,6 @@ window.addEventListener("DOMContentLoaded", (e)=>{
     bckChanger()
     controlPlaylist()
     miniGameScore()
-    editProfile()
+    editProfile(customAlert)
     minigameExplodeParticles()
 })

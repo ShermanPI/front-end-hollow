@@ -94,14 +94,15 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
     })
 
     w.addEventListener("keydown", (e)=>{
-        e.preventDefault()
-
+        
         if(e.key == "ArrowRight"){
+            e.preventDefault()
             animateArrow($rightArrow)
             movePages(1)
         }
 
         if(e.key == "ArrowLeft"){
+            e.preventDefault()
             animateArrow($leftArrow)
             movePages(-1)
         }

@@ -1,11 +1,11 @@
 const d = document
 
-export function editProfile(){
+export function editProfile(customAlert){
     class Pfp{
         constructor(id, imgSrc, blocked = false){
             this.id = id,
-            this.imgSrc = imgSrc, //--->> this.imgSrc
-            this.blocked = blocked //--->> this.blocked
+            this.imgSrc = imgSrc,
+            this.blocked = blocked
         }
     
         createPfpElement(){
@@ -109,6 +109,14 @@ export function editProfile(){
     
     renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
+    const $lockedDivs = d.querySelectorAll(".locked-pfp")
+    let pfpPointsId = PfpsLocked
+
+    for(let i = $lockedDivs.length - 1; i >= 0; i--){
+        $lockedDivs[i].setAttribute("data-locked-pfp-id", pfpPointsId)
+        pfpPointsId--;
+    }
+
     $inUseBoxTxt.classList.add("pfp-in-use-text")
     $inUseBoxTxt.innerHTML = "<p>In use</p>"
     $inUseBox.classList.add("pfp-in-use")
@@ -173,6 +181,10 @@ export function editProfile(){
     setPfp(actualImg)
 
     d.addEventListener("click", (e)=>{
+        if(e.target.matches(".locked-pfp")){
+            customAlert("Need Points to Unlock!", `You can unlock the different profile pictures by playing the mini game "The Last Call" (Available in the profile section from the PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this one`)
+        }
+
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
             checkIfUnlockedPfps()
             setInUsePfp()

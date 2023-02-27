@@ -65,12 +65,13 @@ export function homeNavigation(){
         resizeArrowDivisor()
 
         const navigateItems = (e)=>{
-            e.preventDefault()
             if(e.key == "ArrowDown"){
+                e.preventDefault()
                 navigateItemDown()
             }
 
             if(e.key == "ArrowUp"){
+                e.preventDefault()
                 navigateItemUp()
             }
         }
