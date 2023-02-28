@@ -1,7 +1,7 @@
 const d = document
 
 export function editProfile(customAlert){
-    class Pfp{
+    class ProfilePic{
         constructor(id, imgSrc, blocked = false){
             this.id = id,
             this.imgSrc = imgSrc,
@@ -46,7 +46,8 @@ export function editProfile(customAlert){
         $inUseBox = d.createElement("div"),
         $inUseBoxTxt = d.createElement("div"),
         $pfpGrid = d.querySelector(".pfps-grid"),
-        PfpsLocked = 4;
+        PfpsLocked = 4,
+        $editUsernameInput = d.querySelector(".edit-username")
 
     let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
         
@@ -99,7 +100,7 @@ export function editProfile(customAlert){
 
         let idCounter = 0
         pfpsInfo.forEach(el=>{
-            let newPfp = new Pfp(idCounter, el.src, el.blocked)
+            let newPfp = new ProfilePic(idCounter, el.src, el.blocked)
             pfpsFragment.appendChild(newPfp.createPfpElement())
             idCounter++
         })
@@ -109,7 +110,9 @@ export function editProfile(customAlert){
     
     renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
-    const $lockedDivs = d.querySelectorAll(".locked-pfp")
+    const $lockedDivs = d.querySelectorAll(".locked-pfp"),
+        usernameRegex = /^[a-zA-Z0-9_-]{4,8}$/
+    
     let pfpPointsId = PfpsLocked
 
     for(let i = $lockedDivs.length - 1; i >= 0; i--){
@@ -172,11 +175,6 @@ export function editProfile(customAlert){
         $pfps.forEach(el=> el.classList.remove("pfp-pic-selected"))
     }
 
-    const showPfpSelector = ()=>{
-        removeSelected()
-        $editProfileContainer.classList.add("hide-edit-profile")
-    } 
-
     setInUsePfp()
     setPfp(actualImg)
 
@@ -193,11 +191,6 @@ export function editProfile(customAlert){
             $pfpPreview.firstElementChild.src = imgSrc
         }
 
-        if(e.target == $editProfileContainer){
-            removeSelected()
-            $editProfileContainer.classList.add("hide-edit-profile")
-        }
-        
         if(e.target.matches(".pfp-pic-container")){
             const $lockedDivs = d.querySelectorAll(".locked-pfp")
             
@@ -211,11 +204,23 @@ export function editProfile(customAlert){
         
         if(e.target == $saveBtn){
             setPfp(actualImg)
-            showPfpSelector()
+            removeSelected()
+            setInUsePfp()
+
+            if (usernameRegex.test($editUsernameInput.value)) {
+                localStorage.setItem("username", $editUsernameInput.value)
+            }
         }
 
-        if(e.target == $closeBtn){
-            showPfpSelector()
+        if(e.target == $closeBtn || e.target == $editProfileContainer){
+            removeSelected()
+            $editProfileContainer.classList.add("hide-edit-profile")
         }
-})
+    })
+
+    d.addEventListener("input", (e)=>{
+        if(usernameRegex.test($editUsernameInput.value)){
+            $editUsernameInput.value //need to edit the suername color with the regex
+        }
+    })
 }
