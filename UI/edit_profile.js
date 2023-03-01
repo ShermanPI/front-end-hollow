@@ -47,7 +47,8 @@ export function editProfile(customAlert){
         $inUseBoxTxt = d.createElement("div"),
         $pfpGrid = d.querySelector(".pfps-grid"),
         PfpsLocked = 4,
-        $editUsernameInput = d.querySelector(".edit-username")
+        $editUsernameInput = d.querySelector(".edit-username"),
+        $profileUsername = d.getElementById("user-username")
 
     let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
         
@@ -111,7 +112,7 @@ export function editProfile(customAlert){
     renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
     const $lockedDivs = d.querySelectorAll(".locked-pfp"),
-        usernameRegex = /^[a-zA-Z0-9_-]{4,8}$/
+        usernameRegex = /^[a-zA-Z0-9_-]{4,12}$/
     
     let pfpPointsId = PfpsLocked
 
@@ -174,7 +175,15 @@ export function editProfile(customAlert){
     const removeSelected = () =>{
         $pfps.forEach(el=> el.classList.remove("pfp-pic-selected"))
     }
-
+    
+    const renderUsernameInDom = (username)=>{
+        if(localStorage.getItem("username")){
+            $editUsernameInput.placeholder = `/${localStorage.getItem("username")}`
+            $profileUsername.innerHTML = `/${localStorage.getItem("username")}`
+        }
+    }
+    
+    renderUsernameInDom()
     setInUsePfp()
     setPfp(actualImg)
 
@@ -186,9 +195,12 @@ export function editProfile(customAlert){
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
             checkIfUnlockedPfps()
             setInUsePfp()
+
+            $editUsernameInput.value = ""
             $editProfileContainer.classList.remove("hide-edit-profile")
             let imgSrc = d.querySelector(`div[data-pfp="${localStorage.getItem("pfp-id") || 0}"]`).firstElementChild.firstElementChild.getAttribute("src")
             $pfpPreview.firstElementChild.src = imgSrc
+
         }
 
         if(e.target.matches(".pfp-pic-container")){
@@ -206,21 +218,40 @@ export function editProfile(customAlert){
             setPfp(actualImg)
             removeSelected()
             setInUsePfp()
-
+            
             if (usernameRegex.test($editUsernameInput.value)) {
                 localStorage.setItem("username", $editUsernameInput.value)
+                $editProfileContainer.classList.add("hide-edit-profile")
+                renderUsernameInDom(localStorage.getItem("username"))
+            }else if($editUsernameInput.value == ""){
+                $editProfileContainer.classList.add("hide-edit-profile")
+            }else{
+                customAlert(undefined, "Username must contain only letters (both uppercase and lowercase), numbers, underscores and middle hyphens, with a length of between 3 and 12 characters.")
             }
         }
 
         if(e.target == $closeBtn || e.target == $editProfileContainer){
-            removeSelected()
-            $editProfileContainer.classList.add("hide-edit-profile")
+
+            if(($editUsernameInput.value !== localStorage.getItem("username") && $editUsernameInput.value !== "") || actualImg !== localStorage.getItem("pfp-id")){
+                const alertOptions = {
+                    isConfirmType: true,
+                    yesFunction(){
+                        d.querySelector(".page-overlay").remove()
+                    },
+                    noFunction(){
+                        removeSelected()
+                        d.querySelector(".page-overlay").remove()
+                        $editProfileContainer.classList.add("hide-edit-profile")
+                    }
+                }
+    
+                customAlert("Unsaved Changes", "There are unsaved changes, do you want to continue in the edit profile section?", alertOptions)
+
+            }else{
+                removeSelected()
+                $editProfileContainer.classList.add("hide-edit-profile")
+            }
         }
     })
 
-    d.addEventListener("input", (e)=>{
-        if(usernameRegex.test($editUsernameInput.value)){
-            $editUsernameInput.value //need to edit the suername color with the regex
-        }
-    })
 }

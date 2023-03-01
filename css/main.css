@@ -335,7 +335,7 @@ body{
 
 .alert-container{
     padding-inline: 2rem;
-    padding-block: 1rem;
+    padding-block: 1.5rem;
     position: relative;
     width: 90%;
     background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 2%, rgba(0,0,0,0.6) 98%, rgba(0,0,0,0) 100%);
@@ -368,10 +368,6 @@ body{
     user-select: none;
     cursor: pointer;
     position: relative;
-}
-
-.hide-alert{
-    display: none;
 }
 
 .alert-ok-btn:hover{

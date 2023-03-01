@@ -1,24 +1,62 @@
 const d = document
 
-export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️"){
-    const $alertBackOverlay = d.querySelector(".page-overlay"),
-        $alertTitle = d.querySelector(".alert-title"),
-        $alertMsg = d.querySelector(".alert-msg")
+export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️", alertOptions = {}){
+    const $alertBackOverlay = d.createElement("div"),
+        $alertContainer = d.createElement("div"),
+        $alertTitle = d.createElement("b"),
+        $alertMsg = d.createElement("p"),
+        $alertImgTop = d.createElement("img"),
+        $alertImgBottom = d.createElement("img"),
+        $alertOkBtn = d.createElement("b"),
+        $body = d.querySelector("body")
 
+    $alertImgTop.src = "img/icons/Dialogue_Top.png"
+    $alertImgBottom.src = "img/icons/Dialogue_Bottom.png"
 
-    console.log("esto se debio disparar")
+    $alertBackOverlay.classList.add("page-overlay")
+    $alertContainer.classList.add("alert-container")
+    $alertTitle.classList.add("alert-title")
+    $alertMsg.classList.add("alert-msg")
+    $alertOkBtn.classList.add("alert-ok-btn")
+    $alertOkBtn.innerHTML = "Accept"
+
+    console.log("eso se debio disparar")
     if(title){
         $alertTitle.innerHTML = title
     }
-
     $alertMsg.innerHTML = alertMsg
 
-    $alertBackOverlay.classList.remove("hide-alert")
-    
-    d.addEventListener("click", (e)=>{
-        if(e.target.matches(".alert-ok-btn")){
-            $alertBackOverlay.classList.add("hide-alert")
-        }
+    $alertBackOverlay.appendChild($alertContainer)
 
+    let alertContainerChilds = [$alertImgTop, $alertImgBottom, $alertTitle, $alertMsg, $alertOkBtn]
+
+    if(alertOptions.isConfirmType){
+        const $cancelBtnClone = $alertOkBtn.cloneNode()
+        $alertOkBtn.innerHTML = "Yes"
+        $cancelBtnClone.innerHTML = "No"
+        alertContainerChilds = [...alertContainerChilds, $cancelBtnClone]
+        
+        d.addEventListener("click", (e)=>{
+            if(e.target == $alertOkBtn){
+                alertOptions.yesFunction()
+            }
+
+            if(e.target == $cancelBtnClone){
+                alertOptions.noFunction()
+            }
+        })
+
+    }else{
+        d.addEventListener("click", (e)=>{
+            if(e.target == $alertOkBtn){
+                $alertBackOverlay.remove()
+            }
+        })
+    }
+
+    alertContainerChilds.forEach(el=>{
+        $alertContainer.appendChild(el)
     })
+
+    $body.insertBefore($alertBackOverlay, $body.firstElementChild)
 }

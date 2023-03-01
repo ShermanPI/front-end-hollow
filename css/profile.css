@@ -501,13 +501,12 @@
     border-top: solid;
     color: var(--pure-color);
     font-size: calc(1.6rem + 0.5vw);
+    padding-block: 0.2rem;
 }
 
-.edit-username-btn{
-    display: inline-block;
-    width: calc(1rem + 0.5vw);
+.edit-username:focus{
+    outline: none;
 }
-
 
 @media (min-width: 1024px) {
 
