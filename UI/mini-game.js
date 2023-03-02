@@ -12,7 +12,9 @@ export function miniGameScore (){
         $multiplierTxt = d.querySelector(".multiplier-txt"),
         $actualMultiplierContainer = d.querySelector(".actual-multiplier"),
         $timeSum = d.querySelector(".time-sum"),
-        $gameIconContainer = d.querySelector(".icon-container")
+        $gameIconContainer = d.querySelector(".icon-container"),
+        $profilePicNotification = d.querySelector(".profile-pic-notification")
+
             
     const gameDuration = 20;
 
@@ -52,6 +54,8 @@ export function miniGameScore (){
         localStorage.setItem("unlockByTheUser", 0)
     }
 
+    let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
+
     const checkNewRecord = (goalToNewPfp)=>{
         if(actualScore > highScore){
             highScore = actualScore
@@ -61,6 +65,11 @@ export function miniGameScore (){
             let unlockedByTheUser = Math.floor((parseInt((localStorage.getItem("HScore"))) || 0) / goalToNewPfp)
             
             localStorage.setItem("unlockByTheUser", unlockedByTheUser)
+            
+            if(initialPfpsUnlocked < localStorage.getItem("unlockByTheUser")){
+                $profilePicNotification.classList.remove("hide-notification")
+                initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
+            }
         }
     }
 

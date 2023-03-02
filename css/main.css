@@ -592,7 +592,13 @@ body{
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        cursor: pointer;
     }
+
+    .page-indicator:hover{
+        opacity: 0.8;
+    }
+
     .prev-page img{
         transform: rotate(90deg);
         max-width: 3.3rem;
@@ -616,4 +622,13 @@ body{
         
     }
 
+}
+
+.confirm-btn-container{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.confirm-btn-container > *{
+    margin-left: 0;
 }

@@ -48,10 +48,11 @@ export function editProfile(customAlert){
         $pfpGrid = d.querySelector(".pfps-grid"),
         PfpsLocked = 4,
         $editUsernameInput = d.querySelector(".edit-username"),
-        $profileUsername = d.getElementById("user-username")
+        $profileUsername = d.getElementById("user-username"),
+        $profilePicNotification = d.querySelector(".profile-pic-notification")
 
     let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
-        
+
     const renderPfpsElement = (lockedPfps)=>{
         const pfpsFragment = d.createDocumentFragment()
 
@@ -176,7 +177,7 @@ export function editProfile(customAlert){
         $pfps.forEach(el=> el.classList.remove("pfp-pic-selected"))
     }
     
-    const renderUsernameInDom = (username)=>{
+    const renderUsernameInDom = ()=>{
         if(localStorage.getItem("username")){
             $editUsernameInput.placeholder = `/${localStorage.getItem("username")}`
             $profileUsername.innerHTML = `/${localStorage.getItem("username")}`
@@ -193,6 +194,8 @@ export function editProfile(customAlert){
         }
 
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
+            if(!$profilePicNotification.classList.contains("hide-notification")) $profilePicNotification.classList.add("hide-notification")
+
             checkIfUnlockedPfps()
             setInUsePfp()
 

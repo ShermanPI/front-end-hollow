@@ -83,11 +83,11 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
     }
 
     d.addEventListener("click", (e)=>{
-        if(e.target == $rightArrow){
+        if(e.target == $rightArrow || e.target == $nextPageIndicator){
             animateArrow($rightArrow)
             movePages(1)
         }
-        if(e.target == $leftArrow){
+        if(e.target == $leftArrow || e.target == $prevPageIndicator){
             animateArrow($leftArrow)
             movePages(-1)
         }

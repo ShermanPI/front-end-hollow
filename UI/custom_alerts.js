@@ -28,13 +28,18 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
 
     $alertBackOverlay.appendChild($alertContainer)
 
-    let alertContainerChilds = [$alertImgTop, $alertImgBottom, $alertTitle, $alertMsg, $alertOkBtn]
+    let alertContainerChilds = [$alertImgTop, $alertImgBottom, $alertTitle, $alertMsg]
 
     if(alertOptions.isConfirmType){
         const $cancelBtnClone = $alertOkBtn.cloneNode()
+        const $btnsContainer = d.createElement("div")
         $alertOkBtn.innerHTML = "Yes"
         $cancelBtnClone.innerHTML = "No"
-        alertContainerChilds = [...alertContainerChilds, $cancelBtnClone]
+        $btnsContainer.appendChild($alertOkBtn)
+        $btnsContainer.appendChild($cancelBtnClone)
+        $btnsContainer.classList.add("confirm-btn-container")
+
+        alertContainerChilds = [...alertContainerChilds, $btnsContainer]
         
         d.addEventListener("click", (e)=>{
             if(e.target == $alertOkBtn){
@@ -47,6 +52,8 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
         })
 
     }else{
+        alertContainerChilds = [...alertContainerChilds, $alertOkBtn]
+
         d.addEventListener("click", (e)=>{
             if(e.target == $alertOkBtn){
                 $alertBackOverlay.remove()

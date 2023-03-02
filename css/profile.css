@@ -313,6 +313,20 @@
     animation: glowingAnimation 4500ms ease-in-out 0ms infinite normal forwards;
 }
 
+.profile-pic-notification{
+    background-color: #ff4444;
+    position: absolute;
+    padding: 0.6rem;
+    left: 1rem;
+    top: 0.8rem;
+    z-index: 5;
+    border-radius: 50%;
+}
+
+.hide-notification{
+    display: none;
+}
+
 .change-pfp-text{
     background-color: #000000a7;
     width: 100%;
