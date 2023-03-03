@@ -8,11 +8,7 @@ export function homeNavigation(){
         $itemList = d.getElementById("home-list"),
         $arrowsDivisor = d.getElementById("actual-item-height")
     
-    let actualItem = 0;
-    
-    for(let i = 0; i<$items.length; i++){
-        $items[i].setAttribute("data-item-id", i);
-    }
+    let actualItem = 1;
 
     const resizeArrowDivisor = ()=>{
         $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
@@ -22,11 +18,6 @@ export function homeNavigation(){
         // navigate in "mobile"
         $arrowsDivisor.style.width = "100%"
         $arrowsDivisor.classList.add("selected-item")
-
-
-        // background: ;
-        // border-image: linear-gradient(to left, rgba(0, 0, 0, 0) 1%, rgba(198,183,190,1) 50%, rgba(0, 0, 0, 0) 100%) 
-        // 100% 0 100% 0/2px 0 2px 0 stretch;
 
         let getTheMiddle = ()=>{
             let itemHeight = $items[0].getBoundingClientRect().height,
@@ -68,11 +59,14 @@ export function homeNavigation(){
             if(e.key == "ArrowDown"){
                 e.preventDefault()
                 navigateItemDown()
+                console.log(actualItem)
             }
 
             if(e.key == "ArrowUp"){
                 e.preventDefault()
                 navigateItemUp()
+                console.log(actualItem)
+
             }
         }
 
