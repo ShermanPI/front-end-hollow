@@ -13,10 +13,10 @@ import { miniGameScore } from "./UI/mini-game.js";
 import {minigameExplodeParticles} from "./UI/minigame-particles.js"
 import { editProfile } from "./UI/edit_profile.js";
 import { customAlert } from "./UI/custom_alerts.js";
-import { renderItems } from "./UI/render-items.js";
+// import { renderItems } from "./UI/render-items.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    renderItems()
+    // renderItems()
     homeNavigation()
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);

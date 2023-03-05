@@ -1,14 +1,187 @@
 const d = document,
 w = window;
 
+let itemsInfo = [
+    {
+        id: 1,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "Zote the mighty",
+        characterMainInfo: "This is a chracter wich appear to be safe (optionaly), if you do it you will see that the same one will be totally ungreatful with you",
+        characterSecondaryInfo: "This character is bullshit xd",
+        isFavorite: true
+    },
+    {
+        id: 2,
+        characterImgSrc: "img/character/The_Knight.webp",
+        characterName: "The knight",
+        characterMainInfo: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque voluptatibus minus sint vel placeat sapiente veniam, facilis magnam delectus officiis similique illo accusantium, esse non recusandae at eveniet repudiandae ullam.",
+        characterSecondaryInfo: "The protagonist"
+    },
+    {
+        id: 3,
+        characterImgSrc: "img/character/Hornet_Idle.webp",
+        characterName: "Hornet",
+        characterMainInfo: "This is a chracter wich appear to be safe (optionaly), if you do it you will see that the same one will be totally ungreatful with you",
+        characterSecondaryInfo: "Tsdfg  fsdgdfg",
+        isFavorite: true
+    },
+    {
+        id: 4,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "random ashdkja",
+        characterMainInfo: "aquio cmabasidnsad;lkf",
+        characterSecondaryInfo: "T dfsd fgdf  gdsdfsg"
+    },
+    {
+        id: 5,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "randoamsasd",
+        characterMainInfo: "aergdfgdghsdfgsdfgsdf",
+        characterSecondaryInfo: "Th dsfdfgdfg  g "
+    },
+    {
+        id: 6,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "shfgdzfgsfdgdsfg",
+        characterMainInfo: "sfghbdfrgfgsdfgsdfgsdfg",
+        characterSecondaryInfo: "Ths ds fdf gdf gdf d",
+        isFavorite: true
+    },
+    {
+        id: 7,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "adfgsdfgdfg",
+        characterMainInfo: "dsfgs dfsd fgs dfgsdfgh",
+        characterSecondaryInfo: "Thi sfddegh sdfg sdfg dfg "
+    },
+    {
+        id: 8,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "sdfgdfg",
+        characterMainInfo: " sdfgsd fgsdfg sdfg",
+        characterSecondaryInfo: "Tfg sdfss  s sgs gsf",
+        isFavorite: true
+    },
+    {
+        id: 9,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "Zote the knight",
+        characterMainInfo: "dsfgsdfgsdfgdsfgsdgsdg",
+        characterSecondaryInfo: "Thi dsfgds fgsdfg sdf",
+        isFavorite: true
+    },
+    {
+        id: 10,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "dsfgsdfgg",
+        characterMainInfo: " sdfgsdfg sdfg sdfg sdfgsd fgsdfg s",
+        characterSecondaryInfo: "este es elk unsadf"
+    },
+    {
+        id: 11,
+        characterImgSrc: "img/character/Zotethemighty.webp",
+        characterName: "Last name",
+        characterMainInfo: " sdfgsdfg sfdg dsfg sdfg ",
+        characterSecondaryInfo: "the last item",
+        isFavorite: true
+    },
+]
+
 export function homeNavigation(){
-    
-    const $items = d.querySelectorAll(".item-list > .item"),
-        $sections = document.querySelectorAll(".section-container"),
+
+    const $sections = document.querySelectorAll(".section-container"),
         $itemList = d.getElementById("home-list"),
-        $arrowsDivisor = d.getElementById("actual-item-height")
+        $arrowsDivisor = d.getElementById("actual-item-height"),
+        $itemsFragment = d.createDocumentFragment(),
+        $homeItemList = d.getElementById("home-list"),
+        $characterNameContainer = d.querySelector(".character-name"),
+        $characterImgContainer = d.querySelector(".character-full-img"),
+        $favoriteIconContainer = d.querySelector(".home-favorite-icon"),
+        $bestiaryImgContainer = d.querySelector(".info-divisor-img"),
+        $characterTextInfo = d.getElementById("character-text-info"),
+        $characterExtraTextInfo = d.getElementById("character-more-text")
     
-    let actualItem = 1;
+    class HomeItem{
+        constructor(listIndex, characterImgSrc, characterName, characterMainInfo, characterSecondaryInfo, isFavorite = false){
+            this.listIndex = listIndex,
+            this.characterImgSrc = characterImgSrc,
+            this.characterName = characterName,
+            this.characterMainInfo = characterMainInfo,
+            this.characterSecondaryInfo = characterSecondaryInfo,
+            this.isFavorite = isFavorite
+        }
+
+        createItemNode(){
+            const $item = d.createElement("li"),
+                $listBorderContainer = d.createElement("div"),
+                $borderImg = d.createElement("img"),
+                $characterImgContainer = d.createElement("div"),
+                $characterImg = d.createElement("img"),
+                $characterName = d.createElement("p")
+    
+            $item.classList.add("item")
+            $listBorderContainer.classList.add("list-border")
+            $characterImgContainer.classList.add("character-img")
+        
+            $item.appendChild($listBorderContainer)
+            $item.appendChild($characterImgContainer)
+            $item.appendChild($characterName)
+            $listBorderContainer.appendChild($borderImg)
+            $characterImgContainer.appendChild($characterImg)
+        
+            $item.setAttribute("data-item-id", this.listIndex)
+            $borderImg.src = "img/UI/item-border.png"
+            $characterImg.src = this.characterImgSrc
+            $characterName.innerHTML = this.characterName
+
+            return $item
+        }
+    }
+
+    itemsInfo.forEach((el, i) =>{
+        let newItem = new HomeItem(i, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo, el.isFavorite)
+
+        $itemsFragment.appendChild(newItem.createItemNode())
+    })
+
+    $homeItemList.appendChild($itemsFragment)
+    
+    let $items = d.querySelectorAll(".item-list > .item")
+
+    // setInterval(()=>{
+    //     let newItem = new HomeItem($items.length, "img/character/Zotethemighty.webp", "nombre", "nomebere", "nombre")
+        
+    //     $homeItemList.appendChild(newItem.createItemNode())
+    //     $items = d.querySelectorAll(".item-list > .item") // need to update this variable for the $items.length
+    //     if(actualItem !== 0){
+    //         $items[actualItem].style.marginBlock = "5rem";
+    //     }
+    // }, 10000)
+
+    let actualItem = 0;
+
+    const renderItemInfo = (itemArrayIndex) =>{
+        $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
+        $characterImgContainer.firstElementChild.src = itemsInfo[itemArrayIndex].characterImgSrc
+        
+
+        if(itemsInfo[itemArrayIndex].isFavorite){
+            $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
+        }else{
+            $favoriteIconContainer.firstElementChild.src = "img/icons/unfavorite.png"
+        }
+
+        $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
+
+        if(itemsInfo[itemArrayIndex].characterSecondaryInfo){
+            $bestiaryImgContainer.style.display = "block"
+            $characterExtraTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterSecondaryInfo
+        }else{
+            $bestiaryImgContainer.style.display = "none"
+        }
+    }
+
+    renderItemInfo(actualItem)
 
     const resizeArrowDivisor = ()=>{
         $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
@@ -34,6 +207,7 @@ export function homeNavigation(){
                     clearTimeout(timeOut)
                     timeOut = setTimeout(()=>{
                         actualItem = entry.target.getAttribute("data-item-id")
+                        renderItemInfo(actualItem)
                     }, 500)
                 }
             })
@@ -59,14 +233,13 @@ export function homeNavigation(){
             if(e.key == "ArrowDown"){
                 e.preventDefault()
                 navigateItemDown()
-                console.log(actualItem)
+                renderItemInfo(actualItem)
             }
 
             if(e.key == "ArrowUp"){
                 e.preventDefault()
                 navigateItemUp()
-                console.log(actualItem)
-
+                renderItemInfo(actualItem)
             }
         }
 
@@ -161,15 +334,24 @@ export function homeNavigation(){
             e.preventDefault()
             if (e.deltaY > 0) { //wheels down
                 navigateItemDown()
+                renderItemInfo(actualItem)
             } else { //wheels up
                 navigateItemUp()
+                renderItemInfo(actualItem)
             }
 
         })
 
         d.addEventListener("click", (e)=>{
-            if(e.target == $arrowUp)navigateItemUp();
-            if(e.target == $arrowDown) navigateItemDown();
+            if(e.target == $arrowUp){
+                navigateItemUp();
+                renderItemInfo(actualItem)
+            } 
+                
+            if(e.target == $arrowDown) {
+                navigateItemDown()
+                renderItemInfo(actualItem)
+            }
         })
     }
 
