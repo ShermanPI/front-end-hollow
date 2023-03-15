@@ -9,6 +9,7 @@ export function changeForms(editFormBtn, addFormBtn, editForm, addForm){
 
     d.addEventListener("click", (e)=>{
         if(e.target == $editFormBtn){
+            console.log("HOLA")
             $editFormBtn.classList.add("btn-activated");
             $editForm.classList.remove("hide-form");
             
@@ -16,6 +17,7 @@ export function changeForms(editFormBtn, addFormBtn, editForm, addForm){
             $addFormBtn.classList.remove("btn-activated");
         }
         if(e.target == $addFormBtn){
+            console.log("HOLA 2")
             $addFormBtn.classList.add("btn-activated");
             $addForm.classList.remove("hide-form");
             
