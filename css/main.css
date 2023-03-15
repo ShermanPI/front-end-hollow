@@ -80,6 +80,142 @@ body{
     overflow-y: hidden;
 }
 
+/* Computerse session bar*/
+
+.session-bar{
+    justify-content: flex-end;
+    gap: 2rem;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    height: var(--border-size);
+    width: 100%;
+    padding-inline: var(--border-size);
+    /* background-color: red; */
+    z-index: 10000;
+    align-self: center;
+    font-weight: bold;
+}
+
+.session-btn{
+    font-family: trajan;
+    font-size: calc(1rem + 0.5vw);
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+    display: flex;
+    gap: 2rem;
+}
+
+.session-btn:nth-child(2){
+    border-radius: 0.2rem;
+    background-color: var(--pure-color);
+    color: black;
+}
+
+.session-btn:hover{
+    opacity: 0.9;
+}
+
+.session-form-container{
+    position: fixed;
+    z-index: 10001;
+    width: 100%;
+    height: 100vh;
+    background-color: #0000007c;
+    backdrop-filter: blur(0.3rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.session-section-form-container{
+    width: 90%;
+    position: relative;
+    max-width: 50rem;
+    background-color: #0f0f1bc2;
+    display: flex;
+    align-items: center;
+    padding: 4rem 2rem;
+    flex-direction: column;
+}
+
+.form-icon{
+    width: 6rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: -6rem;
+}
+
+.under-form-img{
+    position: absolute;
+    bottom: -1rem;
+}
+
+.form-title{
+    font-family: trajan;
+    font-weight: bold;
+    line-height: 2;
+    font-size: calc(1.5rem + 0.5vw);
+}
+
+#sign-up-form{
+    width: 100%;
+
+}
+
+.form-group{
+    font-size: calc(1.4rem + 0.5vw);
+    width: 100%;
+    padding-block: 0.4rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.field-name{
+    font-weight: bold;
+    line-height: 1.2;
+    letter-spacing: 0.08rem;
+}
+
+.form-input{
+    line-height: 1.8;
+    border: none;
+    background-color: #00000087;
+
+    border-bottom: 0.1rem solid var(--pure-color);
+    padding-left: 1.2rem;
+    /* background-color: transparent; */
+    color: var(--pure-color);
+}
+
+.form-input:focus{
+    outline: none;
+    line-height: 1.7;
+    background-color: #00000078;
+    border-bottom: 0.2rem solid var(--pure-color);
+
+}
+
+input[type="submit"]{
+    text-align: center;
+    display: block;
+    font-weight: bold;
+    background-color: var(--pure-color);
+    color: black;
+    font-family: trajan;
+    font-size: calc(1.3rem + 0.5vw);
+    line-height: 2;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover{
+    opacity: 0.8;
+}
+
 /* MOBILE MENU */
 
 .menu{
@@ -239,7 +375,6 @@ body{
     right: var(--border-size);
     top: var(--border-size);
     gap: 0.4rem;
-    background-color: #000;
 }
 
 
