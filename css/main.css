@@ -149,6 +149,19 @@ body{
     top: -6rem;
 }
 
+.exit-register-form-icon{
+    position: absolute;
+    right: 2rem;
+    width: 8%;
+    min-width: 2rem;
+    top: 2rem;
+    cursor: pointer;
+}
+
+.exit-register-form-icon:hover{
+    opacity: 0.6;
+}
+
 .under-form-img{
     position: absolute;
     bottom: -1rem;
@@ -214,6 +227,15 @@ input[type="submit"]{
 
 input[type="submit"]:hover{
     opacity: 0.8;
+}
+
+.under-form-info{
+    width: 100%;
+}
+
+.under-form-info p{
+    font-size: calc(1.4rem + 0.5vw);
+    line-height: 2;
 }
 
 /* MOBILE MENU */
@@ -401,7 +423,7 @@ input[type="submit"]:hover{
 @media (min-width: 768px) {
     .burger-icon{
         width: 4.5rem;
-    }
+    }horizontal
 
     .burger-icon.open svg:nth-child(1){
         transform: rotate(-45deg) translate(-0.6rem, 1.1rem);
@@ -423,6 +445,13 @@ input[type="submit"]:hover{
     border-image: linear-gradient(to left, rgba(0, 0, 0, 0) 1%, rgba(198,183,190,1) 50%, rgba(0, 0, 0, 0) 100%) 
     100% 0 100% 0/2px 0 2px 0 stretch;
     border-top: solid;
+}
+
+.divisor-div{
+    width:100%;
+    height: 0.2rem;
+    background: rgb(255,255,255);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
 }
 
 .computer-design{
