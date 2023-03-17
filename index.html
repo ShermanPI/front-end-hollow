@@ -15,11 +15,11 @@
 </head>
 <body>
     <section class="session-bar computer-design">
-        <div class="session-btn">Log in</div>
-        <div class="session-btn">Sign Up</div>
+        <div class="session-btn login-btn">Log in</div>
+        <div class="session-btn signUp-btn">Sign Up</div>
     </section>
 
-    <div class="session-form-container">
+    <div class="session-form-container register-form-container hide-form">
         <div class="session-section-form-container">
             <div class="form-icon">
                 <img src="img/icons/hollow-knight.png" alt="">
@@ -32,38 +32,77 @@
 
             <form method="POST" action = "#" class="session-form" id="sign-up-form">
                 <div class="form-group">
-                    <span class="field-name">
-                        Username:
-                    </span>
-                    <input type="text" name="username" class="form-input" autocomplete="off" placeholder="Username">
+                    <label class="field-name">Username:</label>
+                    <input type="text" maxlength="12" minlength="2" name="username" required class="form-input" placeholder="Username" autocomplete="off">
                 </div>
+
                 <div class="form-group">
-                    <span class="field-name">
-                        Email:
-                    </span>
-                    <input type="text" name="email" class="form-input" autocomplete="off" placeholder="Email">
+                    <label class="field-name">Email:</label>
+                    <input type="text" name="email" required autocomplete="off" class="form-input" placeholder="Email">
                 </div>
+
                 <div class="form-group">
-                    <span class="field-name">
-                        Password:
-                    </span>
-                    <input type="password" name="password" class="form-input" autocomplete="off" placeholder="Password">
+                    <label class="field-name">Password:</label>
+                    <input type="password" name="password" required class="form-input" autocomplete="off" placeholder="Password">
                 </div>
+
                 <div class="form-group">
-                    <span class="field-name">
-                        Confirm password:
-                    </span>
-                    <input type="password" name="confirm-password" class="form-input" autocomplete="off" placeholder="Confirm Password">
+                    <label class="field-name">Confirm password:</label>
+                    <input type="password" name="confirm_password" required class="form-input" autocomplete="off" placeholder="Confirm Password">
                 </div>
+
                 <div class="form-group">
                     <input type="submit" name="submit" autocomplete="off" value="Sign Up">
                 </div>
 
+                <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="IjZkNmUzYTMwNmVkNmU5MDQ1ZjJiMWM5OGM1ODY2ZTdjYzA2OTM3ZjQi.ZBRqeg.fBngfMACCTYmiZHW7ldaPOFDVRI"> -->
+                
             </form>
                         
             <div class="divisor-div"></div>
             <div class="under-form-info">
-                <p>Already have an Account? <a href="#">Sign In</a></p>
+                <p>Already have an Account? <span class="fake-url login-span">Log In</span></p>
+            </div>
+
+            <div class="under-form-img">
+                <img src="img/UI/under-page-img.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="session-form-container login-form-container hide-form">
+        <div class="session-section-form-container">
+            <div class="form-icon">
+                <img src="img/icons/hollow-knight.png" alt="">
+            </div>
+            <div class="exit-register-form-icon">
+                <img src="img/icons/hornet_exit.png" alt="">
+            </div>
+
+            <span class="form-title">Log In</span>
+
+            <form method="POST" action = "#" class="session-form" id="login-form">
+                <div class="form-group">
+                    <label class="field-name">Email:</label>
+                    <input type="text" name="email" required autocomplete="off" class="form-input" placeholder="Email">
+                </div>
+
+                <div class="form-group">
+                    <label class="field-name">Password:</label>
+                    <input type="password" name="password" required class="form-input" autocomplete="off" placeholder="Password">
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" name="submit" autocomplete="off" value="Log In">
+                </div>
+
+                <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="IjZkNmUzYTMwNmVkNmU5MDQ1ZjJiMWM5OGM1ODY2ZTdjYzA2OTM3ZjQi.ZBRqeg.fBngfMACCTYmiZHW7ldaPOFDVRI"> -->
+                
+            </form>
+                        
+            <div class="divisor-div"></div>
+            <div class="under-form-info">
+                <p>Don't have an Account? <span class="fake-url create-account-span">Create One</span></p>
             </div>
 
             <div class="under-form-img">

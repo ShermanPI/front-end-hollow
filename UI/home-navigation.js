@@ -7,7 +7,6 @@ let itemsInfo = [
         characterImgSrc: "img/character/Zotethemighty.webp",
         characterName: "Zote the mighty",
         characterMainInfo: "This is a chracter wich appear to be safe (optionaly), if you do it you will see that the same one will be totally ungreatful with you",
-        characterSecondaryInfo: "This character is bullshit xd",
         isFavorite: true
     },
     {

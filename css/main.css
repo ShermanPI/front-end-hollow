@@ -139,6 +139,11 @@ body{
     flex-direction: column;
 }
 
+.session-form{
+    width: 100%;
+
+}
+
 .form-icon{
     width: 6rem;
     position: absolute;
@@ -172,11 +177,6 @@ body{
     font-weight: bold;
     line-height: 2;
     font-size: calc(1.5rem + 0.5vw);
-}
-
-#sign-up-form{
-    width: 100%;
-
 }
 
 .form-group{
@@ -228,6 +228,17 @@ input[type="submit"]{
 input[type="submit"]:hover{
     opacity: 0.8;
 }
+
+.fake-url{
+    color: var(--pure-color);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.fake-url:hover{
+    opacity: 0.6;
+}
+
 
 .under-form-info{
     width: 100%;
