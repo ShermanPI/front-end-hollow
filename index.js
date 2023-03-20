@@ -15,12 +15,10 @@ import { editProfile } from "./UI/edit_profile.js";
 import { customAlert } from "./UI/custom_alerts.js";
 import { formUtils } from "./UI/forms.js";
 import { getCSRFToken } from "./UI/setCSRFtoken.js";
-// import { renderItems } from "./UI/render-items.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    // renderItems()
-    homeNavigation()
     getCSRFToken()
+    homeNavigation()
     formUtils()
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
