@@ -23,57 +23,50 @@ export function formUtils(){
         const $errorFieldAlert = d.createElement("div")
         $errorFieldAlert.classList.add("error-field")
         $errorFieldAlert.innerHTML = errorMessage
-
+        
         const $errorFieldClone = $errorFieldAlert.cloneNode(true)
 
-
-        if(!d.querySelector(".error-field")){
+        if(!field.classList.contains("error")){
             field.classList.add("error")
-            field.insertAdjacentElement("afterend", $errorFieldClone)
+            field.insertAdjacentElement("afterend", $errorFieldClone)   
         }
+        
     }
     
     const removeErrorField = (field)=>{
-        console.log(d.querySelector(".error"))
-        field.classList.remove("error")
-
-        console.log("FIELD: ", field)
-        console.log("FIELD NEXT: ", field.nextElementSibling)
-        field.parentNode.lastElementChild.remove()
-        console.log("se ha borrado")
-        // field.nextElementSibling.remove()
+        if(field.classList.contains("error")){
+            field.classList.remove("error")
+            field.parentNode.lastElementChild.remove()
+        }
     }
 
-    let isRegisterFormValidated = true //////////// registrationFormValidation
+    const removeAllErrorFields = ()=>{
+        const $errorFields = d.querySelectorAll(".error")
+        const $errorMessages = d.querySelectorAll(".error-field")
 
-    const validateField = (validationRegex, field, errorMessage)=>{
+        $errorFields.forEach(el=>{
+            el.classList.remove("error")
+        })
+
+        $errorMessages.forEach(el=>{
+            el.remove()
+        })
+
+    }
+
+
+    const validateField = (validationRegex, field, errorMessage = null)=>{
         let fieldValue = field.value.trim()
 
         if(!validationRegex.test(fieldValue)){
-            setErrorField(field, errorMessage)
-            isRegisterFormValidated = isRegisterFormValidated && false 
+            if(errorMessage){
+                setErrorField(field, errorMessage)
+            }
             return false;
         }
 
-        isRegisterFormValidated = isRegisterFormValidated && true
         return true
-    }
-
-    // const setValidationFieldListeners = (validationRegex, field, errorMessage) =>{
-    //     let isFieldValidated = validateField(validationRegex, field, errorMessage)
-    //     if(!isFieldValidated) {
-    //         d.addEventListener("input", (e)=>{
-    //             if(e.target == field){
-    //                 console.log("field has been added to the listeners", field)
-    //                 if(validateField(validationRegex, field, errorMessage)){
-    //                    removeErrorField($registerForm.username)
-    //                 }
-    //             }
-    //         })
-    //     }
-        
-    // }
-    
+    }    
 
     d.addEventListener("submit", (e)=>{
         e.preventDefault()
@@ -81,52 +74,92 @@ export function formUtils(){
         if(e.target == $registerForm){
             // validations
             
-            // username Validation -- need 
-            if(!validateField(/^[a-zA-Z0-9_-]{2,12}$/, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
+            
+            // username Input Validation
+            const usernameRegex = /^[a-zA-Z0-9_-]{2,12}$/
+
+            if(!validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
                 d.addEventListener("input", (e)=>{
                     if(e.target == $registerForm.username){
-                        if(validateField(/^[a-zA-Z0-9_-]{2,12}$/, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
+                        if(validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
                            removeErrorField($registerForm.username)
                         }
                     }
                 })
             }
 
-            // username Validation -- I STTOPPED HERE
-            if(!validateField(/^[a-zA-Z0-9_-]{2,12}$/, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
+            // email Validation
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+            if(!validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
                 d.addEventListener("input", (e)=>{
-                    if(e.target == $registerForm.username){
-                        if(validateField(/^[a-zA-Z0-9_-]{2,12}$/, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                            removeErrorField($registerForm.username)
+                    if(e.target == $registerForm.email){
+                        if(validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
+                            removeErrorField($registerForm.email)
+                        }
+                    }
+                })
+            }
+
+            // password Validation
+            const passwordRegex = /^[a-zA-Z0-9_$#-]{8,}$/
+
+            if(!validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
+                d.addEventListener("input", (e)=>{
+                    if(e.target == $registerForm.password){
+                        if(validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
+                            removeErrorField($registerForm.password)
+                        }
+                    }
+                })
+            }
+
+            // confirm password Validation
+            
+            if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
+                d.addEventListener("input", (e)=>{
+                    if(e.target == $registerForm.confirm_password){
+                        if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
+                            removeErrorField($registerForm.confirm_password)
                         }
                     }
                 })
             }
 
             // fetch
-            if(isRegisterFormValidated){
+            if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){
                 console.log(`ola, se ha registrado ${$registerForm.username.value}`)
-                $registerForm.reset()
+            }else{
+                // console.log()
+                console.log("NO SE HA PODIDO ENVIAR ")
             }
+            // $registerForm.reset()
+        
         }
 
-        console.log(e.target)
     })
 
     d.addEventListener("click",(e)=>{
 
-        if(e.target.matches(".exit-register-form-icon img") || e.target.matches(".session-form-container")){
+        if(e.target.matches(".exit-register-form-icon img")){
+            removeAllErrorFields()
             hideLoginForm()
             hideRegisterForm()
         }
 
+        if(e.target.matches(".session-form-container")){
+            $registerFormContainer.classList.add("hide-form")
+            $loginFormContainer.classList.add("hide-form")
+        }
+
         if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span")){
+            removeAllErrorFields()
             hideLoginForm()
             $registerFormContainer.classList.remove("hide-form")
         }
 
         if(e.target.matches(".login-btn") || e.target.matches(".login-span")){
-            console.log("target")
+            removeAllErrorFields()
             hideRegisterForm()
             $loginFormContainer.classList.remove("hide-form")
         }
