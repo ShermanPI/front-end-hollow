@@ -30,7 +30,7 @@
 
             <span class="form-title">Create Account</span>
 
-            <form method="POST" action = "#" class="session-form" id="sign-up-form">
+            <form method="POST" action = "#" class="session-form" id="sign-up-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="field-name">Username:</label>
                     <input type="text" maxlength="12" minlength="2" name="username" required class="form-input" placeholder="Username" autocomplete="off">
@@ -58,7 +58,6 @@
                     <input type="submit" name="submit" autocomplete="off" value="Sign Up" id="register-btn">
                 </div>
 
-                <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="IjZkNmUzYTMwNmVkNmU5MDQ1ZjJiMWM5OGM1ODY2ZTdjYzA2OTM3ZjQi.ZBRqeg.fBngfMACCTYmiZHW7ldaPOFDVRI"> -->
                 
             </form>
                         
@@ -84,10 +83,10 @@
 
             <span class="form-title">Log In</span>
 
-            <form method="POST" action = "#" class="session-form" id="login-form">
+            <form method="POST" action = "#" class="session-form" id="login-form" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label class="field-name">Email:</label>
-                    <input type="text" name="email" required autocomplete="off" class="form-input" placeholder="Email">
+                    <label class="field-name">Username:</label>
+                    <input type="text" name="username" required autocomplete="off" class="form-input" placeholder="Username">
                 </div>
 
                 <div class="form-group">
@@ -99,7 +98,6 @@
                     <input type="submit" name="submit" autocomplete="off" value="Log In" id="login-btn">
                 </div>
 
-                <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="IjZkNmUzYTMwNmVkNmU5MDQ1ZjJiMWM5OGM1ODY2ZTdjYzA2OTM3ZjQi.ZBRqeg.fBngfMACCTYmiZHW7ldaPOFDVRI"> -->
                 
             </form>
                         

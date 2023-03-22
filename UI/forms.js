@@ -66,7 +66,13 @@ export function formUtils(){
         }
 
         return true
-    }    
+    }
+
+    const usernameRegex = /^[a-zA-Z0-9_-]{2,12}$/,
+        emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        passwordRegex = /^[a-zA-Z0-9_$#-]{8,}$/
+
+
 
     d.addEventListener("submit", (e)=>{
         e.preventDefault()
@@ -76,7 +82,6 @@ export function formUtils(){
             
             
             // username Input Validation
-            const usernameRegex = /^[a-zA-Z0-9_-]{2,12}$/
 
             if(!validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
                 d.addEventListener("input", (e)=>{
@@ -89,7 +94,6 @@ export function formUtils(){
             }
 
             // email Validation
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
             if(!validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
                 d.addEventListener("input", (e)=>{
@@ -102,7 +106,6 @@ export function formUtils(){
             }
 
             // password Validation
-            const passwordRegex = /^[a-zA-Z0-9_$#-]{8,}$/
 
             if(!validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
                 d.addEventListener("input", (e)=>{
@@ -128,13 +131,56 @@ export function formUtils(){
 
             // fetch
             if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){
+                fetch("http://127.0.0.1:5000/register",
+                {
+                    'method': "POST",
+                    'X-CSRFToken': $registerForm.csrf_token.value,
+                    'Content-type': 'application/x-www-form-urlencoded',
+                    body: new FormData($registerForm)
+                })
+                .then(res => res.json())
+                .then(res=> console.log(res))
+                .catch(err=>console.log(err, "ESTE FUEÉ UN ERROR DEL BACKEDN NO DEL FRONT JIJIJIJA CON LA PETICION HUBO UN PROBLEMA"))
+
+                console.log("FORM DATA JASJS", new FormData($registerForm))
                 console.log(`ola, se ha registrado ${$registerForm.username.value}`)
+
             }else{
                 // console.log()
                 console.log("NO SE HA PODIDO ENVIAR ")
             }
             // $registerForm.reset()
         
+        }
+
+        if(e.target == $loginForm){
+            // username Input Validation
+
+            if(!validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
+                d.addEventListener("input", (e)=>{
+                    if(e.target == $loginForm.username){
+                        if(validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
+                           removeErrorField($loginForm.username)
+                        }
+                    }
+                })
+            }
+
+            // password Validation
+
+            if(!validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
+                d.addEventListener("input", (e)=>{
+                    if(e.target == $loginForm.password){
+                        if(validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
+                            removeErrorField($loginForm.password)
+                        }
+                    }
+                })
+            }
+
+            if(validateField(usernameRegex, $loginForm.username) && validateField(passwordRegex, $loginForm.password)){
+                console.log("se ha podido iniciar sesion")
+            }
         }
 
     })

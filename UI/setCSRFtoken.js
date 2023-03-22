@@ -11,12 +11,12 @@ export const getCSRFToken = ()=>{
                 console.log(res)
                 const csrfInput = d.createElement("input")
                 
-                csrfInput.id = "csrf_token"
+                // csrfInput.id = "csrf_token"
                 csrfInput.name = "csrf_token"
                 csrfInput.type = "hidden"
                 csrfInput.value = res.csrfToken
-
-                
+                console.log(csrfInput)
+                console.log(el)
                 el.appendChild(csrfInput)
             })
         })
