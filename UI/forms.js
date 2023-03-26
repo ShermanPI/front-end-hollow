@@ -134,20 +134,15 @@ export function formUtils(){
                 fetch("http://127.0.0.1:5000/register",
                 {
                     'method': "POST",
-                    'X-CSRFToken': $registerForm.csrf_token.value,
                     'Content-type': 'application/x-www-form-urlencoded',
                     body: new FormData($registerForm)
                 })
                 .then(res => res.json())
-                .then(res=> console.log(res))
-                .catch(err=>console.log(err, "ESTE FUEÉ UN ERROR DEL BACKEDN NO DEL FRONT JIJIJIJA CON LA PETICION HUBO UN PROBLEMA"))
-
-                console.log("FORM DATA JASJS", new FormData($registerForm))
-                console.log(`ola, se ha registrado ${$registerForm.username.value}`)
+                .then(res=> console.log("RESULT OF THE REQUEST", res))
+                .catch(err=>console.log("Error in fetch REQUEST", err))
 
             }else{
-                // console.log()
-                console.log("NO SE HA PODIDO ENVIAR ")
+                console.log("NO SE HA PODIDO ENVIAR POR VALIDACION DE DATOS")
             }
             // $registerForm.reset()
         
