@@ -5,9 +5,6 @@ export function formUtils(customAlert){
     const $loginForm = d.getElementById("login-form")
     const $registerFormContainer = d.querySelector(".register-form-container")
     const $loginFormContainer = d.querySelector(".login-form-container")
-    // const $registerSubmitBtn = d.getElementById("register-btn")
-    // const $loginSubmitBtn = d.getElementById("login-btn")
-
 
     const hideLoginForm = ()=>{
         $loginFormContainer.classList.add("hide-form")
@@ -137,19 +134,27 @@ export function formUtils(customAlert){
                     'Content-type': 'application/x-www-form-urlencoded',
                     body: new FormData($registerForm)
                 })
-                .then(res =>{return res.ok ? res.json() : Promise.reject(res)})
-                .then(res=> console.log("RESULT OF THE REQUEST", res)) // need to confirm if the request was 200 <= request < 300
-                .catch(err=>console.log("Error in fetch REQUEST", err))
+                .then(res =>{
+                    if(res.ok){
+                        console.log(res)
+                    }else if(res.status == 409){
+                        return res.json()
+                    }else{
+                        throw new Error("Error in THE REQUEST JIJIIJA")
+                    }
+                })
+                .then(res=> console.log("Correct result of the request, con el error", res))
+                .catch(err=>{
+                    console.error(err)
+                    customAlert("", "There was an error validating the form, please reload the page and try again.")
+                })
 
-            }else{
-                customAlert("Something went wrong when trying to send the form. Please reload the page and try again")
             }
             // $registerForm.reset() <==== need to activsate this after tests
         }
 
         if(e.target == $loginForm){
             // username Input Validation
-
             if(!validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
                 d.addEventListener("input", (e)=>{
                     if(e.target == $loginForm.username){
@@ -161,7 +166,6 @@ export function formUtils(customAlert){
             }
 
             // password Validation
-
             if(!validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
                 d.addEventListener("input", (e)=>{
                     if(e.target == $loginForm.password){
@@ -200,13 +204,13 @@ export function formUtils(customAlert){
             $loginFormContainer.classList.add("hide-form")
         }
 
-        if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span")){
+        if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span") || e.target.matches(".register-anchor")){
             removeAllErrorFields()
             hideLoginForm()
             $registerFormContainer.classList.remove("hide-form")
         }
 
-        if(e.target.matches(".login-btn") || e.target.matches(".login-span")){
+        if(e.target.matches(".login-btn") || e.target.matches(".login-span") || e.target.matches(".login-anchor")){
             removeAllErrorFields()
             hideRegisterForm()
             $loginFormContainer.classList.remove("hide-form")

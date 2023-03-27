@@ -109,11 +109,11 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     })
 
-    const menuItems = d.querySelectorAll(".menu-anchor") 
+    const menuItems = d.querySelectorAll(".page-menu-anchor") 
 
     d.addEventListener("click", (e)=>{
 
-        if(e.target.matches(".menu-anchor")){
+        if(e.target.matches(".page-menu-anchor")){
             e.preventDefault()
             
             let pageToMoveInto = document.getElementById(e.target.getAttribute("href").slice(1))
