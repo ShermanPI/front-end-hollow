@@ -19,7 +19,7 @@ import { getCSRFToken } from "./UI/setCSRFtoken.js";
 window.addEventListener("DOMContentLoaded", ()=>{
     getCSRFToken()
     homeNavigation()
-    formUtils()
+    formUtils(customAlert)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)

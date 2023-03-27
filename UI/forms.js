@@ -1,6 +1,6 @@
 const d = document
 
-export function formUtils(){
+export function formUtils(customAlert){
     const $registerForm = d.getElementById("sign-up-form")
     const $loginForm = d.getElementById("login-form")
     const $registerFormContainer = d.querySelector(".register-form-container")
@@ -137,15 +137,14 @@ export function formUtils(){
                     'Content-type': 'application/x-www-form-urlencoded',
                     body: new FormData($registerForm)
                 })
-                .then(res => res.json())
-                .then(res=> console.log("RESULT OF THE REQUEST", res))
+                .then(res =>{return res.ok ? res.json() : Promise.reject(res)})
+                .then(res=> console.log("RESULT OF THE REQUEST", res)) // need to confirm if the request was 200 <= request < 300
                 .catch(err=>console.log("Error in fetch REQUEST", err))
 
             }else{
-                console.log("NO SE HA PODIDO ENVIAR POR VALIDACION DE DATOS")
+                customAlert("Something went wrong when trying to send the form. Please reload the page and try again")
             }
-            // $registerForm.reset()
-        
+            // $registerForm.reset() <==== need to activsate this after tests
         }
 
         if(e.target == $loginForm){
@@ -174,7 +173,15 @@ export function formUtils(){
             }
 
             if(validateField(usernameRegex, $loginForm.username) && validateField(passwordRegex, $loginForm.password)){
-                console.log("se ha podido iniciar sesion")
+                fetch("http://127.0.0.1:5000/login",
+                {
+                    'method': 'post',
+                    'Content-type': 'application/x-www-form-urlencoded',
+                    'body': new FormData($loginForm)
+                })
+                .then(res=> res.ok ? res.json(): Promise.reject(res))
+                .then(res=>console.log("EA ESTOYT EBN EL RESPODNE", res))
+                .catch(err=> console.log("EA ESTOY EN EL CATCH", err))
             }
         }
 
