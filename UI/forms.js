@@ -135,19 +135,20 @@ export function formUtils(customAlert){
                     body: new FormData($registerForm)
                 })
                 .then(res =>{
-                    if(res.ok){
-                        console.log(res)
-                    }else if(res.status == 409){
-                        return res.json()
-                    }else{
-                        throw new Error("Error in THE REQUEST JIJIIJA")
+                    console.log(res)
+                    return res.ok? res.json() : Promise.reject(res)
+                })
+                .then(json => console.log("Correct result of the request, con el error", json))
+                .catch(error => {
+                    console.log(error)
+                    if (error.status === 409) {
+                        error.json().then(json => {
+                        console.log('Errores del formulario:', json.errors);
+                    });
+                    } else {
+                        customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
                     }
-                })
-                .then(res=> console.log("Correct result of the request, con el error", res))
-                .catch(err=>{
-                    console.error(err)
-                    customAlert("", "There was an error validating the form, please reload the page and try again.")
-                })
+                  })
 
             }
             // $registerForm.reset() <==== need to activsate this after tests
