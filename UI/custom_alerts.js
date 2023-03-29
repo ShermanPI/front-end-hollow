@@ -20,7 +20,6 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
     $alertOkBtn.classList.add("alert-ok-btn")
     $alertOkBtn.innerHTML = "Accept"
 
-    console.log("eso se debio disparar")
     if(title){
         $alertTitle.innerHTML = title
     }

@@ -5,6 +5,8 @@ export function formUtils(customAlert){
     const $loginForm = d.getElementById("login-form")
     const $registerFormContainer = d.querySelector(".register-form-container")
     const $loginFormContainer = d.querySelector(".login-form-container")
+    localStorage.setItem("isFormActivated", "false")
+
 
     const hideLoginForm = ()=>{
         $loginFormContainer.classList.add("hide-form")
@@ -116,15 +118,15 @@ export function formUtils(customAlert){
 
             // confirm password Validation
             
-            if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-                d.addEventListener("input", (e)=>{
-                    if(e.target == $registerForm.confirm_password){
-                        if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-                            removeErrorField($registerForm.confirm_password)
-                        }
-                    }
-                })
-            }
+            // if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
+            //     d.addEventListener("input", (e)=>{
+            //         if(e.target == $registerForm.confirm_password){
+            //             if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
+            //                 removeErrorField($registerForm.confirm_password)
+            //             }
+            //         }
+            //     })
+            // }
 
             // fetch
             if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){
@@ -135,16 +137,24 @@ export function formUtils(customAlert){
                     body: new FormData($registerForm)
                 })
                 .then(res =>{
-                    console.log(res)
                     return res.ok? res.json() : Promise.reject(res)
                 })
-                .then(json => console.log("Correct result of the request, con el error", json))
+                .then(json => {
+                    removeAllErrorFields()
+                    customAlert("Welcome, account created", `${json.message}`)
+                    hideRegisterForm()
+                    $loginFormContainer.classList.remove("hide-form")
+
+                })
                 .catch(error => {
-                    console.log(error)
                     if (error.status === 409) {
                         error.json().then(json => {
-                        console.log('Errores del formulario:', json.errors);
-                    });
+                            let errorFields = Object.keys(json.errors)
+                            
+                            errorFields.forEach(field =>{
+                                setErrorField($registerForm[field], json.errors[field])
+                            })
+                        })
                     } else {
                         customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
                     }
@@ -184,34 +194,54 @@ export function formUtils(customAlert){
                     'Content-type': 'application/x-www-form-urlencoded',
                     'body': new FormData($loginForm)
                 })
-                .then(res=> res.ok ? res.json(): Promise.reject(res))
-                .then(res=>console.log("EA ESTOYT EBN EL RESPODNE", res))
-                .catch(err=> console.log("EA ESTOY EN EL CATCH", err))
+                .then(res =>res.ok? res.json() : Promise.reject(res))
+                .then(json => {
+                    removeAllErrorFields()
+                    hideLoginForm()
+                })
+                .catch(error => {
+                    if (error.status === 401) {
+                        error.json().then(json => {
+                            console.log(json)
+                            let errorFields = Object.keys(json.errors)
+                            errorFields.forEach(field =>{
+                                setErrorField($loginForm[field], json.errors[field])
+                            })
+                        })
+                    } else {
+                        customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
+                    }
+                  })
             }
         }
 
     })
 
+
     d.addEventListener("click",(e)=>{
 
         if(e.target.matches(".exit-register-form-icon img")){
+            localStorage.setItem("isFormActivated", "false")
             removeAllErrorFields()
             hideLoginForm()
             hideRegisterForm()
         }
 
         if(e.target.matches(".session-form-container")){
+            localStorage.setItem("isFormActivated", "false")
             $registerFormContainer.classList.add("hide-form")
             $loginFormContainer.classList.add("hide-form")
         }
 
         if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span") || e.target.matches(".register-anchor")){
+            localStorage.setItem("isFormActivated", "true")
             removeAllErrorFields()
             hideLoginForm()
             $registerFormContainer.classList.remove("hide-form")
         }
 
         if(e.target.matches(".login-btn") || e.target.matches(".login-span") || e.target.matches(".login-anchor")){
+            localStorage.setItem("isFormActivated", "true")
             removeAllErrorFields()
             hideRegisterForm()
             $loginFormContainer.classList.remove("hide-form")

@@ -15,8 +15,10 @@ import { editProfile } from "./UI/edit_profile.js";
 import { customAlert } from "./UI/custom_alerts.js";
 import { formUtils } from "./UI/forms.js";
 import { getCSRFToken } from "./UI/setCSRFtoken.js";
+import { loadUser } from "./UI/load-user.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
+    loadUser()
     getCSRFToken()
     homeNavigation()
     formUtils(customAlert)

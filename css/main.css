@@ -263,6 +263,12 @@ input[type="submit"]:hover{
     padding: 1rem;
 }
 
+#remember{
+    margin-left: 0.4rem;
+    cursor: pointer;
+    /* font-weight: bold; */
+}
+
 /* MOBILE MENU */
 
 .menu{
