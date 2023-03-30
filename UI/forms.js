@@ -196,6 +196,7 @@ export function formUtils(customAlert){
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
+                    console.log(json)
                     removeAllErrorFields()
                     hideLoginForm()
                 })
