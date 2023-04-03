@@ -16,8 +16,10 @@ import { customAlert } from "./UI/custom_alerts.js";
 import { formUtils } from "./UI/forms.js";
 import { getCSRFToken } from "./UI/setCSRFtoken.js";
 import { loadUser } from "./UI/load-user.js";
+import { renderLogedPage } from "./UI/render-loged-page.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
+    renderLogedPage()
     loadUser()
     getCSRFToken()
     homeNavigation()

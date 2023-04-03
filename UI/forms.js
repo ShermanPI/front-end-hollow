@@ -118,15 +118,15 @@ export function formUtils(customAlert){
 
             // confirm password Validation
             
-            // if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-            //     d.addEventListener("input", (e)=>{
-            //         if(e.target == $registerForm.confirm_password){
-            //             if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-            //                 removeErrorField($registerForm.confirm_password)
-            //             }
-            //         }
-            //     })
-            // }
+            if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
+                d.addEventListener("input", (e)=>{
+                    if(e.target == $registerForm.confirm_password){
+                        if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
+                            removeErrorField($registerForm.confirm_password)
+                        }
+                    }
+                })
+            }
 
             // fetch
             if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){
@@ -134,6 +134,7 @@ export function formUtils(customAlert){
                 {
                     'method': "POST",
                     'Content-type': 'application/x-www-form-urlencoded',
+                    credentials: 'include',
                     body: new FormData($registerForm)
                 })
                 .then(res =>{
@@ -192,6 +193,7 @@ export function formUtils(customAlert){
                 {
                     'method': 'post',
                     'Content-type': 'application/x-www-form-urlencoded',
+                    credentials: 'include',
                     'body': new FormData($loginForm)
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
