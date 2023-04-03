@@ -827,3 +827,7 @@ input[type="submit"]:hover{
 .confirm-btn-container > *{
     margin-left: 0;
 }
+
+.logged-in{
+    display: none;
+}
