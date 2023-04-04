@@ -1,6 +1,8 @@
 const d = document
 
-export function editProfile(customAlert){
+export function editProfile(customAlert, userObj){
+    console.log("this is in the edit profile: ", userObj)
+
     class ProfilePic{
         constructor(id, imgSrc, blocked = false){
             this.id = id,
@@ -51,7 +53,7 @@ export function editProfile(customAlert){
         $profileUsername = d.getElementById("user-username"),
         $profilePicNotification = d.querySelector(".profile-pic-notification")
 
-    let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
+    let initialPfpsUnlocked = userObj.unlockByTheUser
 
     const renderPfpsElement = (lockedPfps)=>{
         const pfpsFragment = d.createDocumentFragment()
@@ -131,7 +133,20 @@ export function editProfile(customAlert){
 
     const $pfps = d.querySelectorAll(".pfp-pic-container")
 
+    
     const checkIfUnlockedPfps = ()=>{
+        fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
+        {
+            credentials: 'include'
+        })
+        .then(res =>res.ok? res.json() : Promise.reject(res))
+        .then(json=>{
+            console.log(json)
+        })
+        .catch(err=>{
+            console.err(err)
+        })
+
         console.log("pfpsToUnlock", localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked)
         if(initialPfpsUnlocked < localStorage.getItem("unlockByTheUser")){
             let pfpsToUnlock = localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked,

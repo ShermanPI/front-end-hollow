@@ -43,10 +43,15 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
         d.addEventListener("click", (e)=>{
             if(e.target == $alertOkBtn){
                 alertOptions.yesFunction()
+                $alertBackOverlay.remove()
             }
 
             if(e.target == $cancelBtnClone){
-                alertOptions.noFunction()
+                if(alertOptions.noFunction){
+                    alertOptions.noFunction()
+                }else{
+                    $alertBackOverlay.remove()
+                }
             }
         })
 

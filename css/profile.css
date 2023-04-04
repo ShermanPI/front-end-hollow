@@ -667,8 +667,16 @@
         transform: scaleX(-1);
     }
 
-    .sign-btn{
+    .log-out-btn{
         cursor: pointer;
+    }
+
+    .log-out-btn:hover{
+        opacity: 0.4;;
+    }
+
+    .log-out-btn>*{
+        pointer-events: none;
     }
 
     .minigame-container{

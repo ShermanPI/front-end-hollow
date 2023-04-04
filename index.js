@@ -16,14 +16,14 @@ import { customAlert } from "./UI/custom_alerts.js";
 import { formUtils } from "./UI/forms.js";
 import { getCSRFToken } from "./UI/setCSRFtoken.js";
 import { loadUser } from "./UI/load-user.js";
+import { loadScreen } from "./UI/loading-screen.js";
 import { renderLogedPage } from "./UI/render-loged-page.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    renderLogedPage()
-    loadUser()
     getCSRFToken()
+    loadUser(renderLogedPage, loadScreen, customAlert, editProfile)
     homeNavigation()
-    formUtils(customAlert)
+    formUtils(renderLogedPage, customAlert, loadScreen, editProfile)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)
@@ -34,6 +34,5 @@ window.addEventListener("DOMContentLoaded", ()=>{
     bckChanger()
     controlPlaylist()
     miniGameScore()
-    editProfile(customAlert)
     minigameExplodeParticles()
 })

@@ -1,12 +1,11 @@
 const d = document
 
-export function formUtils(customAlert){
+export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile){
     const $registerForm = d.getElementById("sign-up-form")
     const $loginForm = d.getElementById("login-form")
     const $registerFormContainer = d.querySelector(".register-form-container")
     const $loginFormContainer = d.querySelector(".login-form-container")
     localStorage.setItem("isFormActivated", "false")
-
 
     const hideLoginForm = ()=>{
         $loginFormContainer.classList.add("hide-form")
@@ -199,6 +198,7 @@ export function formUtils(customAlert){
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
                     console.log(json)
+                    renderLogedPage(json, loadingScreen, editProfile, customAlert)
                     removeAllErrorFields()
                     hideLoginForm()
                 })
@@ -212,6 +212,7 @@ export function formUtils(customAlert){
                             })
                         })
                     } else {
+                        console.error(error)
                         customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
                     }
                   })
