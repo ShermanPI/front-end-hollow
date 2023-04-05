@@ -129,7 +129,7 @@ export function editProfile(customAlert, userObj){
     $inUseBox.classList.add("pfp-in-use")
     $inUseBox.appendChild($inUseBoxTxt)
 
-    let actualImg = 0
+    let actualImg = userObj.pfpId
 
     const $pfps = d.querySelectorAll(".pfp-pic-container")
 
@@ -141,47 +141,64 @@ export function editProfile(customAlert, userObj){
         })
         .then(res =>res.ok? res.json() : Promise.reject(res))
         .then(json=>{
-            console.log(json)
+            if(initialPfpsUnlocked < json.unlockByTheUser){
+                let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
+                    $lockedDivs = d.querySelectorAll(".locked-pfp")
+                
+                if(pfpsToUnlock <= $lockedDivs.length){
+                    for(let i = 0; i < pfpsToUnlock; i++){
+                        $lockedDivs[i].remove()
+                    }
+                }
+    
+                initialPfpsUnlocked = json.unlockByTheUser
+            }
         })
         .catch(err=>{
             console.err(err)
         })
 
-        console.log("pfpsToUnlock", localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked)
-        if(initialPfpsUnlocked < localStorage.getItem("unlockByTheUser")){
-            let pfpsToUnlock = localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked,
-                $lockedDivs = d.querySelectorAll(".locked-pfp")
-            
-            console.log($lockedDivs)
-            if(pfpsToUnlock <= $lockedDivs.length){
-                for(let i = 0; i < pfpsToUnlock; i++){
-                    console.log("div to remove", $lockedDivs[i], i)
-                    $lockedDivs[i].remove()
-                }
-            }
-
-            initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
-        }
+        // console.log("pfpsToUnlock", localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked)
+        
     } 
-    
-    if(localStorage.getItem("pfp-id")){
-        if(localStorage.getItem("pfp-id") >= 0 && localStorage.getItem("pfp-id") < $pfps.length){
-            actualImg = localStorage.getItem("pfp-id")
-        }else{
-            localStorage.setItem("pfp-id", 0)
-            actualImg = 0
-        }
-    }
+
+    // if(localStorage.getItem("pfp-id") >= 0 && localStorage.getItem("pfp-id") < $pfps.length){
+    //     actualImg = localStorage.getItem("pfp-id")
+    // }else{
+    //     localStorage.setItem("pfp-id", 0)
+    //     actualImg = 0
+    // }
 
     const setInUsePfp = ()=>{
-        let $selectedPfp = d.querySelector(`div[data-pfp="${localStorage.getItem("pfp-id") || 0}"]`)
+        let $selectedPfp = d.querySelector(`div[data-pfp="${userObj.pfpId || 0}"]`)
         $pfps.forEach(el=> el.classList.remove("pfp-in-use-border"))
         $selectedPfp.classList.add("pfp-in-use-border")
         $selectedPfp.firstElementChild.appendChild($inUseBox)
     }
     
     const setPfp = (idImg)=>{
-        localStorage.setItem("pfp-id", idImg)
+        console.log(JSON.stringify({
+            pfpId: idImg
+        }))
+        fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
+        {
+            "method": "PUT",
+            "credentials": 'include',
+            "Content-Type": "application/json",
+            "body": JSON.stringify({
+                pfpId: idImg
+            })
+        })
+        .catch(err=>{
+            if (err.status === 409) {
+                err.json().then(json => {
+                    customAlert("Hold Up!", json.message)
+                })
+            } else {
+                console.error(err)
+            }
+        })
+        
         
         let imgSrc = d.querySelector(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
         $pfpPreview.firstElementChild.src = imgSrc
@@ -192,23 +209,23 @@ export function editProfile(customAlert, userObj){
         $pfps.forEach(el=> el.classList.remove("pfp-pic-selected"))
     }
     
-    const renderUsernameInDom = ()=>{
-        if(localStorage.getItem("username")){
-            $editUsernameInput.placeholder = `/${localStorage.getItem("username")}`
-            $profileUsername.innerHTML = `/${localStorage.getItem("username")}`
-        }
+    const renderUsernameInDom = (username)=>{
+        $editUsernameInput.placeholder = `/${username}`
+        $profileUsername.innerHTML = `/${username}`
     }
     
-    renderUsernameInDom()
+    renderUsernameInDom(userObj.username)
     setInUsePfp()
     setPfp(actualImg)
 
     d.addEventListener("click", (e)=>{
+        console.log(e.target)
         if(e.target.matches(".locked-pfp")){
             customAlert("Need Points to Unlock!", `You can unlock the different profile pictures by playing the mini game "The Last Call" (Available in the profile section from the PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this one`)
         }
-
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
+            console.log("ALISULKAEDNKJASDHS")
+
             if(!$profilePicNotification.classList.contains("hide-notification")) $profilePicNotification.classList.add("hide-notification")
 
             checkIfUnlockedPfps()
@@ -238,9 +255,27 @@ export function editProfile(customAlert, userObj){
             setInUsePfp()
             
             if (usernameRegex.test($editUsernameInput.value)) {
-                localStorage.setItem("username", $editUsernameInput.value)
+                fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
+                {
+                    method: "PUT",
+                    credentials: 'include',
+                    'Content-Type': 'application/json',
+                    body: JSON.stringify({
+                        username: $editUsernameInput.value
+                    })
+                })
+                .catch(err=>{
+                    if (err.status === 409) {
+                        err.json().then(json => {
+                            customAlert("Hold Up!", json.message)
+                        })
+                    } else {
+                        console.error(err)
+                    }
+                })
+
                 $editProfileContainer.classList.add("hide-edit-profile")
-                renderUsernameInDom(localStorage.getItem("username"))
+                renderUsernameInDom($editUsernameInput.value)
             }else if($editUsernameInput.value == ""){
                 $editProfileContainer.classList.add("hide-edit-profile")
             }else{
