@@ -1,8 +1,7 @@
 const d = document
 
-export function loadUser(renderLogedPage, loadingScreen, customAlert, editProfile){
-    const $logoutBtn = d.querySelector(".log-out-btn"),
-        $loginBtn = d.getElementById("login-btn")
+export function firstLoadUser(renderLogedPage, loadingScreen, customAlert, editProfile, miniGame){
+    const $logoutBtn = d.querySelector(".log-out-btn")
 
     const loginUser = ()=>{
         fetch("http://127.0.0.1:5000/login",
@@ -13,7 +12,8 @@ export function loadUser(renderLogedPage, loadingScreen, customAlert, editProfil
         .then(json => {
             console.log("This user is still loged in: ", json)
             if(json.username){
-                renderLogedPage(json, loadingScreen, editProfile, customAlert)
+                renderLogedPage(json, loadingScreen, editProfile, customAlert, miniGame)
+                
             }else{
                 loadingScreen(false)
             }
@@ -34,6 +34,9 @@ export function loadUser(renderLogedPage, loadingScreen, customAlert, editProfil
                         credentials: 'include'
                     })
                     .then(res => res.ok? res.json() : res)
+                    .then(json=>{
+                        location.reload()
+                    })
                     .catch(err=> console.error(err))
                 }
             })

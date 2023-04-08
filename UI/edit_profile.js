@@ -1,7 +1,6 @@
 const d = document
 
 export function editProfile(customAlert, userObj){
-    console.log("this is in the edit profile: ", userObj)
 
     class ProfilePic{
         constructor(id, imgSrc, blocked = false){
@@ -115,10 +114,9 @@ export function editProfile(customAlert, userObj){
     renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
     const $lockedDivs = d.querySelectorAll(".locked-pfp"),
-        usernameRegex = /^[a-zA-Z0-9_-]{4,12}$/
+        usernameRegex = /^[a-zA-Z0-9_-]{3,12}$/
     
     let pfpPointsId = PfpsLocked
-
     for(let i = $lockedDivs.length - 1; i >= 0; i--){
         $lockedDivs[i].setAttribute("data-locked-pfp-id", pfpPointsId)
         pfpPointsId--;
@@ -133,73 +131,17 @@ export function editProfile(customAlert, userObj){
 
     const $pfps = d.querySelectorAll(".pfp-pic-container")
 
-    
-    const checkIfUnlockedPfps = ()=>{
-        fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
-        {
-            credentials: 'include'
-        })
-        .then(res =>res.ok? res.json() : Promise.reject(res))
-        .then(json=>{
-            if(initialPfpsUnlocked < json.unlockByTheUser){
-                let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
-                    $lockedDivs = d.querySelectorAll(".locked-pfp")
-                
-                if(pfpsToUnlock <= $lockedDivs.length){
-                    for(let i = 0; i < pfpsToUnlock; i++){
-                        $lockedDivs[i].remove()
-                    }
-                }
-    
-                initialPfpsUnlocked = json.unlockByTheUser
-            }
-        })
-        .catch(err=>{
-            console.err(err)
-        })
-
-        // console.log("pfpsToUnlock", localStorage.getItem("unlockByTheUser") - initialPfpsUnlocked)
-        
-    } 
-
-    // if(localStorage.getItem("pfp-id") >= 0 && localStorage.getItem("pfp-id") < $pfps.length){
-    //     actualImg = localStorage.getItem("pfp-id")
-    // }else{
-    //     localStorage.setItem("pfp-id", 0)
-    //     actualImg = 0
-    // }
-
-    const setInUsePfp = ()=>{
-        let $selectedPfp = d.querySelector(`div[data-pfp="${userObj.pfpId || 0}"]`)
+    const showPfpInUse = (imgIdSelected)=>{
+        console.log(imgIdSelected)
+        let $selectedPfp = d.querySelector(`div[data-pfp="${imgIdSelected}"]`)
+        console.log($selectedPfp, imgIdSelected)
         $pfps.forEach(el=> el.classList.remove("pfp-in-use-border"))
         $selectedPfp.classList.add("pfp-in-use-border")
         $selectedPfp.firstElementChild.appendChild($inUseBox)
     }
     
-    const setPfp = (idImg)=>{
-        console.log(JSON.stringify({
-            pfpId: idImg
-        }))
-        fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
-        {
-            "method": "PUT",
-            "credentials": 'include',
-            "Content-Type": "application/json",
-            "body": JSON.stringify({
-                pfpId: idImg
-            })
-        })
-        .catch(err=>{
-            if (err.status === 409) {
-                err.json().then(json => {
-                    customAlert("Hold Up!", json.message)
-                })
-            } else {
-                console.error(err)
-            }
-        })
-        
-        
+    const renderPfpInDOM = (idImg)=>{
+        console.log("esto es dentro de la funciona de set Pfp", userObj)
         let imgSrc = d.querySelector(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
         $pfpPreview.firstElementChild.src = imgSrc
         $userPfp.src = imgSrc
@@ -215,26 +157,51 @@ export function editProfile(customAlert, userObj){
     }
     
     renderUsernameInDom(userObj.username)
-    setInUsePfp()
-    setPfp(actualImg)
+    console.log("primer: ", userObj.pfpId)
+    showPfpInUse(userObj.pfpId)
+    renderPfpInDOM(actualImg)
 
     d.addEventListener("click", (e)=>{
-        console.log(e.target)
         if(e.target.matches(".locked-pfp")){
             customAlert("Need Points to Unlock!", `You can unlock the different profile pictures by playing the mini game "The Last Call" (Available in the profile section from the PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this one`)
         }
+
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
-            console.log("ALISULKAEDNKJASDHS")
+            localStorage.setItem("isFormActivated", true)
 
             if(!$profilePicNotification.classList.contains("hide-notification")) $profilePicNotification.classList.add("hide-notification")
 
-            checkIfUnlockedPfps()
-            setInUsePfp()
+            // checkIfUnlockedPfps ↓↓↓↓↓
+            fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
+            {
+                credentials: 'include'
+            })
+            .then(res =>res.ok? res.json() : Promise.reject(res))
+            .then(json=>{
+                if(initialPfpsUnlocked < json.unlockByTheUser){
+                    let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
+                        $lockedDivs = d.querySelectorAll(".locked-pfp")
+                    
+    
+                    if(pfpsToUnlock <= $lockedDivs.length){
+                        for(let i = 0; i < pfpsToUnlock; i++){
+                            $lockedDivs[i].remove()
+                        }
+                    }
+        
+                    initialPfpsUnlocked = json.unlockByTheUser
+                }
+                console.log("SEGUNDO", json.pfpId)
+                showPfpInUse(json.pfpId)
 
-            $editUsernameInput.value = ""
-            $editProfileContainer.classList.remove("hide-edit-profile")
-            let imgSrc = d.querySelector(`div[data-pfp="${localStorage.getItem("pfp-id") || 0}"]`).firstElementChild.firstElementChild.getAttribute("src")
-            $pfpPreview.firstElementChild.src = imgSrc
+                $editUsernameInput.value = ""
+                $editProfileContainer.classList.remove("hide-edit-profile")
+                let imgSrc = d.querySelector(`div[data-pfp="${json.pfpId}"]`).firstElementChild.firstElementChild.getAttribute("src")
+                $pfpPreview.firstElementChild.src = imgSrc
+                })
+            .catch(err=>{
+                console.err(err)
+            })
 
         }
 
@@ -250,42 +217,58 @@ export function editProfile(customAlert, userObj){
         }
         
         if(e.target == $saveBtn){
-            setPfp(actualImg)
-            removeSelected()
-            setInUsePfp()
-            
-            if (usernameRegex.test($editUsernameInput.value)) {
-                fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
-                {
-                    method: "PUT",
-                    credentials: 'include',
-                    'Content-Type': 'application/json',
-                    body: JSON.stringify({
-                        username: $editUsernameInput.value
-                    })
-                })
-                .catch(err=>{
-                    if (err.status === 409) {
-                        err.json().then(json => {
-                            customAlert("Hold Up!", json.message)
-                        })
-                    } else {
-                        console.error(err)
-                    }
-                })
+            console.log("holaaaa")
 
-                $editProfileContainer.classList.add("hide-edit-profile")
-                renderUsernameInDom($editUsernameInput.value)
-            }else if($editUsernameInput.value == ""){
-                $editProfileContainer.classList.add("hide-edit-profile")
-            }else{
+            if(!usernameRegex.test($editUsernameInput.value) && $editUsernameInput.value !== ''){ //validate if the user put another username
                 customAlert(undefined, "Username must contain only letters (both uppercase and lowercase), numbers, underscores and middle hyphens, with a length of between 3 and 12 characters.")
+                return;
             }
+
+            const fetchBody = {},
+                pfpsUnlocked = $pfps.length - (PfpsLocked - userObj.unlockByTheUser) - 1
+
+            if ($editUsernameInput.value !== ''){ // validate if the user only want to edit the pfp
+                fetchBody.username = $editUsernameInput.value
+                renderUsernameInDom($editUsernameInput.value)                    
+            }
+
+            if(actualImg !== userObj.pfpId && (actualImg >= 0 && actualImg <= pfpsUnlocked)){
+                fetchBody.pfpId = actualImg
+            }
+
+            fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`, {
+                method: "PUT",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fetchBody)
+            })
+            .then(res => res.ok? res.json() : res)
+            .then(json =>{
+                renderPfpInDOM(actualImg)
+                removeSelected()
+                showPfpInUse(json.pfpId)
+                $editProfileContainer.classList.add("hide-edit-profile")
+                actualImg = json.pfpId
+
+                localStorage.setItem("isFormActivated", false)
+            })
+            .catch(err=>{
+                if (err.status === 409) {
+                    err.json().then(json => {
+                        customAlert("Hold Up!", json.message)
+                    })
+                } else {
+                    console.error(err)
+                }
+            })
         }
 
         if(e.target == $closeBtn || e.target == $editProfileContainer){
+            localStorage.setItem("isFormActivated", false)
 
-            if(($editUsernameInput.value !== localStorage.getItem("username") && $editUsernameInput.value !== "") || actualImg !== localStorage.getItem("pfp-id")){
+            if(($editUsernameInput.value !== userObj.username && $editUsernameInput.value !== "") || actualImg !== userObj.pfpId){
                 const alertOptions = {
                     isConfirmType: true,
                     yesFunction(){

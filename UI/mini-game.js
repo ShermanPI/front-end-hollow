@@ -1,6 +1,6 @@
 const d = document
 
-export function miniGameScore (){
+export function miniGame(userObj){
     const $totemImg = d.querySelector(".game-icon img"),
         $actualScoreContainer = d.querySelector(".actual-score"),
         $highScoreContainer = d.getElementById("high-score"),
@@ -41,35 +41,46 @@ export function miniGameScore (){
         return number
     }
 
-    if(localStorage.getItem("HScore")){
-        highScore = parseInt(localStorage.getItem("HScore"))
-        $highScoreContainer.innerHTML = addExtraZeros(highScore)
-    }
+    highScore = userObj.HScore
+    $highScoreContainer.innerHTML = addExtraZeros(highScore)
+    
 
-    const setScoreInScreen = (score)=>{
+    const showScoreInDOM = (score)=>{
         $actualScoreContainer.innerHTML = addExtraZeros(score)
     }
 
-    if(!localStorage.getItem("unlockByTheUser")){
-        localStorage.setItem("unlockByTheUser", 0)
-    }
-
-    let initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
+    let initialPfpsUnlocked = userObj.unlockByTheUser
 
     const checkNewRecord = (goalToNewPfp)=>{
+        console.log("CHECKIIING: ", actualScore, "HS:", highScore)
         if(actualScore > highScore){
             highScore = actualScore
-            localStorage.setItem("HScore", highScore)
-            $highScoreContainer.innerHTML = addExtraZeros(highScore)
+            const fetchBody = {}
+            
+            fetchBody.HScore = highScore
+            let unlockedByTheUser = Math.floor((highScore) / goalToNewPfp)
+            fetchBody.unlockByTheUser = unlockedByTheUser
 
-            let unlockedByTheUser = Math.floor((parseInt((localStorage.getItem("HScore"))) || 0) / goalToNewPfp)
-            
-            localStorage.setItem("unlockByTheUser", unlockedByTheUser)
-            
-            if(initialPfpsUnlocked < localStorage.getItem("unlockByTheUser")){
-                $profilePicNotification.classList.remove("hide-notification")
-                initialPfpsUnlocked = localStorage.getItem("unlockByTheUser")
-            }
+            fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`, {
+                method: "PUT",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fetchBody)
+            })
+            .then(res => res.ok? res.json() : res)
+            .then(json =>{
+                console.log("LUEGO DEL HIGHSCIR: ", json)
+                $highScoreContainer.innerHTML = addExtraZeros(highScore)
+                console.log("initial: ", initialPfpsUnlocked, " unlocked new ", json.unlockByTheUser)
+                if(initialPfpsUnlocked < json.unlockByTheUser){
+                    $profilePicNotification.classList.remove("hide-notification")
+                    initialPfpsUnlocked = json.unlockByTheUser
+                }
+            })
+            .catch(err=>console.error(err))
+
         }
     }
 
@@ -162,19 +173,21 @@ export function miniGameScore (){
         }
 
         if(e.target == $totemImg){ // # when totem btn is pressed
-            
             if(isPlaying){
-                actualScore += (3 * scoreMultiplier);
-                checkNewRecord(1000)
-                setScoreInScreen(actualScore)
-                
+                actualScore += (80 * scoreMultiplier);
+                // checkNewRecord(1000)
+                // console.log("ACTUAL: ", actualScore, " HS: ", highScore)
+                if(actualScore > highScore){
+                    // console.log("EXTRA CEROOOOS: ", addExtraZeros(highScore))
+                    $highScoreContainer.innerHTML = addExtraZeros(actualScore)
+                }
+                showScoreInDOM(actualScore)
             }
-
         }
 
         if(e.target == $restartBtn){ // # when restart btn is pressed
             restartGame()
-            setScoreInScreen(0)
+            showScoreInDOM(0)
         }
 
         if(e.target == $itemToClick){
@@ -200,8 +213,6 @@ export function miniGameScore (){
 
             hideItemToClick()
             clearTimeout(hideItemTimeOut)
-
-
         }
     })
 
@@ -229,6 +240,5 @@ export function miniGameScore (){
             }, 200)
 
         }
-
     });
 }

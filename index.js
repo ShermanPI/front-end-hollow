@@ -9,21 +9,21 @@ import { scrollsBtn } from "./UI/scroll-btn.js";
 import { resizeItemToHeight } from "./UI/resize-elem-height.js";
 import { bckChanger } from "./UI/background-changer.js";
 import { controlPlaylist } from "./UI/playlist.js";
-import { miniGameScore } from "./UI/mini-game.js";
+import { miniGame } from "./UI/mini-game.js";
 import {minigameExplodeParticles} from "./UI/minigame-particles.js"
 import { editProfile } from "./UI/edit_profile.js";
 import { customAlert } from "./UI/custom_alerts.js";
 import { formUtils } from "./UI/forms.js";
 import { getCSRFToken } from "./UI/setCSRFtoken.js";
-import { loadUser } from "./UI/load-user.js";
+import { firstLoadUser } from "./UI/first-load-user.js";
 import { loadScreen } from "./UI/loading-screen.js";
 import { renderLogedPage } from "./UI/render-loged-page.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
     getCSRFToken()
-    loadUser(renderLogedPage, loadScreen, customAlert, editProfile)
+    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame)
     homeNavigation()
-    formUtils(renderLogedPage, customAlert, loadScreen, editProfile)
+    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)
@@ -33,6 +33,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
     scrollsBtn()
     bckChanger()
     controlPlaylist()
-    miniGameScore()
+
     minigameExplodeParticles()
 })

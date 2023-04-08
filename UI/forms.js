@@ -1,6 +1,6 @@
 const d = document
 
-export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile){
+export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame){
     const $registerForm = d.getElementById("sign-up-form")
     const $loginForm = d.getElementById("login-form")
     const $registerFormContainer = d.querySelector(".register-form-container")
@@ -198,7 +198,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
                     console.log(json)
-                    renderLogedPage(json, loadingScreen, editProfile, customAlert)
+                    renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame)
                     removeAllErrorFields()
                     hideLoginForm()
                 })
