@@ -205,6 +205,11 @@ body{
     color: var(--pure-color);
 }
 
+textarea{
+    min-height: 12rem;
+    font-size: calc(1.6rem + 0.5vw);
+}
+
 .form-input:focus{
     outline: none;
     line-height: 1.7;
@@ -213,7 +218,7 @@ body{
 
 }
 
-input[type="submit"]{
+input[type="submit"], .fill-info-btn{
     text-align: center;
     display: block;
     font-weight: bold;
@@ -226,7 +231,15 @@ input[type="submit"]{
     cursor: pointer;
 }
 
+.fill-info-btn{
+    margin-top: 0.5rem;
+    background-color: var(--abyss-blue);
+    color: var(--pure-color);
+}
 
+.fill-info-btn:hover{
+    opacity: 0.8;
+}
 
 input[type="submit"]:hover{
     opacity: 0.8;

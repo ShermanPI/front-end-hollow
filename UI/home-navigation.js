@@ -86,7 +86,7 @@ let itemsInfo = [
     },
 ]
 
-export function homeNavigation(){
+export function itemsNavigation(){
 
     const $sections = document.querySelectorAll(".section-container"),
         $itemList = d.getElementById("home-list"),

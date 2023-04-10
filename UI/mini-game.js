@@ -174,7 +174,7 @@ export function miniGame(userObj){
 
         if(e.target == $totemImg){ // # when totem btn is pressed
             if(isPlaying){
-                actualScore += (80 * scoreMultiplier);
+                actualScore += (3 * scoreMultiplier);
                 // checkNewRecord(1000)
                 // console.log("ACTUAL: ", actualScore, " HS: ", highScore)
                 if(actualScore > highScore){

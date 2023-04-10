@@ -1,10 +1,12 @@
 const d = document
 
 export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame){
-    const $registerForm = d.getElementById("sign-up-form")
-    const $loginForm = d.getElementById("login-form")
-    const $registerFormContainer = d.querySelector(".register-form-container")
-    const $loginFormContainer = d.querySelector(".login-form-container")
+    const $registerForm = d.getElementById("sign-up-form"),
+        $loginForm = d.getElementById("login-form"),
+        $createCharacterForm = d.getElementById("add-character-form"),
+        $registerFormContainer = d.querySelector(".register-form-container"),
+        $loginFormContainer = d.querySelector(".login-form-container")
+
     localStorage.setItem("isFormActivated", "false")
 
     const hideLoginForm = ()=>{
@@ -217,6 +219,35 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                     }
                   })
             }
+        }
+
+        if(e.target == $createCharacterForm){
+            fetch('http://127.0.0.1:5000/characters', {
+                method: "POST",
+                credentials: 'include',
+                body: new FormData($createCharacterForm)
+            })
+            .then(res =>res.ok? res.json() : Promise.reject(res))
+            .then(json => {
+                console.log(json)
+                removeAllErrorFields()
+            })
+            .catch(error => {
+                console.log(error.status)
+                
+                if (error.status === 409) {
+                    error.json().then(json => {
+                        let errorFields = Object.keys(json.errors)
+                        
+                        errorFields.forEach(field =>{
+                            setErrorField($createCharacterForm[field], json.errors[field])
+                        })
+                    })
+                } else {
+                    customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
+                    console.error("EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA SDJHAKJHDN", error)
+                }
+            })
         }
 
     })

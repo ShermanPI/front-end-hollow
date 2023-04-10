@@ -62,21 +62,8 @@
     width: 100%;
 }
 
-.fill-info-btn{
-    cursor: pointer;
-    width: 100%;
-    display: block;
-    background-color: var(--abyss-blue);
-}
-
 textarea{
     width: 100%;
-}
-
-.form-btn{
-    padding: 0.6rem;
-    color: #fff;
-
 }
 
 .name-input{
