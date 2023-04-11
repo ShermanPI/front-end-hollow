@@ -1,6 +1,10 @@
 const d = document
 
 export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️", alertOptions = {}){
+    if(alertOptions.isFlashAlert){
+        return;
+    }
+
     const $alertBackOverlay = d.createElement("div"),
         $alertContainer = d.createElement("div"),
         $alertTitle = d.createElement("b"),
