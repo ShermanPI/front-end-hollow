@@ -2,6 +2,26 @@ const d = document
 
 export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️", alertOptions = {}){
     if(alertOptions.isFlashAlert){
+        const $flashAlertContainer = d.createElement("div"),
+            $flashAlertImgContainer = d.createElement("div"),
+            $flashAlertImg = d.createElement("img"),
+            $flashMessage = d.createElement("p")
+        
+        $flashAlertContainer.classList.add("flash-alert")
+        $flashAlertImgContainer.classList.add("flash-alert-icon-container")
+        $flashAlertImgContainer.appendChild($flashAlertImg)
+        $flashAlertImg.src = "img/icons/mask-shard.png"
+        $flashMessage.classList.add("flash-alert-message")
+        $flashMessage.innerHTML = alertMsg
+
+        $flashAlertContainer.appendChild($flashAlertImgContainer)
+        $flashAlertContainer.appendChild($flashMessage)
+        $flashAlertContainer.appendChild($flashAlertImgContainer.cloneNode(true))
+        d.querySelector("body").prepend($flashAlertContainer)
+
+        setTimeout(()=>{
+            d.querySelector("body").removeChild($flashAlertContainer)
+        }, 3000)
         return;
     }
 

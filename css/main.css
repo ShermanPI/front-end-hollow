@@ -553,18 +553,28 @@ input[type="submit"]:hover{
 
 .flash-alert{
     margin-inline: auto;
+    display: flex;
+    align-items: center;
     padding: 1.4rem;
-    padding-left: 4rem;
-    margin-top: 2rem;
+    margin-top: 4.4rem;
     left: 0; right: 0;
     position: absolute;
     z-index: 100000;
-    width: 80%;
+    width: 90%;
     max-width: 900px;
     border-bottom: 1px solid var(--pure-color);
     background: linear-gradient(90deg, transparent 0%, #565a7577 30%, #565a7577 70%, transparent 100%);
     border-image: linear-gradient(to left, rgba(0, 0, 0, 0) 1%, var(--start-blue) 50%, rgba(0, 0, 0, 0) 100%) 
     100% 0 100% 0/2px 0 2px 0 stretch;
+}
+
+.flash-alert-icon-container{
+    width: calc(1.5vw + 1rem);
+    margin-inline: 1rem;
+}
+
+.flash-alert-message{
+    width: 100%;
 }
 
 @keyframes twist {

@@ -143,7 +143,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(json => {
                     removeAllErrorFields()
-                    customAlert("Welcome, account created", `${json.message}`)
+                    customAlert(undefined, `${json.message}`, {isFlashAlert: true})
                     hideRegisterForm()
                     $loginFormContainer.classList.remove("hide-form")
 
@@ -199,7 +199,6 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
-                    console.log(json)
                     renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame)
                     removeAllErrorFields()
                     hideLoginForm()
@@ -230,6 +229,8 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             .then(res =>res.ok? res.json() : Promise.reject(res))
             .then(json => {
                 console.log(json)
+                customAlert(undefined, `A new characters has been added`, {isFlashAlert: true})
+                $createCharacterForm.reset()
                 removeAllErrorFields()
             })
             .catch(error => {
@@ -238,14 +239,12 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 if (error.status === 409) {
                     error.json().then(json => {
                         let errorFields = Object.keys(json.errors)
-                        
                         errorFields.forEach(field =>{
                             setErrorField($createCharacterForm[field], json.errors[field])
                         })
                     })
                 } else {
                     customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
-                    console.error("EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA SDJHAKJHDN", error)
                 }
             })
         }

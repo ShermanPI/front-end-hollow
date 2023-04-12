@@ -33,6 +33,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
     scrollsBtn()
     bckChanger()
     controlPlaylist()
-
+    
+    // customAlert(undefined, "A new character has been added", {isFlashAlert: true})
     minigameExplodeParticles()
 })
