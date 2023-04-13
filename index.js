@@ -1,7 +1,7 @@
 import { selectors } from "./utils/dom-selectors.js";
 import { changeForms } from "./UI/activate-form.js";
 import { burgerMenu } from "./UI/burger-menu.js";
-import { itemsNavigation } from "./UI/home-navigation.js";
+import { itemsNavigation } from "./UI/items-render-navigation.js";
 import { markAsFavorite } from "./UI/favorite-btn.js";
 import { navigatePages } from "./UI/page-navigation.js";
 import { makeThemBlink } from "./UI/blinking-arrows.js";
