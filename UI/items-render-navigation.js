@@ -1,5 +1,6 @@
 const d = document,
-w = window;
+    w = window,
+    backendAPIRestUrl = "http://127.0.0.1:5000"
 
 let itemsInfo = []
 
@@ -33,14 +34,13 @@ class HomeItem{
     
         $item.setAttribute("data-item-id", this.listIndex)
         $borderImg.src = "img/UI/item-border.png"
-        $characterImg.src = this.characterImgSrc
+        $characterImg.src = backendAPIRestUrl + this.characterImgSrc
         $characterName.innerHTML = this.characterName
 
         return $item
     }
 }
 
-const backendAPIRestUrl = "http://127.0.0.1:5000"
 
 export function itemsNavigation(jsonUser = undefined){
 
@@ -70,7 +70,8 @@ export function itemsNavigation(jsonUser = undefined){
 
     const renderItemInfo = (itemArrayIndex) =>{
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
-        $characterImgContainer.firstElementChild.src = itemsInfo[itemArrayIndex].characterImgSrc
+        $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
+        console.log(backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc)
         
 
         if(itemsInfo[itemArrayIndex].isFavorite){
@@ -89,7 +90,7 @@ export function itemsNavigation(jsonUser = undefined){
         }
     }
 
-    fetch(backendAPIRestUrl + "/characters",
+    fetch(backendAPIRestUrl + "/charactersSample/12",
     {
         credentials: 'include'
     })

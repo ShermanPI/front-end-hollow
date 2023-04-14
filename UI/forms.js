@@ -229,7 +229,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             .then(res =>res.ok? res.json() : Promise.reject(res))
             .then(json => {
                 console.log(json)
-                customAlert(undefined, `A new characters has been added`, {isFlashAlert: true})
+                customAlert(undefined, `A new character has been added`, {isFlashAlert: true})
                 $createCharacterForm.reset()
                 removeAllErrorFields()
             })
