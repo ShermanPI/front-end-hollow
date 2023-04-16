@@ -42,12 +42,11 @@ class HomeItem{
 }
 
 
-export function itemsNavigation(jsonUser = undefined){
+export function renderCharacterItems(customAlert, jsonUser = undefined){
 
     const $sections = document.querySelectorAll(".section-container"),
         $itemList = d.getElementById("home-list"),
         $arrowsDivisor = d.getElementById("actual-item-height"),
-        $itemsFragment = d.createDocumentFragment(),
         $homeItemList = d.getElementById("home-list"),
         $characterNameContainer = d.querySelector(".character-name"),
         $characterImgContainer = d.querySelector(".character-full-img"),
@@ -57,18 +56,26 @@ export function itemsNavigation(jsonUser = undefined){
         $characterExtraTextInfo = d.getElementById("character-more-text")
     
     
-    let actualItem = 0;
+    let actualItem = 0,
+        $items;
 
     const renderItemsList = (listToRender)=>{
+
+        const $itemsFragment = d.createDocumentFragment()
+        
         listToRender.forEach((el, i) =>{
             let newItem = new HomeItem(i, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo)
     
             $itemsFragment.appendChild(newItem.createItemNode())
         })
+
+        $homeItemList.appendChild($itemsFragment)
     }
 
 
     const renderItemInfo = (itemArrayIndex) =>{
+        console.log(itemArrayIndex)
+
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
         $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
         console.log(backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc)
@@ -88,9 +95,43 @@ export function itemsNavigation(jsonUser = undefined){
         }else{
             $bestiaryImgContainer.style.display = "none"
         }
+
+        if(itemArrayIndex == itemsInfo.length - 1){
+            
+            const itemsInfoName = []
+            itemsInfo.forEach(el=>{
+                itemsInfoName.push(el.characterName)
+            })
+
+            fetch(backendAPIRestUrl + "/charactersSample/4",
+            {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({items: itemsInfoName})
+            })
+            .then(res => res.ok? res.json() : Promise.reject(res))
+            .then((json)=>{
+                if(json[0]){ //if the db still have items
+                    customAlert(undefined, "Loading new characters...", {isFlashAlert: true})
+                    console.log(json)
+                    itemsInfo = [...itemsInfo, ...json]
+                    console.log(itemsInfo)
+                    renderItemsList(json)
+                    $items = d.querySelectorAll(".item-list > .item")
+                    
+                    if(actualItem !== 0){
+                        $items[actualItem].style.marginBlock = "5rem";
+                    }
+                }
+            })
+            .catch(err=>console.error(err))
+        }
     }
 
-    fetch(backendAPIRestUrl + "/charactersSample/12",
+    fetch(backendAPIRestUrl + "/charactersSample/4",
     {
         credentials: 'include'
     })
@@ -100,9 +141,8 @@ export function itemsNavigation(jsonUser = undefined){
 
         renderItemsList(itemsInfo)
         renderItemInfo(actualItem)
-        $homeItemList.appendChild($itemsFragment)
 
-        let $items = d.querySelectorAll(".item-list > .item")
+        $items = d.querySelectorAll(".item-list > .item")
 
         const resizeArrowDivisor = ()=>{
             $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
@@ -277,7 +317,7 @@ export function itemsNavigation(jsonUser = undefined){
         }
 
     })
-    .catch(err=>console.log("ERROR AT CHARACTER FETCH", err))
+    .catch(err=>console.error(err))
     
 
 

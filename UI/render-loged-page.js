@@ -9,7 +9,8 @@ export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert
     })
 
     editProfile(customAlert, userObj) // first step - this render the pfp, username, and let you edit your profile
-    miniGame(userObj) // secondStep - this render the HScore and time in the DOM, and the pfpsUnlocked
+    // second step - render the favorite items
+    miniGame(userObj) // third step - this render the HScore and time in the DOM, and the pfpsUnlocked
 
     loadingScreen(false)
 }
