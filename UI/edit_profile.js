@@ -97,7 +97,6 @@ export function editProfile(customAlert, userObj){
         ]
     
         for(let i = 1; i <= lockedPfps; i++){
-            console.log(pfpsInfo.length - i)
             pfpsInfo[pfpsInfo.length - i].blocked = true
         }
 
@@ -132,16 +131,13 @@ export function editProfile(customAlert, userObj){
     const $pfps = d.querySelectorAll(".pfp-pic-container")
 
     const showPfpInUse = (imgIdSelected)=>{
-        console.log(imgIdSelected)
         let $selectedPfp = d.querySelector(`div[data-pfp="${imgIdSelected}"]`)
-        console.log($selectedPfp, imgIdSelected)
         $pfps.forEach(el=> el.classList.remove("pfp-in-use-border"))
         $selectedPfp.classList.add("pfp-in-use-border")
         $selectedPfp.firstElementChild.appendChild($inUseBox)
     }
     
     const renderPfpInDOM = (idImg)=>{
-        console.log("esto es dentro de la funciona de set Pfp", userObj)
         let imgSrc = d.querySelector(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
         $pfpPreview.firstElementChild.src = imgSrc
         $userPfp.src = imgSrc
@@ -157,7 +153,6 @@ export function editProfile(customAlert, userObj){
     }
     
     renderUsernameInDom(userObj.username)
-    console.log("primer: ", userObj.pfpId)
     showPfpInUse(userObj.pfpId)
     renderPfpInDOM(actualImg)
 
@@ -191,7 +186,6 @@ export function editProfile(customAlert, userObj){
         
                     initialPfpsUnlocked = json.unlockByTheUser
                 }
-                console.log("SEGUNDO", json.pfpId)
                 showPfpInUse(json.pfpId)
 
                 $editUsernameInput.value = ""
@@ -217,7 +211,6 @@ export function editProfile(customAlert, userObj){
         }
         
         if(e.target == $saveBtn){
-            console.log("holaaaa")
 
             if(!usernameRegex.test($editUsernameInput.value) && $editUsernameInput.value !== ''){ //validate if the user put another username
                 customAlert(undefined, "Username must contain only letters (both uppercase and lowercase), numbers, underscores and middle hyphens, with a length of between 3 and 12 characters.")

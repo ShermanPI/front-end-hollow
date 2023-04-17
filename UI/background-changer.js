@@ -42,7 +42,6 @@ export function bckChanger(){
             $backgroundName.forEach((el)=>{
                 el.innerHTML = biomeNames[actualBck]
             })
-            console.log(actualBck)
         }
     })
 

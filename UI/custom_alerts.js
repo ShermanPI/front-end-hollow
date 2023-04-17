@@ -2,6 +2,11 @@ const d = document
 
 export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️", alertOptions = {}){
     if(alertOptions.isFlashAlert){
+
+        if(d.querySelector(".flash-alert")){
+            d.querySelector(".flash-alert").remove()
+        }
+
         const $flashAlertContainer = d.createElement("div"),
             $flashAlertImgContainer = d.createElement("div"),
             $flashAlertImg = d.createElement("img"),
@@ -20,7 +25,9 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
         d.querySelector("body").prepend($flashAlertContainer)
 
         setTimeout(()=>{
-            d.querySelector("body").removeChild($flashAlertContainer)
+            if(d.querySelector(".flash-alert")){
+                d.querySelector(".flash-alert").remove()
+            }
         }, 3000)
         return;
     }

@@ -5,13 +5,12 @@ const d = document,
 let itemsInfo = []
 
 class HomeItem{
-    constructor(listIndex, characterImgSrc, characterName, characterMainInfo, characterSecondaryInfo, isFavorite = false){
+    constructor(listIndex, characterImgSrc, characterName, characterMainInfo, characterSecondaryInfo){
         this.listIndex = listIndex,
         this.characterImgSrc = characterImgSrc,
         this.characterName = characterName,
         this.characterMainInfo = characterMainInfo,
         this.characterSecondaryInfo = characterSecondaryInfo
-        // this.isFavorite = isFavorite
     }
 
     createItemNode(){
@@ -42,7 +41,23 @@ class HomeItem{
 }
 
 
-export function renderCharacterItems(customAlert, jsonUser = undefined){
+export function renderCharacterItems(customAlert, firstTimeAlreadyRendered, jsonUser = undefined){
+
+    if(firstTimeAlreadyRendered) {
+        if(jsonUser){
+            console.log(jsonUser)
+            const actualCharacterName = d.querySelector(".character-name").firstElementChild.innerHTML,
+                $favoriteIcon = d.querySelector(".favorite-icon img")
+        
+            if(jsonUser.favoriteCharacters.includes(actualCharacterName)){
+                $favoriteIcon.src = "img/icons/favorite.png"
+            }else{
+                $favoriteIcon.src = "img/icons/unfavorite.png"
+            }
+        }
+        return;
+    } 
+
 
     const $sections = document.querySelectorAll(".section-container"),
         $itemList = d.getElementById("home-list"),
@@ -53,19 +68,21 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
         $favoriteIconContainer = d.querySelector(".home-favorite-icon"),
         $bestiaryImgContainer = d.querySelector(".info-divisor-img"),
         $characterTextInfo = d.getElementById("character-text-info"),
-        $characterExtraTextInfo = d.getElementById("character-more-text")
+        $characterExtraTextInfo = d.getElementById("character-more-text"),
+        characterNumberToRender = 8
     
     
     let actualItem = 0,
-        $items;
+        $items,
+        actualFavoriteItems = [];
 
     const renderItemsList = (listToRender)=>{
 
-        const $itemsFragment = d.createDocumentFragment()
+        const $itemsFragment = d.createDocumentFragment(),
+            itemsAlreadyRendered = d.querySelectorAll(".item-list .item") ? d.querySelectorAll(".item-list .item").length : 0
         
-        listToRender.forEach((el, i) =>{
-            let newItem = new HomeItem(i, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo)
-    
+        listToRender.forEach((el, index) =>{
+            let newItem = new HomeItem(itemsAlreadyRendered + index, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo)
             $itemsFragment.appendChild(newItem.createItemNode())
         })
 
@@ -74,17 +91,18 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
 
 
     const renderItemInfo = (itemArrayIndex) =>{
-        console.log(itemArrayIndex)
 
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
         $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
-        console.log(backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc)
         
+        if(jsonUser){
+            actualFavoriteItems = jsonUser.favoriteCharacters 
 
-        if(itemsInfo[itemArrayIndex].isFavorite){
-            $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
-        }else{
-            $favoriteIconContainer.firstElementChild.src = "img/icons/unfavorite.png"
+            if(actualFavoriteItems.includes(itemsInfo[itemArrayIndex].characterName) && jsonUser){
+                $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
+            }else{
+                $favoriteIconContainer.firstElementChild.src = "img/icons/unfavorite.png"
+            }
         }
 
         $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
@@ -103,7 +121,7 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
                 itemsInfoName.push(el.characterName)
             })
 
-            fetch(backendAPIRestUrl + "/charactersSample/4",
+            fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender,
             {
                 method: "POST",
                 credentials: 'include',
@@ -115,23 +133,27 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
             .then(res => res.ok? res.json() : Promise.reject(res))
             .then((json)=>{
                 if(json[0]){ //if the db still have items
-                    customAlert(undefined, "Loading new characters...", {isFlashAlert: true})
-                    console.log(json)
+                    customAlert(undefined, "Loading...", {isFlashAlert: true})
                     itemsInfo = [...itemsInfo, ...json]
-                    console.log(itemsInfo)
                     renderItemsList(json)
                     $items = d.querySelectorAll(".item-list > .item")
                     
-                    if(actualItem !== 0){
+                    if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
                         $items[actualItem].style.marginBlock = "5rem";
                     }
+                }else{
+                    customAlert(undefined, "It seems you have reached the end of the list.", {isFlashAlert: true})
                 }
             })
             .catch(err=>console.error(err))
         }
+
+
     }
 
-    fetch(backendAPIRestUrl + "/charactersSample/4",
+    //first time item render
+
+    fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender, 
     {
         credentials: 'include'
     })
@@ -141,8 +163,9 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
 
         renderItemsList(itemsInfo)
         renderItemInfo(actualItem)
-
         $items = d.querySelectorAll(".item-list > .item")
+        
+
 
         const resizeArrowDivisor = ()=>{
             $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
@@ -180,8 +203,38 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
             $items.forEach(el=>{
                 itemsObserver.observe(el)
             })
-    
+
+            // Parent element to observe
+            const parentElement = document.getElementById("home-list");
+
+            // Create an instance of MutationObserver
+            const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                // Check if new child elements were added
+                if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+                    itemsObserver.disconnect()
+                    $items = d.querySelectorAll("#home-list .item")
+
+                    $items.forEach(el=>{
+                        itemsObserver.observe(el)
+                    })
+
+                    console.log("New child elements added to the parent element.");
+                }
+            });    
+            });
+
+            const mutationObserverConfig = {
+                childList: true,
+                subtree: true
+            };
+
+            // Start observing
+            observer.observe(parentElement, mutationObserverConfig);
+
+            
         } else {
+
             // navigate in "computer"        
             let $arrowUp = d.querySelector(".navigate-item-up"),
                 $arrowDown = d.querySelector(".navigate-item-down")
@@ -319,7 +372,45 @@ export function renderCharacterItems(customAlert, jsonUser = undefined){
     })
     .catch(err=>console.error(err))
     
+    // Mark as favorite
+    if(jsonUser){
+        document.addEventListener("click", (e)=>{
+            if(e.target.matches(".favorite-icon img")){
+                const $items = d.querySelectorAll(".item-list > .item")
+                let characterName = $items[actualItem].querySelector("p").innerHTML
 
+                if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
+                    e.target.src = "img/icons/favorite.png"
+                    actualFavoriteItems.push(characterName)
+                    fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+                    {
+                        credentials: 'include',
+                        method: 'POST'
+                    })
+                    .then(res => res.ok? res.json() : Promise.reject(res))
+                    .catch(err => console.error(err))
+                    
+                }else{
+                    e.target.src = "img/icons/favorite.png"
+                    const index = actualFavoriteItems.indexOf(characterName);
+                    if (index > -1) actualFavoriteItems.splice(index, 1);
+                    console.log(actualFavoriteItems)
+
+                    fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+                    {
+                        credentials: 'include',
+                        method: 'PATCH'
+                    })
+                    .then(res => res.ok? res.json() : Promise.reject(res))
+                    .catch(err => console.error(err))
+
+                    e.target.src = "img/icons/unfavorite.png"
+                }
+            }
+        })
+
+        return;
+    }
 
 }
 

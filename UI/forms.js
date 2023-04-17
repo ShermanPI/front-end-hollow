@@ -1,6 +1,6 @@
 const d = document
 
-export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame){
+export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame, renderCharacterItems){
     const $registerForm = d.getElementById("sign-up-form"),
         $loginForm = d.getElementById("login-form"),
         $createCharacterForm = d.getElementById("add-character-form"),
@@ -199,14 +199,13 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
-                    renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame)
+                    renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame, renderCharacterItems, true)
                     removeAllErrorFields()
                     hideLoginForm()
                 })
                 .catch(error => {
                     if (error.status === 401) {
                         error.json().then(json => {
-                            console.log(json)
                             let errorFields = Object.keys(json.errors)
                             errorFields.forEach(field =>{
                                 setErrorField($loginForm[field], json.errors[field])
@@ -228,14 +227,11 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             })
             .then(res =>res.ok? res.json() : Promise.reject(res))
             .then(json => {
-                console.log(json)
                 customAlert(undefined, `A new character has been added`, {isFlashAlert: true})
                 $createCharacterForm.reset()
                 removeAllErrorFields()
             })
-            .catch(error => {
-                console.log(error.status)
-                
+            .catch(error => {                
                 if (error.status === 409) {
                     error.json().then(json => {
                         let errorFields = Object.keys(json.errors)

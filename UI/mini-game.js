@@ -52,7 +52,6 @@ export function miniGame(userObj){
     let initialPfpsUnlocked = userObj.unlockByTheUser
 
     const checkNewRecord = (goalToNewPfp)=>{
-        console.log("CHECKIIING: ", actualScore, "HS:", highScore)
         if(actualScore > highScore){
             highScore = actualScore
             const fetchBody = {}
@@ -71,9 +70,7 @@ export function miniGame(userObj){
             })
             .then(res => res.ok? res.json() : res)
             .then(json =>{
-                console.log("LUEGO DEL HIGHSCIR: ", json)
                 $highScoreContainer.innerHTML = addExtraZeros(highScore)
-                console.log("initial: ", initialPfpsUnlocked, " unlocked new ", json.unlockByTheUser)
                 if(initialPfpsUnlocked < json.unlockByTheUser){
                     $profilePicNotification.classList.remove("hide-notification")
                     initialPfpsUnlocked = json.unlockByTheUser
@@ -176,9 +173,7 @@ export function miniGame(userObj){
             if(isPlaying){
                 actualScore += (3 * scoreMultiplier);
                 // checkNewRecord(1000)
-                // console.log("ACTUAL: ", actualScore, " HS: ", highScore)
                 if(actualScore > highScore){
-                    // console.log("EXTRA CEROOOOS: ", addExtraZeros(highScore))
                     $highScoreContainer.innerHTML = addExtraZeros(actualScore)
                 }
                 showScoreInDOM(actualScore)

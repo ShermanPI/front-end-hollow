@@ -64,8 +64,8 @@
 }
 
 .character-img img{
-    transform: scale(1.5);
-    transform-origin: 50%;
+    transform: scale(1);
+    /* transform-origin: 50%; */
 }
 
 

@@ -1,6 +1,6 @@
 const d = document
 
-export function firstLoadUser(renderLogedPage, loadingScreen, customAlert, editProfile, miniGame){
+export function firstLoadUser(renderLogedPage, loadingScreen, customAlert, editProfile, miniGame, renderCharacterItems){
     const $logoutBtn = d.querySelector(".log-out-btn")
 
     const loginUser = ()=>{
@@ -10,17 +10,14 @@ export function firstLoadUser(renderLogedPage, loadingScreen, customAlert, editP
         })
         .then(res => res.ok? res.json() : res)
         .then(json => {
-            console.log("This user is still loged in: ", json)
             if(json.username){
-                renderLogedPage(json, loadingScreen, editProfile, customAlert, miniGame)
-                
+                renderLogedPage(json, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, false)
             }else{
                 loadingScreen(false)
+                renderCharacterItems(customAlert, false) //render without the favorite icons
             }
         })
-        .catch(err=>{
-            console.log(err)
-        })
+        .catch(err=>console.error(err))
     }
 
     loginUser()

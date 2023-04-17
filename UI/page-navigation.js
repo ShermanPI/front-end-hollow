@@ -43,7 +43,6 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
                 currentIndex = entry.target.getAttribute("data-page-number")
                 showSideSections()
                 $actualPageTitle.textContent = $sections[currentIndex].id.toUpperCase()
-                console.log("Actual page id by intersection: ", entry.target.getAttribute("data-page-number"))
             }
         })
     }
@@ -121,7 +120,6 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
             e.preventDefault()
             
             let pageToMoveInto = document.getElementById(e.target.getAttribute("href").slice(1))
-            console.log(pageToMoveInto)
 
             // removing the hover from all items
             menuItems.forEach(el=>{

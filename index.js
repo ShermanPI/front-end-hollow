@@ -21,9 +21,8 @@ import { renderLogedPage } from "./UI/render-loged-page.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
     getCSRFToken()
-    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame)
-    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame)
-    renderCharacterItems(customAlert)
+    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems)
+    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)
@@ -34,6 +33,5 @@ window.addEventListener("DOMContentLoaded", ()=>{
     bckChanger()
     controlPlaylist()
     
-    // customAlert(undefined, "A new character has been added", {isFlashAlert: true})
     minigameExplodeParticles()
 })
