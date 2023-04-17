@@ -25,9 +25,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       # Instalar dependencias
       - name: Install dependencies
-        # No ejecutar si se obtuvo node_modules de cache
-        if: steps.node-cache.outputs.cache-hit != 'true' 
-        run: npm install
       # Generar compilación de producción
       - name: Run Build command
         run: npm run build -- --prod
