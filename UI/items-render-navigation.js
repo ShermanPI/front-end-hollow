@@ -70,125 +70,104 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         })
 
         $homeItemList.appendChild($itemsFragment)
+        $items = d.querySelectorAll(".item-list > .item") 
     }
 
 
     const checkIsFavorite = (itemArrayIndex)=>{
+        // console.log("checkiiin", jsonUser, "ACTUAL ITEM", itemArrayIndex)
+        const $items = d.querySelectorAll(".item-list > .item")
+        console.log("ITEM ARREAY ESO", itemArrayIndex)
+        console.log("ITEMES JIJIJIJA", $items)
+        console.log("ITEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM", )
         if(jsonUser){
-
-            actualFavoriteItems = jsonUser.favoriteCharacters 
-            if(actualFavoriteItems.includes(itemsInfo[itemArrayIndex].characterName)){
-                console.log("ES FAVORITO")
+            actualFavoriteItems = jsonUser.favoriteCharacters
+            if(actualFavoriteItems.includes($items[itemArrayIndex].lastElementChild.innerHTML)){
+                // console.log("ES FAVORITO")
                 $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
             }else{
-                console.log("NO ES FAVORITO")
+                // console.log("NO ES FAVORITO")
                 $favoriteIconContainer.firstElementChild.src = "img/icons/unfavorite.png"
             }
         }
     }
 
     const renderItemInfo = (itemArrayIndex) =>{
-        console.log("RENDERED ", itemsInfo[itemArrayIndex].characterName,)
-        if(!isListAlreadyRendered){
-            $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
-            $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
-            $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
-            
-            checkIsFavorite(itemArrayIndex)
-    
-            if(itemsInfo[itemArrayIndex].characterSecondaryInfo){
-                $bestiaryImgContainer.style.display = "block"
-                $characterExtraTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterSecondaryInfo
-            }else{
-                $bestiaryImgContainer.style.display = "none"
-            }
-    
-            if(itemArrayIndex == itemsInfo.length - 1){
-                
-                const itemsInfoName = []
-                itemsInfo.forEach(el=>{
-                    itemsInfoName.push(el.characterName)
-                })
-    
-                fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender,
-                {
-                    method: "POST",
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({items: itemsInfoName})
-                })
-                .then(res => res.ok? res.json() : Promise.reject(res))
-                .then((json)=>{
-                    if(json[0]){ //if the db still have items
-                        customAlert(undefined, "Loading...", {isFlashAlert: true})
-                        itemsInfo = [...itemsInfo, ...json]
-                        renderItemsList(json)
-                        $items = d.querySelectorAll(".item-list > .item")
-                        
-                        if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
-                            $items[actualItem].style.marginBlock = "5rem";
-                        }
-                    }else{
-                        customAlert(undefined, "It seems you have reached the end of the list.", {isFlashAlert: true})
-                    }
-                })
-                .catch(err=>console.error(err))
-            }
-        }else{ 
-            //if is it rendering after log in only will render the favorite btn
-            checkIsFavorite(actualItem)
+        console.log("RENDERED ", itemsInfo[itemArrayIndex].characterName)
+        
+        $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
+        $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
+        $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
+
+        checkIsFavorite(itemArrayIndex)
+        
+
+        if(itemsInfo[itemArrayIndex].characterSecondaryInfo){
+            $bestiaryImgContainer.style.display = "block"
+            $characterExtraTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterSecondaryInfo
+        }else{
+            $bestiaryImgContainer.style.display = "none"
         }
+        
+        if(itemArrayIndex == itemsInfo.length - 1){
+            
+            const itemsInfoName = []
+            itemsInfo.forEach(el=>{
+                itemsInfoName.push(el.characterName)
+            })
 
-
+            fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender,
+            {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({items: itemsInfoName})
+            })
+            .then(res => res.ok? res.json() : Promise.reject(res))
+            .then((json)=>{
+                if(json[0]){ //if the db still have items
+                    
+                    customAlert(undefined, "Loading...", {isFlashAlert: true})
+                    console.log("ANTES DEL RENDIRZADO ", itemsInfo)
+                    itemsInfo = [...itemsInfo, ...json]
+                    renderItemsList(json)
+                    console.log("se ha renderizado una lista, la SEGUNDA, se renderizo lo siguiente ", json)
+                    $items = d.querySelectorAll(".item-list > .item")
+                    
+                    if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
+                        $items[actualItem].style.marginBlock = "5rem";
+                    }
+                }else{
+                    customAlert(undefined, "It seems you have reached the end of the list.", {isFlashAlert: true})
+                }
+            })
+            .catch(err=>console.error(err))
+        }
+        
     }
 
-    //first time item render
-
-    fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender, 
-    {
-        credentials: 'include'
-    })
-    .then(res => res.ok? res.json() : Promise.reject(res))
-    .then((json)=>{
-        
-        const actualCharacterName = d.querySelector(".character-name").firstElementChild.innerHTML,
-            $favoriteIcon = d.querySelector(".favorite-icon img")
-
-        // if(!isListAlreadyRendered){}
-        itemsInfo = json
-        renderItemsList(itemsInfo)
-        if(jsonUser){
-            if(jsonUser.favoriteCharacters.includes(actualCharacterName)){
-                $favoriteIcon.src = "img/icons/favorite.png"
-            }else{
-                $favoriteIcon.src = "img/icons/unfavorite.png"
-            }
-
-        }
-
-        renderItemInfo(actualItem)
-
-        $items = d.querySelectorAll(".item-list > .item")
+    const setItemListeners = (itemRenderFunction)=>{
 
         const resizeArrowDivisor = ()=>{
+            const $items = d.querySelectorAll(".item-list > .item")
             $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
         }
-    
+        
         if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600) ) {
             // navigate in "mobile"
             $arrowsDivisor.style.width = "100%"
             $arrowsDivisor.classList.add("selected-item")
-    
+
             let getTheMiddle = ()=>{
                 let itemHeight = $items[0].getBoundingClientRect().height,
                 listHeight = $itemList.getBoundingClientRect().height
                 return  `-${((listHeight/2) - (itemHeight/2))}px 0px -${((listHeight/2) - (itemHeight/2))}px 0px`
             }
-    
+
             let timeOut;
-    
+
             let observeItemFunc = (entries)=>{
                 entries.forEach(entry=>{
                     if(entry.isIntersecting){
@@ -196,15 +175,15 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                         clearTimeout(timeOut)
                         timeOut = setTimeout(()=>{
                             actualItem = entry.target.getAttribute("data-item-id")
-                            renderItemInfo(actualItem)
+                            itemRenderFunction(actualItem)
                         }, 500)
                     }
                 })
             }
-    
+
             let itemsObserver = new IntersectionObserver(observeItemFunc, 
                 {root: $itemList, rootMargin: getTheMiddle(), threshold: 0.6});
-    
+
             $items.forEach(el=>{
                 itemsObserver.observe(el)
             })
@@ -237,11 +216,41 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             // Start observing
             observer.observe(parentElement, mutationObserverConfig);
 
-            
         } else {
+            $items = d.querySelectorAll("#home-list .item")
+            
+            // Parent element to observe
+            const parentElement = document.getElementById("home-list");
 
+            // Create an instance of MutationObserver
+            const mutationObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                // Check if new child elements were added
+                if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+                    // itemsObserver.disconnect()
+                    $items = d.querySelectorAll("#home-list .item")
+
+                    // $items.forEach(el=>{
+                    //     itemsObserver.observe(el)
+                    // })
+
+                    console.log("New child elements added to the parent element.");
+                }
+            });    
+            });
+
+            const mutationObserverConfig = {
+                childList: true,
+                subtree: true
+            };
+
+            // Start observing
+            mutationObserver.observe(parentElement, mutationObserverConfig);
+
+
+            console.log($items)
             // navigate        
-            let $arrowUp = d.querySelector(".navigate-item-up"),
+            const $arrowUp = d.querySelector(".navigate-item-up"),
                 $arrowDown = d.querySelector(".navigate-item-down")
             
             // actualItem
@@ -250,25 +259,24 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             }  
             console.log("EA ACTUAL ITEMS ", $items, actualItem)
             $items[actualItem].classList.add("selected-item")
-    
+
             resizeArrowDivisor()
-    
+
             const navigateItems = (e)=>{
                 if(e.key == "ArrowDown"){
                     e.preventDefault()
                     navigateItemDown()
-                    renderItemInfo(actualItem)
+                    itemRenderFunction(actualItem)
 
                 }
-    
+
                 if(e.key == "ArrowUp"){
                     e.preventDefault()
                     navigateItemUp()
-                    renderItemInfo(actualItem)
-
+                    itemRenderFunction(actualItem)
                 }
             }
-    
+
             const observerOptions = {
                 threshold: 0.9
             }
@@ -283,42 +291,42 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     }
                 });        
             }
-    
+
             const observer = new IntersectionObserver(observerCallback, observerOptions);
             $sections.forEach(el=>observer.observe(el));
-    
+
             const animationTiming = {
                 duration: 250,
                 iterations: 1
             }
-    
+
             //NavigateItemDown
             const navigateItemDown = ()=>{
                 if(actualItem < $items.length - 1){
                     actualItem++;
                 }
-    
+
                 resizeArrowDivisor()
                 $arrowDown.animate([
                     {transform: 'translateY(1rem)'},
                     {transform: 'translate(0)'}], animationTiming)
-    
+
                 $items[actualItem].scrollIntoView({block: "center"})
                 $items[actualItem].classList.add("selected-item")
                 $items[actualItem - 1].classList.remove("selected-item")
-    
+
                 if(actualItem == 1){
                     $items[actualItem].style.marginBlock = "5rem";
                     $items[0].style.marginBottom = "1rem";
                     return;
                 }
-    
+
                 if(actualItem == $items.length - 1){
                     $items[$items.length - 1].style.marginTop = "5rem"
                     $items[$items.length - 1].previousElementSibling.style.marginBlock = "1rem";
                     return;
                 }
-    
+
                 $items[actualItem].style.marginBlock = "5rem"
                 $items[actualItem].previousElementSibling.style.marginBlock = "1rem"
             }
@@ -327,22 +335,22 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                 if(actualItem > 0){
                     actualItem--;
                 }
-    
+
                 resizeArrowDivisor()
                 $arrowUp.animate([
                     {transform: 'translateY(-1rem)'},
                     {transform: 'translate(0)'}], animationTiming)
-    
+
                 $items[actualItem].scrollIntoView({block: "center"})
                 $items[actualItem].classList.add("selected-item")
                 $items[parseInt(actualItem) + 1].classList.remove("selected-item")
-    
+
                 if(actualItem == $items.length - 2){
                     $items[$items.length - 1].style.marginTop = "1rem";
                     $items[actualItem].style.marginBlock = "5rem";
                     return;
                 }
-    
+
                 if(actualItem == 0){
                     $items[0].style.marginBottom = "5rem"
                     $items[actualItem].nextElementSibling.style.marginBlock = "1rem";
@@ -352,46 +360,77 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                 $items[actualItem].style.marginBlock = "5rem"
                 $items[actualItem].nextElementSibling.style.marginBlock = "1rem"
             }
-    
+
             
             $items[actualItem].style.marginBottom = "5rem"
             
-            $itemList.addEventListener("wheel", (e)=>{
+            const wheelNavigation = (e)=>{
                 e.preventDefault()
                 if (e.deltaY > 0) { //wheels down
                     navigateItemDown()    
-                    renderItemInfo(actualItem)
+                    itemRenderFunction(actualItem)
 
                 } else { //wheels up
                     navigateItemUp()
-                    renderItemInfo(actualItem)
+                    itemRenderFunction(actualItem)
                 }
-    
-            })
-    
-            d.addEventListener("click", (e)=>{
+            }
+
+            $itemList.addEventListener("wheel", wheelNavigation)
+
+            const itemsClickNavigation = (e)=>{
                 if(e.target == $arrowUp){
                     navigateItemUp();
-                    renderItemInfo(actualItem)
+                    itemRenderFunction(actualItem)
                 } 
                     
                 if(e.target == $arrowDown) {
                     navigateItemDown()
-                    renderItemInfo(actualItem)
+                    itemRenderFunction(actualItem)
 
                 }
-            })
+            }
+
+            d.addEventListener("click", itemsClickNavigation)
         }
-        
-        // if(isListAlreadyRendered){
-        //     if(jsonUser.favoriteCharacters.includes(actualCharacterName)){
-        //         $favoriteIcon.src = "img/icons/favorite.png"
-        //     }else{
-        //         $favoriteIcon.src = "img/icons/unfavorite.png"
-        //     }
-        // } 
-    })
-    .catch(err=>console.error(err))
+    
+    }
+
+    //first time item render
+
+    if(!isListAlreadyRendered){
+        fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender, 
+        {
+            credentials: 'include'
+        })
+        .then(res => res.ok? res.json() : Promise.reject(res))
+        .then((json)=>{
+            const actualCharacterName = d.querySelector(".character-name").firstElementChild.innerHTML,
+                $favoriteIcon = d.querySelector(".favorite-icon img")
+            
+            console.log("se ha renderizado una lista, la primera")
+            itemsInfo = json
+            renderItemsList(itemsInfo)
+            renderItemInfo(actualItem)
+
+            if(jsonUser){
+                if(jsonUser.favoriteCharacters.includes(actualCharacterName)){
+                    $favoriteIcon.src = "img/icons/favorite.png"
+                }else{
+                    $favoriteIcon.src = "img/icons/unfavorite.png"
+                }
+
+            }
+
+            $items = d.querySelectorAll(".item-list > .item")
+
+            setItemListeners(renderItemInfo)
+        })
+        .catch(err=>console.error(err))
+    }else{
+        setItemListeners(checkIsFavorite)
+
+    }
     
     // Mark as favorite
     if(jsonUser){
@@ -415,7 +454,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     e.target.src = "img/icons/favorite.png"
                     const index = actualFavoriteItems.indexOf(characterName);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    console.log(actualFavoriteItems)
+                    // console.log(actualFavoriteItems)
 
                     fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
                     {
