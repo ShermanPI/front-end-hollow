@@ -10,6 +10,7 @@ export function firstLoadUser(renderLogedPage, loadingScreen, customAlert, editP
         })
         .then(res => res.ok? res.json() : res)
         .then(json => {
+            console.log("ESTE USUARIO ESTA AUN LOGEADO", json)
             if(json.username){
                 renderLogedPage(json, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, false)
             }else{

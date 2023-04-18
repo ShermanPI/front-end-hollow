@@ -858,3 +858,9 @@
     }
 
 }
+
+.no-items-ready{
+    width: 100%;
+    margin-block: 5rem;
+    text-align: center;
+}

@@ -199,6 +199,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
+                    console.log(json)
                     renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame, renderCharacterItems, true)
                     removeAllErrorFields()
                     hideLoginForm()

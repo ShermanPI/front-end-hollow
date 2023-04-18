@@ -77,9 +77,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
     const checkIsFavorite = (itemArrayIndex)=>{
         // console.log("checkiiin", jsonUser, "ACTUAL ITEM", itemArrayIndex)
         const $items = d.querySelectorAll(".item-list > .item")
-        console.log("ITEM ARREAY ESO", itemArrayIndex)
-        console.log("ITEMES JIJIJIJA", $items)
-        console.log("ITEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM", )
+        
         if(jsonUser){
             actualFavoriteItems = jsonUser.favoriteCharacters
             if(actualFavoriteItems.includes($items[itemArrayIndex].lastElementChild.innerHTML)){
@@ -157,6 +155,8 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         
         if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600) ) {
             // navigate in "mobile"
+            $items = d.querySelectorAll(".item-list > .item")
+
             $arrowsDivisor.style.width = "100%"
             $arrowsDivisor.classList.add("selected-item")
 
@@ -405,22 +405,10 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         })
         .then(res => res.ok? res.json() : Promise.reject(res))
         .then((json)=>{
-            const actualCharacterName = d.querySelector(".character-name").firstElementChild.innerHTML,
-                $favoriteIcon = d.querySelector(".favorite-icon img")
             
-            console.log("se ha renderizado una lista, la primera")
             itemsInfo = json
             renderItemsList(itemsInfo)
             renderItemInfo(actualItem)
-
-            if(jsonUser){
-                if(jsonUser.favoriteCharacters.includes(actualCharacterName)){
-                    $favoriteIcon.src = "img/icons/favorite.png"
-                }else{
-                    $favoriteIcon.src = "img/icons/unfavorite.png"
-                }
-
-            }
 
             $items = d.querySelectorAll(".item-list > .item")
 
@@ -428,16 +416,21 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         })
         .catch(err=>console.error(err))
     }else{
+        if(isListAlreadyRendered && d.querySelector("#home-list > .selected-item")){
+            actualItem = d.querySelector("#home-list > .selected-item").getAttribute("data-item-id")
+        }
+        checkIsFavorite(actualItem)
         setItemListeners(checkIsFavorite)
-
     }
     
     // Mark as favorite
     if(jsonUser){
         document.addEventListener("click", (e)=>{
-            if(e.target.matches(".favorite-icon img")){
+            if(e.target.matches(".home-favorite-icon img")){
                 const $items = d.querySelectorAll(".item-list > .item")
                 let characterName = $items[actualItem].querySelector("p").innerHTML
+                
+                console.log(backendAPIRestUrl + "/characters/favorite/" + characterName, jsonUser)
 
                 if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
                     e.target.src = "img/icons/favorite.png"
@@ -445,26 +438,45 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
                     {
                         credentials: 'include',
-                        method: 'POST'
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({id: jsonUser._id.$oid})
                     })
                     .then(res => res.ok? res.json() : Promise.reject(res))
-                    .catch(err => console.error(err))
+                    .catch(err =>{
+                        console.error(err)
+                        customAlert(undefined, "A mistake has occurred that does not allow the character to be favored", {isFlashAlert: true})
+                        e.target.src = "img/icons/unfavorite.png"
+                        const index = actualFavoriteItems.indexOf(characterName);
+                        if (index > -1) actualFavoriteItems.splice(index, 1);
+                    })
                     
                 }else{
-                    e.target.src = "img/icons/favorite.png"
+                    e.target.src = "img/icons/unfavorite.png"
+
                     const index = actualFavoriteItems.indexOf(characterName);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
                     // console.log(actualFavoriteItems)
-
                     fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
                     {
                         credentials: 'include',
-                        method: 'PATCH'
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({id: jsonUser._id.$oid})
                     })
                     .then(res => res.ok? res.json() : Promise.reject(res))
-                    .catch(err => console.error(err))
+                    .catch(err =>{
+                        console.error(err)
+                        customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
+                        e.target.src = "img/icons/favorite.png"
+                        actualFavoriteItems.push(characterName)
+                    }) 
 
-                    e.target.src = "img/icons/unfavorite.png"
+                    
                 }
             }
         })
