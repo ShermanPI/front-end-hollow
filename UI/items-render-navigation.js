@@ -75,23 +75,19 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
 
 
     const checkIsFavorite = (itemArrayIndex)=>{
-        // console.log("checkiiin", jsonUser, "ACTUAL ITEM", itemArrayIndex)
         const $items = d.querySelectorAll(".item-list > .item")
         
         if(jsonUser){
             actualFavoriteItems = jsonUser.favoriteCharacters
             if(actualFavoriteItems.includes($items[itemArrayIndex].lastElementChild.innerHTML)){
-                // console.log("ES FAVORITO")
                 $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
             }else{
-                // console.log("NO ES FAVORITO")
                 $favoriteIconContainer.firstElementChild.src = "img/icons/unfavorite.png"
             }
         }
     }
 
     const renderItemInfo = (itemArrayIndex) =>{
-        console.log("RENDERED ", itemsInfo[itemArrayIndex].characterName)
         
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
         $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
@@ -128,10 +124,8 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                 if(json[0]){ //if the db still have items
                     
                     customAlert(undefined, "Loading...", {isFlashAlert: true})
-                    console.log("ANTES DEL RENDIRZADO ", itemsInfo)
                     itemsInfo = [...itemsInfo, ...json]
                     renderItemsList(json)
-                    console.log("se ha renderizado una lista, la SEGUNDA, se renderizo lo siguiente ", json)
                     $items = d.querySelectorAll(".item-list > .item")
                     
                     if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
@@ -203,7 +197,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                         itemsObserver.observe(el)
                     })
 
-                    console.log("New child elements added to the parent element.");
                 }
             });    
             });
@@ -229,12 +222,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                 if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
                     // itemsObserver.disconnect()
                     $items = d.querySelectorAll("#home-list .item")
-
-                    // $items.forEach(el=>{
-                    //     itemsObserver.observe(el)
-                    // })
-
-                    console.log("New child elements added to the parent element.");
                 }
             });    
             });
@@ -248,7 +235,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             mutationObserver.observe(parentElement, mutationObserverConfig);
 
 
-            console.log($items)
             // navigate        
             const $arrowUp = d.querySelector(".navigate-item-up"),
                 $arrowDown = d.querySelector(".navigate-item-down")
@@ -257,7 +243,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             if(isListAlreadyRendered){
                 actualItem = d.querySelector("#home-list > .selected-item").getAttribute("data-item-id")
             }  
-            console.log("EA ACTUAL ITEMS ", $items, actualItem)
             $items[actualItem].classList.add("selected-item")
 
             resizeArrowDivisor()
@@ -430,9 +415,8 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                 const $items = d.querySelectorAll(".item-list > .item")
                 let characterName = $items[actualItem].querySelector("p").innerHTML
                 
-                console.log(backendAPIRestUrl + "/characters/favorite/" + characterName, jsonUser)
-
                 if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
+                    localStorage.setItem("favoritesUpdated", "true")
                     e.target.src = "img/icons/favorite.png"
                     actualFavoriteItems.push(characterName)
                     fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
@@ -454,11 +438,11 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     })
                     
                 }else{
+                    localStorage.setItem("favoritesUpdated", "true")
                     e.target.src = "img/icons/unfavorite.png"
 
                     const index = actualFavoriteItems.indexOf(characterName);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    // console.log(actualFavoriteItems)
                     fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
                     {
                         credentials: 'include',

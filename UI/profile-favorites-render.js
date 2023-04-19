@@ -1,4 +1,5 @@
-const d = document
+const d = document,
+    backendAPIRestUrl = "http://127.0.0.1:5000"
 
 class ProfileItem{
     constructor(characterName, characterImgSrc){
@@ -43,14 +44,76 @@ class ProfileItem{
 }
 
 
-export const profileFavoritesRender = ()=> {
-    const $FragmentProfileList = d.createDocumentFragment() 
+export const profileFavoritesRender = (jsonUser)=> {
 
-    for(let i = 0; i < 3; i++){
-        let newItem = new ProfileItem("SHEMAN", "http://127.0.0.1:5000/static/characters-images/5cbb24349e6b94f2.png")
-        $FragmentProfileList.appendChild(newItem.renderProfileItem())
+    const renderProfileFavoriteItems = ()=>{
+        fetch(`${backendAPIRestUrl}/user/favorites/${jsonUser._id.$oid}`, {
+            credentials: 'include',
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.ok? res.json() : res)
+        .then(json=>{
+            let $FragmentProfileList = d.createDocumentFragment() 
+
+            json.forEach(el=>{
+                let newItem = new ProfileItem(el.characterName, `${backendAPIRestUrl}/static/characters-images/${el.characterImgSrc}`)
+                $FragmentProfileList.appendChild(newItem.renderProfileItem())
+            })
+        
+            if(d.querySelector(".no-items-ready")) d.querySelector(".no-items-ready").remove()
+            
+            d.querySelector(".favorite-item-list").appendChild($FragmentProfileList)
+            console.log($FragmentProfileList)
+            console.log("SE HA AGREGADO")
+        })
+        .catch(err=> console.error(err))
     }
 
-    d.querySelector(".no-items-ready").remove()
-    d.querySelector(".favorite-item-list").appendChild($FragmentProfileList)
+    renderProfileFavoriteItems()
+    
+    const $section = d.getElementById("profile")
+    const profileObserverCallback = (entries)=>{
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if(localStorage.getItem("favoritesUpdated") == "true"){
+                    if(d.querySelectorAll(".profile-favorite-items .favorite-item")) d.querySelectorAll(".profile-favorite-items .favorite-item").forEach(el=>el.remove())
+                    localStorage.setItem("favoritesUpdated", "false")
+                    renderProfileFavoriteItems()
+                }
+            }
+        })
+    }
+
+    let profileObserver = new IntersectionObserver(profileObserverCallback, {threshold: 1})
+    profileObserver.observe($section)
+
+    d.addEventListener("click", e=>{
+        if(e.target.matches(".profile-favorite-items .favorite-icon img")){
+            const characterName = e.target.parentNode.parentNode.querySelector('p').innerHTML,
+                profileItemClicked = e.target.parentNode.parentNode
+            
+            profileItemClicked.remove()
+
+            fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+            {
+                credentials: 'include',
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: jsonUser._id.$oid})
+            })
+            .then(res => res.ok? res.json() : Promise.reject(res))
+            .catch(err =>{
+                console.error(err)
+                customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
+                e.target.src = "img/icons/favorite.png"
+                // actualFavoriteItems.push(characterName)
+            }) 
+        }
+    })
+
 }

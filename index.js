@@ -21,10 +21,10 @@ import { renderLogedPage } from "./UI/render-loged-page.js";
 import { profileFavoritesRender } from "./UI/profile-favorites-render.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    profileFavoritesRender()
+    // profileFavoritesRender()
     getCSRFToken()
-    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems)
-    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems)
+    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems, profileFavoritesRender)
+    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems, profileFavoritesRender)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)
