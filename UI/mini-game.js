@@ -1,6 +1,6 @@
 const d = document
 
-export function miniGame(userObj){
+export function miniGame(userObj, customAlert){
     const $totemImg = d.querySelector(".game-icon img"),
         $actualScoreContainer = d.querySelector(".actual-score"),
         $highScoreContainer = d.getElementById("high-score"),
@@ -73,6 +73,7 @@ export function miniGame(userObj){
                 $highScoreContainer.innerHTML = addExtraZeros(highScore)
                 if(initialPfpsUnlocked < json.unlockByTheUser){
                     $profilePicNotification.classList.remove("hide-notification")
+                    customAlert(undefined, "New profile picture unlocked!", {isFlashAlert: true})
                     initialPfpsUnlocked = json.unlockByTheUser
                 }
             })

@@ -1,7 +1,33 @@
 const d = document
 
 export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, isRenderingFromForm)=>{
-    const $loggedOutElements = d.querySelectorAll(".logged-out")
+    const $loggedOutElements = d.querySelectorAll(".logged-out"),
+        $logoutBtn = d.querySelector(".log-out-btn"),
+        $mobileSignOutBtn = d.createElement("a")
+    
+    $mobileSignOutBtn.href = "#"
+    $mobileSignOutBtn.classList.add("menu-anchor")
+    $mobileSignOutBtn.innerHTML = "Log Out"
+
+    d.querySelector(".menu").appendChild($mobileSignOutBtn)
+    
+    d.addEventListener("click", (e)=>{
+        if(e.target == $logoutBtn || e.target == $mobileSignOutBtn){
+            customAlert("Log Out", "Are you sure you want to log out?", {
+                isConfirmType: true,
+                yesFunction: function(){
+                    fetch("http://127.0.0.1:5000/logout",{
+                        credentials: 'include'
+                    })
+                    .then(res => res.ok? res.json() : res)
+                    .then(json=>{
+                        location.reload()
+                    })
+                    .catch(err=> console.error(err))
+                }
+            })
+        } 
+    })
 
     $loggedOutElements.forEach(el=>{
         el.classList.replace("logged-out", "logged-in")
@@ -21,7 +47,7 @@ export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert
     // profileFavoritesRender(userObj)
 
     // fourth step - this render the HScore and time in the DOM, and the pfpsUnlocked
-    miniGame(userObj) 
+    miniGame(userObj, customAlert)
 
     loadingScreen(false)
 }
