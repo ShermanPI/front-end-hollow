@@ -569,7 +569,7 @@ input[type="submit"]:hover{
 }
 
 .flash-alert-icon-container{
-    width: calc(1.5vw + 1rem);
+    width: calc(1.2vw + 1rem);
     margin-inline: 1rem;
 }
 

@@ -1,6 +1,6 @@
 const d = document
 
-export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, isRenderingFromForm, profileFavoritesRender)=>{
+export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, isRenderingFromForm)=>{
     const $loggedOutElements = d.querySelectorAll(".logged-out")
 
     $loggedOutElements.forEach(el=>{
@@ -17,8 +17,8 @@ export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert
         renderCharacterItems(customAlert, false, userObj)
     }
 
-    // third step - render profile favorite Items
-    profileFavoritesRender(userObj)
+    // third step - render profile favorite Items (is renderind in renderCharacterItems)
+    // profileFavoritesRender(userObj)
 
     // fourth step - this render the HScore and time in the DOM, and the pfpsUnlocked
     miniGame(userObj) 

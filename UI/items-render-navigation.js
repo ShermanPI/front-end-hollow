@@ -40,7 +40,6 @@ class HomeItem{
     }
 }
 
-
 export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUser = undefined){
 
     const $sections = document.querySelectorAll(".section-container"),
@@ -57,7 +56,8 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
     
     let actualItem = 0,
         $items,
-        actualFavoriteItems = [];
+        actualFavoriteItems = [],
+        fetchTimer;
 
     const renderItemsList = (listToRender)=>{
 
@@ -88,7 +88,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
     }
 
     const renderItemInfo = (itemArrayIndex) =>{
-        
+        console.log("renderin item")
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
         $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
         $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
@@ -102,45 +102,64 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         }else{
             $bestiaryImgContainer.style.display = "none"
         }
-        
-        if(itemArrayIndex == itemsInfo.length - 1){
-            
-            const itemsInfoName = []
-            itemsInfo.forEach(el=>{
-                itemsInfoName.push(el.characterName)
-            })
 
-            fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender,
-            {
-                method: "POST",
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({items: itemsInfoName})
-            })
-            .then(res => res.ok? res.json() : Promise.reject(res))
-            .then((json)=>{
-                if(json[0]){ //if the db still have items
-                    
-                    customAlert(undefined, "Loading...", {isFlashAlert: true})
-                    itemsInfo = [...itemsInfo, ...json]
-                    renderItemsList(json)
-                    $items = d.querySelectorAll(".item-list > .item")
-                    
-                    if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
-                        $items[actualItem].style.marginBlock = "5rem";
+        //making bounding for the user dont keep fetching characters
+        clearTimeout(fetchTimer);
+        fetchTimer = setTimeout(() => {
+            if(itemArrayIndex == itemsInfo.length - 1){
+                console.log("BUSCANDO MAS ITEMES")
+
+                const itemsInfoName = []
+                itemsInfo.forEach(el=>{
+                    itemsInfoName.push(el.characterName)
+                })
+    
+                fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender,
+                {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({items: itemsInfoName})
+                })
+                .then(res => res.ok? res.json() : Promise.reject(res))
+                .then((json)=>{
+                    if(json[0]){ //if the db still have items
+                        
+                        customAlert(undefined, "Loading...", {isFlashAlert: true})
+                        itemsInfo = [...itemsInfo, ...json]
+                        renderItemsList(json)
+                        $items = d.querySelectorAll(".item-list > .item")
+    
+                        if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
+                            $items[actualItem].style.marginBlock = "5rem";
+                        }
+                    }else{
+                        customAlert(undefined, "It seems you have reached the end of the list.", {isFlashAlert: true})
                     }
-                }else{
-                    customAlert(undefined, "It seems you have reached the end of the list.", {isFlashAlert: true})
-                }
-            })
-            .catch(err=>console.error(err))
-        }
-        
+                })
+                .catch(err=>console.error(err))
+            }
+        }, 200);
     }
 
     const setItemListeners = (itemRenderFunction)=>{
+        const observerOptions = {
+            threshold: 0.9
+        }
+        const observerCallback = (entries)=>{
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    if(entry.target.getAttribute("id") == "home"){
+                        checkIsFavorite(actualItem)
+                    }
+                }
+            });        
+        }
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        $sections.forEach(el=>observer.observe(el));
 
         const resizeArrowDivisor = ()=>{
             const $items = d.querySelectorAll(".item-list > .item")
@@ -170,7 +189,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                         timeOut = setTimeout(()=>{
                             actualItem = entry.target.getAttribute("data-item-id")
                             itemRenderFunction(actualItem)
-                        }, 500)
+                        }, 400)
                     }
                 })
             }
@@ -251,8 +270,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                 if(e.key == "ArrowDown"){
                     e.preventDefault()
                     navigateItemDown()
-                    itemRenderFunction(actualItem)
-
+                    itemRenderFunction(actualItem)                    
                 }
 
                 if(e.key == "ArrowUp"){
@@ -352,9 +370,8 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             const wheelNavigation = (e)=>{
                 e.preventDefault()
                 if (e.deltaY > 0) { //wheels down
-                    navigateItemDown()    
-                    itemRenderFunction(actualItem)
-
+                    navigateItemDown()
+                    itemRenderFunction(actualItem) 
                 } else { //wheels up
                     navigateItemUp()
                     itemRenderFunction(actualItem)
@@ -369,10 +386,9 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     itemRenderFunction(actualItem)
                 } 
                     
-                if(e.target == $arrowDown) {
+                if(e.target == $arrowDown){
                     navigateItemDown()
                     itemRenderFunction(actualItem)
-
                 }
             }
 
@@ -465,6 +481,124 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             }
         })
 
+        const profileFavoritesRender = (jsonUser)=> {
+            
+            class ProfileItem{
+                constructor(characterName, characterImgSrc){
+                    this.characterName = characterName
+                    this.characterImgSrc = characterImgSrc   
+                }
+            
+                renderProfileItem(){
+                    const $item = d.createElement("li"),
+                        $itemInfo = d.createElement("div"),
+                        $listBorder = d.createElement("div"),
+                        $imgListBorder = d.createElement("img"),
+                        $characterImgContainer = d.createElement("div"),
+                        $characterImg = d.createElement("img"),
+                        $favoriteIconContainer = d.createElement("div"),
+                        $favoriteIcon = d.createElement("img"),
+                        $characterName = d.createElement("p")
+            
+                    $item.classList.add("item")
+                    $item.classList.add("favorite-item")
+                    $item.classList.add("selected-item")
+                    $itemInfo.classList.add("item-info")
+                    $listBorder.classList.add("list-border")
+                    $characterImgContainer.classList.add("character-img")
+                    $imgListBorder.src = "img/UI/item-border.png"
+                    $characterImg.src = this.characterImgSrc
+                    $favoriteIconContainer.classList.add("favorite-icon")
+                    $favoriteIcon.src = "img/icons/favorite.png"
+                    
+                    $listBorder.appendChild($imgListBorder)
+                    $item.appendChild($itemInfo)
+                    $characterImgContainer.appendChild($characterImg)
+                    $itemInfo.appendChild($listBorder)
+                    $itemInfo.appendChild($characterImgContainer)
+                    $favoriteIconContainer.appendChild($favoriteIcon)
+                    $item.appendChild($favoriteIconContainer)
+                    $characterName.innerHTML = this.characterName
+                    $itemInfo.appendChild($characterName)
+                    
+                    return $item
+                }
+            }
+        
+            const renderProfileFavoriteItems = ()=>{
+                fetch(`${backendAPIRestUrl}/user/favorites/${jsonUser._id.$oid}`, {
+                    credentials: 'include',
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => res.ok? res.json() : res)
+                .then(json=>{
+                    const $FragmentProfileList = d.createDocumentFragment() 
+        
+                    json.forEach(el=>{
+                        let newItem = new ProfileItem(el.characterName, `${backendAPIRestUrl}/static/characters-images/${el.characterImgSrc}`)
+                        $FragmentProfileList.appendChild(newItem.renderProfileItem())
+                    })
+                
+                    if(d.querySelector(".no-items-ready")) d.querySelector(".no-items-ready").remove()
+                    
+                    d.querySelector(".favorite-item-list").appendChild($FragmentProfileList)
+                })
+                .catch(err=> console.error(err))
+            }
+        
+            renderProfileFavoriteItems()
+            
+            const $section = d.getElementById("profile")
+            const profileObserverCallback = (entries)=>{
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if(localStorage.getItem("favoritesUpdated") == "true"){
+                            if(d.querySelectorAll(".profile-favorite-items .favorite-item")) d.querySelectorAll(".profile-favorite-items .favorite-item").forEach(el=>el.remove())
+                            localStorage.setItem("favoritesUpdated", "false")
+                            renderProfileFavoriteItems()
+                        }
+                    }
+                })
+            }
+        
+            let profileObserver = new IntersectionObserver(profileObserverCallback, {threshold: 1})
+            profileObserver.observe($section)
+        
+            d.addEventListener("click", e=>{
+                if(e.target.matches(".profile-favorite-items .favorite-icon img")){
+                    const characterName = e.target.parentNode.parentNode.querySelector('p').innerHTML,
+                        profileItemClicked = e.target.parentNode.parentNode,
+                        index = actualFavoriteItems.indexOf(characterName);
+                    
+                    if (index > -1) actualFavoriteItems.splice(index, 1);
+                    
+                    profileItemClicked.remove()
+        
+                    fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+                    {
+                        credentials: 'include',
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({id: jsonUser._id.$oid})
+                    })
+                    .then(res => res.ok? res.json() : Promise.reject(res))
+                    .catch(err =>{
+                        console.error(err)
+                        customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
+                        e.target.src = "img/icons/favorite.png"
+                        actualFavoriteItems.push(characterName)
+                    }) 
+                }
+            })
+        
+        }
+
+        profileFavoritesRender(jsonUser)
         return;
     }
 

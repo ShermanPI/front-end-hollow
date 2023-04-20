@@ -1,6 +1,6 @@
 const d = document
 
-export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame, renderCharacterItems, profileFavoritesRender){
+export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame, renderCharacterItems){
     const $registerForm = d.getElementById("sign-up-form"),
         $loginForm = d.getElementById("login-form"),
         $createCharacterForm = d.getElementById("add-character-form"),
@@ -199,7 +199,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
-                    renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame, renderCharacterItems, true, profileFavoritesRender)
+                    renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame, renderCharacterItems, true)
                     removeAllErrorFields()
                     hideLoginForm()
                 })

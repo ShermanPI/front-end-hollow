@@ -18,13 +18,11 @@ import { getCSRFToken } from "./UI/setCSRFtoken.js";
 import { firstLoadUser } from "./UI/first-load-user.js";
 import { loadScreen } from "./UI/loading-screen.js";
 import { renderLogedPage } from "./UI/render-loged-page.js";
-import { profileFavoritesRender } from "./UI/profile-favorites-render.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    // profileFavoritesRender()
     getCSRFToken()
-    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems, profileFavoritesRender)
-    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems, profileFavoritesRender)
+    firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems)
+    formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)
