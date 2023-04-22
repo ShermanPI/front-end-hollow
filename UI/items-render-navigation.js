@@ -5,7 +5,8 @@ const d = document,
 let itemsInfo = []
 
 class HomeItem{
-    constructor(listIndex, characterImgSrc, characterName, characterMainInfo, characterSecondaryInfo){
+    constructor(characterId, listIndex, characterImgSrc, characterName, characterMainInfo, characterSecondaryInfo){
+        this.characterId = characterId,
         this.listIndex = listIndex,
         this.characterImgSrc = characterImgSrc,
         this.characterName = characterName,
@@ -32,6 +33,7 @@ class HomeItem{
         $characterImgContainer.appendChild($characterImg)
     
         $item.setAttribute("data-item-id", this.listIndex)
+        $item.setAttribute("data-character-id", this.characterId)
         $borderImg.src = "img/UI/item-border.png"
         $characterImg.src = backendAPIRestUrl + this.characterImgSrc
         $characterName.innerHTML = this.characterName
@@ -65,7 +67,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             itemsAlreadyRendered = d.querySelectorAll(".item-list .item") ? d.querySelectorAll(".item-list .item").length : 0
         
         listToRender.forEach((el, index) =>{
-            let newItem = new HomeItem(itemsAlreadyRendered + index, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo)
+            let newItem = new HomeItem(el._id.$oid, itemsAlreadyRendered + index, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo)
             $itemsFragment.appendChild(newItem.createItemNode())
         })
 
@@ -79,7 +81,8 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         
         if(jsonUser){
             actualFavoriteItems = jsonUser.favoriteCharacters
-            if(actualFavoriteItems.includes($items[itemArrayIndex].lastElementChild.innerHTML)){
+            
+            if(actualFavoriteItems.includes($items[itemArrayIndex].getAttribute('data-character-id'))){
                 $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
             }else{
                 $favoriteIconContainer.firstElementChild.src = "img/icons/unfavorite.png"
@@ -88,7 +91,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
     }
 
     const renderItemInfo = (itemArrayIndex) =>{
-        console.log("renderin item")
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
         $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
         $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
@@ -107,14 +109,12 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         clearTimeout(fetchTimer);
         fetchTimer = setTimeout(() => {
             if(itemArrayIndex == itemsInfo.length - 1){
-                console.log("BUSCANDO MAS ITEMES")
-
                 const itemsInfoName = []
                 itemsInfo.forEach(el=>{
                     itemsInfoName.push(el.characterName)
                 })
     
-                fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender,
+                fetch(`${backendAPIRestUrl}/charactersSample/${characterNumberToRender}`,
                 {
                     method: "POST",
                     credentials: 'include',
@@ -397,10 +397,9 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
     
     }
 
-    //first time item render
-
+    //first time items render
     if(!isListAlreadyRendered){
-        fetch(backendAPIRestUrl + "/charactersSample/" + characterNumberToRender, 
+        fetch(`${backendAPIRestUrl}/charactersSample/${characterNumberToRender}`,
         {
             credentials: 'include'
         })
@@ -428,25 +427,22 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
     if(jsonUser){
         document.addEventListener("click", (e)=>{
             if(e.target.matches(".home-favorite-icon img")){
-                const $items = d.querySelectorAll(".item-list > .item")
-                let characterName = $items[actualItem].querySelector("p").innerHTML
-                
-                if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
-                    localStorage.setItem("favoritesUpdated", "true")
-                    e.target.src = "img/icons/favorite.png"
-                    actualFavoriteItems.push(characterName)
-                    fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+                const characterName = itemsInfo[actualItem].characterName,
+                    $items = d.querySelectorAll(".item-list > .item"),
+                    characterId = $items[actualItem].getAttribute('data-character-id')
+                    
+                    if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
+                        localStorage.setItem("favoritesUpdated", "true")
+                        e.target.src = "img/icons/favorite.png"
+                        actualFavoriteItems.push(characterId)
+                        console.log("se ha ingresadoooo", characterId)
+                    fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
                     {
                         credentials: 'include',
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({id: jsonUser._id.$oid})
+                        method: 'POST'
                     })
                     .then(res => res.ok? res.json() : Promise.reject(res))
                     .catch(err =>{
-                        console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be favored", {isFlashAlert: true})
                         e.target.src = "img/icons/unfavorite.png"
                         const index = actualFavoriteItems.indexOf(characterName);
@@ -457,34 +453,31 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     localStorage.setItem("favoritesUpdated", "true")
                     e.target.src = "img/icons/unfavorite.png"
 
-                    const index = actualFavoriteItems.indexOf(characterName);
+                    const index = actualFavoriteItems.indexOf(characterId);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+                    console.log("se ha borradoooo", characterId)
+                    
+                    fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
                     {
                         credentials: 'include',
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({id: jsonUser._id.$oid})
+                        method: 'DELETE'
                     })
                     .then(res => res.ok? res.json() : Promise.reject(res))
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
                         e.target.src = "img/icons/favorite.png"
-                        actualFavoriteItems.push(characterName)
+                        actualFavoriteItems.push(characterId)
                     }) 
 
                     
                 }
             }
         })
-
         const profileFavoritesRender = (jsonUser)=> {
-            
             class ProfileItem{
-                constructor(characterName, characterImgSrc){
+                constructor(characterId, characterName, characterImgSrc){
+                    this.characterId = characterId
                     this.characterName = characterName
                     this.characterImgSrc = characterImgSrc   
                 }
@@ -520,6 +513,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     $item.appendChild($favoriteIconContainer)
                     $characterName.innerHTML = this.characterName
                     $itemInfo.appendChild($characterName)
+                    $item.setAttribute("data-character-id", this.characterId)
                     
                     return $item
                 }
@@ -538,11 +532,11 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     const $FragmentProfileList = d.createDocumentFragment() 
         
                     json.forEach(el=>{
-                        let newItem = new ProfileItem(el.characterName, `${backendAPIRestUrl}/static/characters-images/${el.characterImgSrc}`)
+                        let newItem = new ProfileItem(el._id.$oid, el.characterName, `${backendAPIRestUrl}/static/characters-images/${el.characterImgSrc}`)
                         $FragmentProfileList.appendChild(newItem.renderProfileItem())
                     })
                 
-                    if(d.querySelector(".no-items-ready")) d.querySelector(".no-items-ready").remove()
+                    if(json[0] && d.querySelector(".no-items-ready")) d.querySelector(".no-items-ready").remove()
                     
                     d.querySelector(".favorite-item-list").appendChild($FragmentProfileList)
                 })
@@ -570,37 +564,31 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
             d.addEventListener("click", e=>{
                 if(e.target.matches(".profile-favorite-items .favorite-icon img")){
                     const characterName = e.target.parentNode.parentNode.querySelector('p').innerHTML,
+                        characterId =  e.target.parentNode.parentNode.getAttribute('data-character-id'),
                         profileItemClicked = e.target.parentNode.parentNode,
-                        index = actualFavoriteItems.indexOf(characterName);
-                    
+                        index = actualFavoriteItems.indexOf(characterId)
+
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    
+                    console.log("SE HA ELIMINADOOOOOOOO", )
                     profileItemClicked.remove()
-        
-                    fetch(backendAPIRestUrl + "/characters/favorite/" + characterName,
+
+                    fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
                     {
                         credentials: 'include',
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({id: jsonUser._id.$oid})
+                        method: 'DELETE'
                     })
                     .then(res => res.ok? res.json() : Promise.reject(res))
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
                         e.target.src = "img/icons/favorite.png"
-                        actualFavoriteItems.push(characterName)
+                        actualFavoriteItems.push(characterId)
                     }) 
                 }
             })
-        
         }
-
         profileFavoritesRender(jsonUser)
         return;
     }
-
 }
 
