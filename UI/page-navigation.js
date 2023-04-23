@@ -34,7 +34,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         }
     }
     
-    let currentIndex = 0;
+    let currentIndex = 2;
     $sections[currentIndex].scrollIntoView({behavior: "auto"})
 
     let pageObserverCallback = function(entries){

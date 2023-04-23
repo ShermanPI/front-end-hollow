@@ -1,11 +1,50 @@
 const d = document
 
+class editCharacterItem {
+    constructor(name, img){
+        this.name = name,
+        this.img = img
+    }
+
+    makeEditItem(){
+        const $characterEditItem = d.createElement("div"),
+            $characterEditImgContainer = d.createElement("div"),
+            $characterEditImg = d.createElement("img"),
+            $characterName = d.createElement("p")
+        
+        $characterEditItem.classList.add("character-edit-item")
+        $characterEditImgContainer.classList.add("character-edit-img")
+        $characterName.classList.add("character-edit-name")
+        $characterEditImg.src = `http://127.0.0.1:5000/${this.img}`
+        $characterName.innerHTML = this.name
+
+        $characterEditImgContainer.appendChild($characterEditImg)
+        $characterEditItem.appendChild($characterEditImgContainer)
+        $characterEditItem.appendChild($characterName)
+
+        return $characterEditItem
+    }
+}
+
 export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame, renderCharacterItems){
     const $registerForm = d.getElementById("sign-up-form"),
         $loginForm = d.getElementById("login-form"),
         $createCharacterForm = d.getElementById("add-character-form"),
+        $editCharacterForm = d.getElementById("edit-character-form"),
         $registerFormContainer = d.querySelector(".register-form-container"),
         $loginFormContainer = d.querySelector(".login-form-container")
+
+    let actualCharacters = []
+
+    const renderEditCharacters = (listToRender) =>{
+        const $newEditListFragment = d.createDocumentFragment()
+        listToRender.forEach(el=>{
+            const newEditItem = new editCharacterItem(el.characterName, el.characterImgSrc)
+            $newEditListFragment.appendChild(newEditItem.makeEditItem())
+        })
+
+        d.querySelector(".character-edit-list").appendChild($newEditListFragment) 
+    }
 
     localStorage.setItem("isFormActivated", "false")
 
@@ -54,7 +93,6 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
 
     }
 
-
     const validateField = (validationRegex, field, errorMessage = null)=>{
         let fieldValue = field.value.trim()
 
@@ -71,8 +109,6 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
     const usernameRegex = /^[a-zA-Z0-9_-]{2,12}$/,
         emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         passwordRegex = /^[a-zA-Z0-9_$#-]{8,}$/
-
-
 
     d.addEventListener("submit", (e)=>{
         e.preventDefault()
@@ -227,6 +263,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             })
             .then(res =>res.ok? res.json() : Promise.reject(res))
             .then(json => {
+                actualCharacters.push(json)
                 customAlert(undefined, `A new character has been added`, {isFlashAlert: true})
                 $createCharacterForm.reset()
                 removeAllErrorFields()
@@ -237,6 +274,30 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                         let errorFields = Object.keys(json.errors)
                         errorFields.forEach(field =>{
                             setErrorField($createCharacterForm[field], json.errors[field])
+                        })
+                    })
+                } else {
+                    customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
+                }
+            })
+        }
+
+        if(e.target == $editCharacterForm){
+            fetch(`http://127.0.0.1:5000/characters/${$editCharacterForm.characterEditingName.value}`, {
+                method: "PUT",
+                credentials: 'include',
+                body: new FormData($createCharacterForm)
+            })
+            .then(res =>res.ok? res.json() : Promise.reject(res))
+            .then(json => {
+                console.log(json)
+            })
+            .catch(error => {                
+                if (error.status === 409) {
+                    error.json().then(json => {
+                        let errorFields = Object.keys(json.errors)
+                        errorFields.forEach(field =>{
+                            setErrorField($editCharacterForm[field], json.errors[field])
                         })
                     })
                 } else {
@@ -278,4 +339,61 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
         }
     })
 
+    fetch("http://127.0.0.1:5000/characters",
+    {
+        'method': "GET",
+        'Content-type': 'application/x-www-form-urlencoded',
+        credentials: 'include'
+    })
+    .then(res => res.ok? res.json() : Promise.reject(res))
+    .then(charactersJson => {
+        actualCharacters = charactersJson
+        const $characterEditList = d.querySelector(".character-edit-list")
+
+        d.addEventListener("input", (e)=>{
+            if(e.target == $editCharacterForm.characterEditingName){
+                if($editCharacterForm.characterEditingName.value == ""){
+                    $characterEditList.classList.add("hide-edit-list")
+                    $editCharacterForm.reset()
+                    return;
+                }
+
+                let inputValue = $editCharacterForm.characterEditingName.value,
+                    $characterEditItem = d.querySelectorAll(".character-edit-item")
+                
+                $characterEditList.classList.remove("hide-edit-list")
+                
+                $characterEditItem.forEach(el=>el.remove())
+
+                const filteredArr = actualCharacters.filter(item =>{
+                    return item.characterName.match(new RegExp(inputValue, "i"));
+                })
+
+                renderEditCharacters(filteredArr)
+            }
+        })
+
+        d.addEventListener("click", (e)=>{
+            if(e.target.matches(".character-edit-item")){
+                let characterName = e.target.querySelector(".character-edit-name").innerHTML
+                
+                $characterEditList.classList.add("hide-edit-list")
+                $editCharacterForm.characterEditingName.value = characterName
+                
+                console.log(actualCharacters)
+
+                let filteredArr = actualCharacters.filter(item =>{
+                    return item.characterName.match(new RegExp(characterName, "i"));
+                })
+
+                filteredArr = filteredArr[0]
+                
+                $editCharacterForm.newCharacterName.value = filteredArr.characterName
+                $editCharacterForm.newCharacterMainInfo.value = filteredArr.characterMainInfo
+                $editCharacterForm.newCharacterSecondaryInfo.value = filteredArr.characterSecondaryInfo
+
+            }
+        })
+    })
+    .catch(error => {console.error(error)})
 }

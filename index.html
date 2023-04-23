@@ -643,35 +643,38 @@
 
                     </form>
 
-                    <form class="form edit-form hide-form">
+                    <form class="form edit-form hide-form" id="edit-character-form" enctype="multipart/form-data">
                         <div class="form-container">
-                            <div class="form-group">
+                            <div class="form-group character-to-edit-group">
                                 <label class="field-name">Character to edit:</label>
-                                <input id="characterName" class ="form-input" maxlength="22" minlength="2" name="characterName" required type="text" value="" placeholder="Character's Name" autocomplete="off">
+                                <input id="characterEditingName" class ="form-input select-character-field" maxlength="22" minlength="2" name="characterEditingName" required type="text" value="" placeholder="Character's Name" autocomplete="off">
+                                <div class="character-edit-list hide-edit-list">
+                                    <!--Edit items-->
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="field-name">Character's Name:</label>
-                                <input id="characterName" autocomplete="off" class ="form-input" maxlength="22" minlength="2" name="characterName" required type="text" value="" placeholder="Character's Name">
+                                <label class="field-name">Character's new name:</label>
+                                <input id="newCharacterName" autocomplete="off" class ="form-input" maxlength="22" minlength="2" name="newCharacterName" required type="text" value="" placeholder="Character's Name">
                             </div>
 
                             <div class="form-group">
                                 <label class="field-name">Main Info:</label>
-                                <textarea id="characterMainInfo" class ="form-input" name="characterMainInfo" required type="text" value="" placeholder="Main Information"></textarea>
+                                <textarea id="newCharacterMainInfo" class ="form-input" name="newCharacterMainInfo" required type="text" value="" placeholder="Main Information"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label class="field-name">Secondary Info:</label>
-                                <textarea id="characterSecondaryInfo" class ="form-input" name="characterSecondaryInfo" required type="text" value="" placeholder="Secondary Information"></textarea>
+                                <textarea id="newCharacterSecondaryInfo" class ="form-input" name="newCharacterSecondaryInfo" required type="text" value="" placeholder="Secondary Information"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label class="field-name">Character's Image:</label>
-                                <input id="characterImgSrc" name="characterImgSrc" type="file" accept=".png, .jpeg, .webp, .jpg">
+                                <input id="newCharacterImgSrc" name="newCharacterImgSrc" type="file" accept=".png, .jpeg, .webp, .jpg">
                             </div>
     
                             <div class="form-group">
-                                <input type="submit" name="submit" autocomplete="off" value="Create Character" id="create-character-btn">
+                                <input type="submit" name="submit" autocomplete="off" value="Save changes" id="edit-character-btn">
                                 <!-- <button class="fill-info-btn" id="new-submit-btn">Fill Fields</button> -->
                             </div>
                         </div>

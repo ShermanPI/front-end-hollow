@@ -77,3 +77,63 @@ textarea{
         width: 50%;
     }
 }
+
+.character-to-edit-group{
+    position: relative;
+}
+
+.select-character-field{
+    background-color: #30303087;
+}
+
+.select-character-field::placeholder{
+    /* background-color: #30303087; */
+    color: rgba(241, 241, 241, 0.486);
+}
+
+.select-character-field:focus{
+    background-color: #30303087;
+}
+
+.character-edit-list{
+    background-color: #303030e1;
+    width: 100%;
+    max-height: 25rem;
+    overflow-y: scroll;
+    position: absolute;
+    top: 100%;
+}
+
+.character-edit-item{
+    cursor: pointer;
+    padding-inline: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.character-edit-item *{
+    pointer-events: none;
+    user-select: none;
+}
+
+.character-edit-item:hover{
+    background-color: rgba(241, 241, 241, 0.151);
+}
+
+.character-edit-name{
+    padding: 1.8rem 2rem;
+}
+.character-edit-img{
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--abyss-blue);
+    height: 4rem;
+    overflow-y: hidden;
+    /* height: 2rem; */
+}
+
+.hide-edit-list{
+    display: none;
+}
