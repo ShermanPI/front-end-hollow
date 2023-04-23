@@ -78,10 +78,9 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
 
     const checkIsFavorite = (itemArrayIndex)=>{
         const $items = d.querySelectorAll(".item-list > .item")
-        
+
         if(jsonUser){
-            actualFavoriteItems = jsonUser.favoriteCharacters
-            
+            actualFavoriteItems = jsonUser.favoriteCharacters            
             if(actualFavoriteItems.includes($items[itemArrayIndex].getAttribute('data-character-id'))){
                 $favoriteIconContainer.firstElementChild.src = "img/icons/favorite.png"
             }else{
@@ -109,9 +108,9 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
         clearTimeout(fetchTimer);
         fetchTimer = setTimeout(() => {
             if(itemArrayIndex == itemsInfo.length - 1){
-                const itemsInfoName = []
+                const itemsInfoId = []
                 itemsInfo.forEach(el=>{
-                    itemsInfoName.push(el.characterName)
+                    itemsInfoId.push(el._id.$oid)
                 })
     
                 fetch(`${backendAPIRestUrl}/charactersSample/${characterNumberToRender}`,
@@ -121,7 +120,7 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({items: itemsInfoName})
+                    body: JSON.stringify({items: itemsInfoId})
                 })
                 .then(res => res.ok? res.json() : Promise.reject(res))
                 .then((json)=>{
@@ -435,7 +434,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                         localStorage.setItem("favoritesUpdated", "true")
                         e.target.src = "img/icons/favorite.png"
                         actualFavoriteItems.push(characterId)
-                        console.log("se ha ingresadoooo", characterId)
                     fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
                     {
                         credentials: 'include',
@@ -455,7 +453,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
 
                     const index = actualFavoriteItems.indexOf(characterId);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    console.log("se ha borradoooo", characterId)
                     
                     fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
                     {
@@ -569,7 +566,6 @@ export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUse
                         index = actualFavoriteItems.indexOf(characterId)
 
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    console.log("SE HA ELIMINADOOOOOOOO", )
                     profileItemClicked.remove()
 
                     fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,

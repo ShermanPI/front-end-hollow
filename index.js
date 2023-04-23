@@ -18,7 +18,6 @@ import { getCSRFToken } from "./UI/setCSRFtoken.js";
 import { firstLoadUser } from "./UI/first-load-user.js";
 import { loadScreen } from "./UI/loading-screen.js";
 import { renderLogedPage } from "./UI/render-loged-page.js";
-import { editCharacterForm } from "./UI/edit-character.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
     getCSRFToken()

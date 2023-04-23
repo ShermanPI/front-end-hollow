@@ -283,16 +283,25 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
         }
 
         if(e.target == $editCharacterForm){
-            fetch(`http://127.0.0.1:5000/characters/${$editCharacterForm.characterEditingName.value}`, {
+            fetch(`http://127.0.0.1:5000/character/${$editCharacterForm.characterEditingName.value}`, 
+            {
                 method: "PUT",
                 credentials: 'include',
-                body: new FormData($createCharacterForm)
+                body: new FormData($editCharacterForm)
             })
             .then(res =>res.ok? res.json() : Promise.reject(res))
             .then(json => {
-                console.log(json)
+                actualCharacters.forEach((el, index)=>{
+                    if(el._id.$oid == json._id.$oid){
+                        actualCharacters[index] = json
+                    }
+                })
+                removeAllErrorFields()
+                customAlert(undefined, `The characters has been updated`, {isFlashAlert: true})
+                $editCharacterForm.reset()
+                localStorage.setItem("favoritesUpdated", "true")
             })
-            .catch(error => {                
+            .catch(error => {
                 if (error.status === 409) {
                     error.json().then(json => {
                         let errorFields = Object.keys(json.errors)
@@ -349,19 +358,20 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
     .then(charactersJson => {
         actualCharacters = charactersJson
         const $characterEditList = d.querySelector(".character-edit-list")
-
+        
         d.addEventListener("input", (e)=>{
             if(e.target == $editCharacterForm.characterEditingName){
+
                 if($editCharacterForm.characterEditingName.value == ""){
                     $characterEditList.classList.add("hide-edit-list")
                     $editCharacterForm.reset()
                     return;
                 }
 
+                $characterEditList.classList.remove("hide-edit-list")
+
                 let inputValue = $editCharacterForm.characterEditingName.value,
                     $characterEditItem = d.querySelectorAll(".character-edit-item")
-                
-                $characterEditList.classList.remove("hide-edit-list")
                 
                 $characterEditItem.forEach(el=>el.remove())
 
@@ -380,7 +390,6 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 $characterEditList.classList.add("hide-edit-list")
                 $editCharacterForm.characterEditingName.value = characterName
                 
-                console.log(actualCharacters)
 
                 let filteredArr = actualCharacters.filter(item =>{
                     return item.characterName.match(new RegExp(characterName, "i"));
