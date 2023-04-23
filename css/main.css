@@ -924,3 +924,7 @@ input[type="submit"]:hover{
 .logged-in{
     display: none;
 }
+
+.admin-option-hidden{
+    display: none;
+}

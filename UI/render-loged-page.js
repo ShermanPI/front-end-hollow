@@ -1,6 +1,16 @@
 const d = document
 
 export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, isRenderingFromForm)=>{
+    
+    if(userObj.type == "admin"){
+        const $adminSections = d.querySelectorAll(".admin-option-hidden")
+        if($adminSections){
+            $adminSections.forEach(el=>{
+                el.classList.remove("admin-option-hidden")
+            })
+        }
+        
+    }
     const $loggedOutElements = d.querySelectorAll(".logged-out"),
         $logoutBtn = d.querySelector(".log-out-btn"),
         $mobileSignOutBtn = d.createElement("a")

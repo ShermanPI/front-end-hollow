@@ -150,9 +150,10 @@
         <a href="#profile" class="menu-anchor page-menu-anchor">
             Profile
         </a>
-        <div class="divisor"></div>
 
-        <a href="#admin" class="menu-anchor page-menu-anchor">
+        <div class="divisor admin-option"></div>
+
+        <a href="#admin" class="menu-anchor page-menu-anchor admin-option">
             Admin
         </a>
         
@@ -437,15 +438,26 @@
         </section>
 
         <section class = "section-container" id="profile">
+            
             <header class="section-header">
                 <div class="prev-page computer-design"></div>
                 <h1 class="container-name">Profile</h1>
                 <div class="next-page computer-design"></div>
                 <div class="divisor header-divisor"></div>
             </header>
-
+            
             <section class="profile-container">
                 
+                <div class="unlogged-screen">
+                    <img src="img/icons/logInScreenIcon.png" alt="">
+                    <br>
+                    <h1 class="unlogged-screen-title">Welcome to Hollow Wiki</h1>
+                    <p class="unlogged-screen-paragraph">Log in with your account to continue</p>
+                    <div class="unlogged-session-btns">
+                        <div class="unlogged-log-in-btn login-unlogged-btn">Log In</div>
+                        <div class="unlogged-log-in-btn signup-unlogged-btn">Sign Up</div>
+                    </div>
+                </div>
                 <div class="profile-control-panel">
                     <div class="profile-info">
                         <div class="profile-pfp">
@@ -595,7 +607,7 @@
 
         </section>
 
-        <section class = "section-container" id="admin">
+        <section class = "section-container admin-option" id="admin">
             <header class="section-header">
                 <div class="prev-page computer-design"></div>
                 <h1 class="container-name">Admin</h1>

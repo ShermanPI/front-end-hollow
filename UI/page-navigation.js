@@ -34,7 +34,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         }
     }
     
-    let currentIndex = 2;
+    let currentIndex = 0;
     $sections[currentIndex].scrollIntoView({behavior: "auto"})
 
     let pageObserverCallback = function(entries){
@@ -54,7 +54,9 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
     })
 
     const showSideSections = ()=>{
-        if($sections[parseInt(currentIndex) + 1]){
+        let $sections = document.querySelectorAll(".section-container")
+
+        if($sections[parseInt(currentIndex) + 1] && !$sections[(parseInt(currentIndex) + 1)].classList.contains("admin-option-hidden")){
             $nextPageIndicator.innerHTML = 
             `${$sections[parseInt(currentIndex) + 1].id.charAt(0).toUpperCase() + $sections[parseInt(currentIndex) + 1].id.slice(1)}
             <img src="img/UI/Expandarrow.png" alt="">`
@@ -73,12 +75,24 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     showSideSections()
 
-    const movePages = (steps)=>{
+    const movePages = (steps)=>{        
+        const $sections = document.querySelectorAll(".section-container")
+
         if((steps + parseInt(currentIndex)) < 0) return;
-        if(steps + parseInt(currentIndex) > $sections.length - 1)  return;    
-        currentIndex = steps + parseInt(currentIndex)
-        $sections[currentIndex].scrollIntoView({behavior: "smooth"})
-        showSideSections()
+        if(steps + parseInt(currentIndex) > $sections.length - 1)  return;
+
+        if($sections[(parseInt(currentIndex) + 1)] && steps > 0){
+            if(!$sections[(parseInt(currentIndex) + 1)].classList.contains("admin-option-hidden")){
+                currentIndex = steps + parseInt(currentIndex)
+                $sections[currentIndex].scrollIntoView({behavior: "smooth"})
+                showSideSections()
+            }
+        }else{
+            currentIndex = steps + parseInt(currentIndex)
+            $sections[currentIndex].scrollIntoView({behavior: "smooth"})
+            showSideSections()
+        }
+
     }
 
     d.addEventListener("click", (e)=>{

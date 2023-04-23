@@ -235,6 +235,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
+                    if(d.querySelector('.unlogged-screen')) d.querySelector('.unlogged-screen').remove()
                     renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame, renderCharacterItems, true)
                     removeAllErrorFields()
                     hideLoginForm()
@@ -333,14 +334,14 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             $loginFormContainer.classList.add("hide-form")
         }
 
-        if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span") || e.target.matches(".register-anchor")){
+        if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span") || e.target.matches(".register-anchor") || e.target.matches(".signup-unlogged-btn")){
             localStorage.setItem("isFormActivated", "true")
             removeAllErrorFields()
             hideLoginForm()
             $registerFormContainer.classList.remove("hide-form")
         }
 
-        if(e.target.matches(".login-btn") || e.target.matches(".login-span") || e.target.matches(".login-anchor")){
+        if(e.target.matches(".login-btn") || e.target.matches(".login-span") || e.target.matches(".login-anchor") || e.target.matches('.login-unlogged-btn')){
             localStorage.setItem("isFormActivated", "true")
             removeAllErrorFields()
             hideRegisterForm()
