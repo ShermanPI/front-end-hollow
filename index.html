@@ -698,5 +698,28 @@
     </section>
 
     <script src="index.js" type="module"></script>
+
+    <!-- firebase scrip auth-->
+    // Import the functions you need from the SDKs you need
+    
+    <script> import { initializeApp } from "firebase/app"; </script>
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+    <script> import { initializeApp } from "firebase/auth"; </script>    
+
+        <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+    apiKey: "AIzaSyAhHFh6PJHkmP4mvOAbnXI8FmoX3_3NTz0",
+    authDomain: "wikihollow.firebaseapp.com",
+    projectId: "wikihollow",
+    storageBucket: "wikihollow.appspot.com",
+    messagingSenderId: "567619005819",
+    appId: "1:567619005819:web:37057094d1da453a32e1de"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+        </script>
 </body>
 </html>
