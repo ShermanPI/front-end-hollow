@@ -2,9 +2,10 @@
   "name": "front-end-hollow",
   "version": "8.19.3",
   "description": "demo node app",
-  "main": "index.js",
+  "main": "index.test.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "jest --",
+    "coverage": "jest --collectCoverage --"
   },
   "repository": {
     "type": "git",
