@@ -34,3 +34,4 @@ window.addEventListener("DOMContentLoaded", ()=>{
     controlPlaylist()
     minigameExplodeParticles()
 })
+
