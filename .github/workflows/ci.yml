@@ -30,7 +30,7 @@ jobs:
         run: npm install
       # Generar compilación de producción
       - name: Run Build command
-        run: npm run 
+        run: jest 
       # Ejecutar pruebas unitarias
       - name: Run Unit tests
         run: npm run test -- --configuration=ci
