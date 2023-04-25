@@ -8,7 +8,7 @@ on: # ¿Cuando ejecutar?
 
 jobs:
   ci:
-    name: Continuous Integration # Nombre del Job
+    name: integration test # Nombre del Job
     runs-on: ubuntu-latest # Ejecutar en Ubuntu
     steps:
       - uses: actions/checkout@v2 # Clonar repositorio actual
