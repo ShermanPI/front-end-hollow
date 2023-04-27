@@ -14,13 +14,13 @@ import { minigameExplodeParticles } from "./UI/minigame-particles.js"
 import { editProfile } from "./UI/edit_profile.js";
 import { customAlert } from "./UI/custom_alerts.js";
 import { formUtils } from "./UI/forms.js";
-import { getCSRFToken } from "./UI/setCSRFtoken.js";
+import { getCSRFToken } from "./UI/set-CSRF-token.js";
 import { firstLoadUser } from "./UI/first-load-user.js";
 import { loadScreen } from "./UI/loading-screen.js";
 import { renderLogedPage } from "./UI/render-loged-page.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    getCSRFToken()
+    getCSRFToken(selectors)
     firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems)
     formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)

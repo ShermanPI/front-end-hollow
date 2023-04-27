@@ -5,12 +5,12 @@ class ElemToResize {
     }
 }
 
+const d = document;
+
 export const selectors = {
 
     characterInfo: new ElemToResize(".character-full-info", [".section-header", ".item-list"]),
-
     profileContainer: new ElemToResize(".profile-container", [".section-header"]),
-    
     adminContainer: new ElemToResize(".admin-container", [".section-header"]),
 
     addFormBtn: ".add-form-btn",
@@ -26,5 +26,9 @@ export const selectors = {
     header: ".section-header",
     profileControlPanel: ".profile-control-panel",
     favoritesTitle: ".favorite-title",
-    favoritesListContainer: ".favorite-list-container"
+    favoritesListContainer: ".favorite-list-container",
+
+    /// new selectors
+    allForms: d.querySelectorAll("form")
+
 };

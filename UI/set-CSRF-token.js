@@ -1,15 +1,13 @@
 const d = document
 
-export const getCSRFToken = ()=>{
-    const $forms = d.querySelectorAll("form")
-
+export const getCSRFToken = (selectors)=>{
     fetch("http://127.0.0.1:5000/csrf_token",{
         method: 'GET',
         credentials: 'include'
       })
         .then(jsonRes=> jsonRes.json())
         .then(res =>{
-            $forms.forEach(el =>{
+            selectors.allForms.forEach(el =>{
                 const csrfInput = d.createElement("input")
                 csrfInput.id = "csrf_token"
                 csrfInput.name = "csrf_token"
