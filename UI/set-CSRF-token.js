@@ -1,6 +1,7 @@
-const d = document
+import { selectors } from "../utils/selectors.js";
 
-export const getCSRFToken = (selectors)=>{
+
+export const getCSRFToken = ()=>{
     fetch("http://127.0.0.1:5000/csrf_token",{
         method: 'GET',
         credentials: 'include'
@@ -8,7 +9,7 @@ export const getCSRFToken = (selectors)=>{
         .then(jsonRes=> jsonRes.json())
         .then(res =>{
             selectors.allForms.forEach(el =>{
-                const csrfInput = d.createElement("input")
+                const csrfInput = document.createElement("input")
                 csrfInput.id = "csrf_token"
                 csrfInput.name = "csrf_token"
                 csrfInput.type = "hidden"

@@ -1,4 +1,4 @@
-import { selectors } from "./utils/dom-selectors.js";
+import { selectors } from "./utils/selectors.js";
 import { changeForms } from "./UI/activate-form.js";
 import { burgerMenu } from "./UI/burger-menu.js";
 import { renderCharacterItems } from "./UI/items-render-navigation.js";
@@ -20,7 +20,7 @@ import { loadScreen } from "./UI/loading-screen.js";
 import { renderLogedPage } from "./UI/render-loged-page.js";
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    getCSRFToken(selectors)
+    getCSRFToken()
     firstLoadUser(renderLogedPage, loadScreen, customAlert, editProfile, miniGame, renderCharacterItems)
     formUtils(renderLogedPage, customAlert, loadScreen, editProfile, miniGame, renderCharacterItems)
     navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
