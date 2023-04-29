@@ -1,3 +1,5 @@
+import { customAlert } from "./custom_alerts.js"
+
 const d = document,
     w = window,
     backendAPIRestUrl = "http://127.0.0.1:5000"
@@ -42,7 +44,7 @@ class HomeItem{
     }
 }
 
-export function renderCharacterItems(customAlert, isListAlreadyRendered, jsonUser = undefined){
+export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined){
 
     const $sections = document.querySelectorAll(".section-container"),
         $itemList = d.getElementById("home-list"),

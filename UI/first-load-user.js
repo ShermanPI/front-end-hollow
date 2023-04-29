@@ -1,36 +1,37 @@
-const d = document
+import { selectAll, classSelectorMaker, addClass, fetchFromApi, select, removeElement, removeClass } from "../utils/dom-functions.js"
+import { globalVariables } from "../utils/global-variables.js"
+import { selectors } from "../utils/selectors.js"
+import { renderLogedPage } from "./render-loged-page.js"
+import { loadScreen } from "./loading-screen.js"
+import { renderCharacterItems } from "./items-render-navigation.js"
 
-export function firstLoadUser(renderLogedPage, loadingScreen, customAlert, editProfile, miniGame, renderCharacterItems){
+
+export function firstLoadUser(){
     
-    const $adminOption = d.querySelectorAll(".admin-option")
+    const $adminOption = selectAll(classSelectorMaker(selectors.adminOption))
+    
     $adminOption.forEach(el=>{
-        el.classList.add("admin-option-hidden")
+        addClass(el, 'admin-option-hidden')
     })
 
-    const loginUser = ()=>{
-        fetch("http://127.0.0.1:5000/login",
-        {
-            credentials: 'include'
-        })
-        .then(res => res.ok? res.json() : res)
-        .then(json => {
-            if(json.username){
-                d.querySelector('.unlogged-screen').remove()
+    const loginUser = async (fetchFromApi)=>{
+        const response = await fetchFromApi
 
-                if(json.type == 'admin'){
-                    d.querySelectorAll(".admin-option-hidden").forEach(el =>{
-                        el.classList.remove("admin-option-hidden")
-                    })
-                }
-                renderLogedPage(json, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, false)
-            }else{
-                loadingScreen(false)
-                renderCharacterItems(customAlert, false) //render without the favorite icons
+        if(response.username){
+            removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
+
+            if(response.type == globalVariables.userAdminType){
+                selectAll(classSelectorMaker(selectors.adminOptionHidden)).forEach(el =>{
+                    removeClass(el, classSelectorMaker(selectors.adminOptionHidden))
+                })
             }
-        })
-        .catch(err=>console.error(err))
+
+            renderLogedPage(response, false)
+        }else{
+            loadScreen(false)
+            renderCharacterItems(false) //render without the favorite icons
+        }
     }
 
-    loginUser()
-
+    loginUser(fetchFromApi(globalVariables.loginEndpoint), {credentials: 'include'})
 }

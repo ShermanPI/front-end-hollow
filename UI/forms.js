@@ -1,3 +1,9 @@
+import { customAlert } from "./custom_alerts.js"
+import { renderLogedPage } from "./render-loged-page.js"
+import { classSelectorMaker, createFragment, select, selectById, append, addClass, create, addInnerHtml, elementContainsClass, removeClass, removeElement, selectAll, setImgSrc } from "../utils/dom-functions.js"
+import { selectors } from "../utils/selectors.js"
+import { globalVariables } from "../utils/global-variables.js"
+
 const d = document
 
 class editCharacterItem {
@@ -7,88 +13,89 @@ class editCharacterItem {
     }
 
     makeEditItem(){
-        const $characterEditItem = d.createElement("div"),
-            $characterEditImgContainer = d.createElement("div"),
-            $characterEditImg = d.createElement("img"),
-            $characterName = d.createElement("p")
+        const $characterEditItem = create('div'),
+            $characterEditImgContainer = create('div'),
+            $characterEditImg = create('img'),
+            $characterName = create('p')
         
-        $characterEditItem.classList.add("character-edit-item")
-        $characterEditImgContainer.classList.add("character-edit-img")
-        $characterName.classList.add("character-edit-name")
-        $characterEditImg.src = `http://127.0.0.1:5000/${this.img}`
-        $characterName.innerHTML = this.name
+        addClass($characterEditItem, selectors.characterEditItem)
+        addClass($characterEditImgContainer, selectors.characterEditImg)
+        addClass($characterName, selectors.characterEditName)
+        setImgSrc($characterEditImg, `${globalVariables.apiURL}${this.img}`)
+        addInnerHtml($characterName, this.name)
 
-        $characterEditImgContainer.appendChild($characterEditImg)
-        $characterEditItem.appendChild($characterEditImgContainer)
-        $characterEditItem.appendChild($characterName)
+        append($characterEditImgContainer, $characterEditImg)
+        append($characterEditItem, $characterEditImgContainer)
+        append($characterEditItem, $characterName)
 
         return $characterEditItem
     }
 }
 
-export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfile, minigame, renderCharacterItems){
-    const $registerForm = d.getElementById("sign-up-form"),
-        $loginForm = d.getElementById("login-form"),
-        $createCharacterForm = d.getElementById("add-character-form"),
-        $editCharacterForm = d.getElementById("edit-character-form"),
-        $registerFormContainer = d.querySelector(".register-form-container"),
-        $loginFormContainer = d.querySelector(".login-form-container")
+export function formUtils(){
+    const $registerForm = selectById(selectors.signUpForm),
+        $loginForm = selectById(selectors.loginForm),
+        $createCharacterForm = selectById(selectors.addCharacterForm),
+        $editCharacterForm = selectById(selectors.editCharacterForm),
+        $registerFormContainer = select(classSelectorMaker(selectors.registerFormContainer)),
+        $loginFormContainer = select(classSelectorMaker(selectors.loginFormContainer))
 
     let actualCharacters = []
 
     const renderEditCharacters = (listToRender) =>{
-        const $newEditListFragment = d.createDocumentFragment()
+        const $newEditListFragment = createFragment()
         listToRender.forEach(el=>{
             const newEditItem = new editCharacterItem(el.characterName, el.characterImgSrc)
-            $newEditListFragment.appendChild(newEditItem.makeEditItem())
+            append($newEditListFragment, newEditItem.makeEditItem())            
         })
 
-        d.querySelector(".character-edit-list").appendChild($newEditListFragment) 
+    
+        append(select(classSelectorMaker(selectors.characterEditList)), $newEditListFragment)
     }
 
     localStorage.setItem("isFormActivated", "false")
 
     const hideLoginForm = ()=>{
-        $loginFormContainer.classList.add("hide-form")
+        addClass($loginFormContainer, selectors.hideForm)
         $loginForm.reset()
     }
 
     const hideRegisterForm = ()=>{
-        $registerFormContainer.classList.add("hide-form")
+        addClass($registerFormContainer, selectors.hideForm)
         $registerForm.reset()
     }
 
     const setErrorField = (field, errorMessage)=>{
-        const $errorFieldAlert = d.createElement("div")
-        $errorFieldAlert.classList.add("error-field")
-        $errorFieldAlert.innerHTML = errorMessage
+
+        const $errorFieldAlert = create('div')
+        addClass($errorFieldAlert, selectors.errorField)
+        addInnerHtml($errorFieldAlert, errorMessage)
         
         const $errorFieldClone = $errorFieldAlert.cloneNode(true)
 
-        if(!field.classList.contains("error")){
-            field.classList.add("error")
+        if(!elementContainsClass(field, selectors.error)){
+            addClass(field, selectors.error)
             field.insertAdjacentElement("afterend", $errorFieldClone)   
         }
-        
     }
     
     const removeErrorField = (field)=>{
-        if(field.classList.contains("error")){
-            field.classList.remove("error")
-            field.parentNode.lastElementChild.remove()
+        if(elementContainsClass(field, selectors.error)){
+            removeClass(field, selectors.error)
+            removeElement(field.parentNode.lastElementChild)
         }
     }
 
     const removeAllErrorFields = ()=>{
-        const $errorFields = d.querySelectorAll(".error")
-        const $errorMessages = d.querySelectorAll(".error-field")
+        const $errorFields = selectAll(classSelectorMaker(selectors.error)) 
+        const $errorMessages = selectAll(classSelectorMaker(selectors.errorField))
 
         $errorFields.forEach(el=>{
-            el.classList.remove("error")
+            removeClass(el, selectors.error)
         })
 
         $errorMessages.forEach(el=>{
-            el.remove()
+            removeElement(el)
         })
 
     }
@@ -102,25 +109,25 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             }
             return false;
         }
-
         return true
     }
+
+
 
     const usernameRegex = /^[a-zA-Z0-9_-]{2,12}$/,
         emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         passwordRegex = /^[a-zA-Z0-9_$#-]{8,}$/
 
-    d.addEventListener("submit", (e)=>{
+    globalVariables.d.addEventListener("submit", (e)=>{
         e.preventDefault()
 
         if(e.target == $registerForm){
             // validations
             
-            
             // username Input Validation
 
             if(!validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                d.addEventListener("input", (e)=>{
+                globalVariables.d.addEventListener("input", (e)=>{
                     if(e.target == $registerForm.username){
                         if(validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
                            removeErrorField($registerForm.username)
@@ -132,7 +139,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             // email Validation
 
             if(!validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
-                d.addEventListener("input", (e)=>{
+                globalVariables.d.addEventListener("input", (e)=>{
                     if(e.target == $registerForm.email){
                         if(validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
                             removeErrorField($registerForm.email)
@@ -144,7 +151,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             // password Validation
 
             if(!validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
-                d.addEventListener("input", (e)=>{
+                globalVariables.d.addEventListener("input", (e)=>{
                     if(e.target == $registerForm.password){
                         if(validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
                             removeErrorField($registerForm.password)
@@ -156,7 +163,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             // confirm password Validation
             
             if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-                d.addEventListener("input", (e)=>{
+                globalVariables.d.addEventListener("input", (e)=>{
                     if(e.target == $registerForm.confirm_password){
                         if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
                             removeErrorField($registerForm.confirm_password)
@@ -181,8 +188,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                     removeAllErrorFields()
                     customAlert(undefined, `${json.message}`, {isFlashAlert: true})
                     hideRegisterForm()
-                    $loginFormContainer.classList.remove("hide-form")
-
+                    removeClass($loginFormContainer, selectors.hideForm)
                 })
                 .catch(error => {
                     if (error.status === 409) {
@@ -196,16 +202,14 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                     } else {
                         customAlert("", "An error occurred while submitting the form. Please refresh the page and try again.")
                     }
-                  })
-
+                })
             }
-            // $registerForm.reset() <==== need to activsate this after tests
         }
 
         if(e.target == $loginForm){
             // username Input Validation
             if(!validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                d.addEventListener("input", (e)=>{
+                globalVariables.d.addEventListener("input", (e)=>{
                     if(e.target == $loginForm.username){
                         if(validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
                            removeErrorField($loginForm.username)
@@ -216,7 +220,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
 
             // password Validation
             if(!validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
-                d.addEventListener("input", (e)=>{
+                globalVariables.d.addEventListener("input", (e)=>{
                     if(e.target == $loginForm.password){
                         if(validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
                             removeErrorField($loginForm.password)
@@ -226,7 +230,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             }
 
             if(validateField(usernameRegex, $loginForm.username) && validateField(passwordRegex, $loginForm.password)){
-                fetch("http://127.0.0.1:5000/login",
+                fetch(`${globalVariables.apiURL}${globalVariables.loginEndpoint}`,
                 {
                     'method': 'post',
                     'Content-type': 'application/x-www-form-urlencoded',
@@ -235,8 +239,8 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
                 })
                 .then(res =>res.ok? res.json() : Promise.reject(res))
                 .then(json => {
-                    if(d.querySelector('.unlogged-screen')) d.querySelector('.unlogged-screen').remove()
-                    renderLogedPage(json, loadingScreen, editProfile, customAlert, minigame, renderCharacterItems, true)
+                    if(select(classSelectorMaker(selectors.unloggedScreen)))  removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
+                    renderLogedPage(json, true)
                     removeAllErrorFields()
                     hideLoginForm()
                 })
@@ -257,7 +261,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
         }
 
         if(e.target == $createCharacterForm){
-            fetch('http://127.0.0.1:5000/characters', {
+            fetch(`${globalVariables.apiURL}characters`, {
                 method: "POST",
                 credentials: 'include',
                 body: new FormData($createCharacterForm)
@@ -284,7 +288,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
         }
 
         if(e.target == $editCharacterForm){
-            fetch(`http://127.0.0.1:5000/character/${$editCharacterForm.characterEditingName.value}`, 
+            fetch(`${globalVariables.apiURL}/character/${$editCharacterForm.characterEditingName.value}`, 
             {
                 method: "PUT",
                 credentials: 'include',
@@ -319,7 +323,7 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
     })
 
 
-    d.addEventListener("click",(e)=>{
+    globalVariables.d.addEventListener("click",(e)=>{
 
         if(e.target.matches(".exit-register-form-icon img")){
             localStorage.setItem("isFormActivated", "false")
@@ -330,22 +334,22 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
 
         if(e.target.matches(".session-form-container")){
             localStorage.setItem("isFormActivated", "false")
-            $registerFormContainer.classList.add("hide-form")
-            $loginFormContainer.classList.add("hide-form")
+            addClass($registerFormContainer, selectors.hideForm)
+            addClass($loginFormContainer, selectors.hideForm)
         }
 
-        if(e.target.matches(".signUp-btn") || e.target.matches(".create-account-span") || e.target.matches(".register-anchor") || e.target.matches(".signup-unlogged-btn")){
+        if(e.target.matches(classSelectorMaker(selectors.signUpBtn)) || e.target.matches(classSelectorMaker(selectors.createAccountSpan)) || e.target.matches(classSelectorMaker(selectors.registerAnchor)) || e.target.matches(classSelectorMaker(selectors.signupUnloggedBtn))){
             localStorage.setItem("isFormActivated", "true")
             removeAllErrorFields()
             hideLoginForm()
-            $registerFormContainer.classList.remove("hide-form")
+            removeClass($registerFormContainer, selectors.hideForm)
         }
 
-        if(e.target.matches(".login-btn") || e.target.matches(".login-span") || e.target.matches(".login-anchor") || e.target.matches('.login-unlogged-btn')){
+        if(e.target.matches(classSelectorMaker(selectors.loginBtn)) || e.target.matches(classSelectorMaker(selectors.loginSpan)) || e.target.matches(classSelectorMaker(selectors.loginAnchor)) || e.target.matches(classSelectorMaker(selectors.loginUnloggedBtn))){
             localStorage.setItem("isFormActivated", "true")
             removeAllErrorFields()
             hideRegisterForm()
-            $loginFormContainer.classList.remove("hide-form")
+            removeClass($loginFormContainer, selectors.hideForm)
         }
     })
 
@@ -358,21 +362,21 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
     .then(res => res.ok? res.json() : Promise.reject(res))
     .then(charactersJson => {
         actualCharacters = charactersJson
-        const $characterEditList = d.querySelector(".character-edit-list")
+        const $characterEditList = select(classSelectorMaker(selectors.characterEditList))
         
-        d.addEventListener("input", (e)=>{
+        globalVariables.d.addEventListener("input", (e)=>{
             if(e.target == $editCharacterForm.characterEditingName){
 
                 if($editCharacterForm.characterEditingName.value == ""){
-                    $characterEditList.classList.add("hide-edit-list")
+                    addClass($characterEditList, selectors.hideEditList)
                     $editCharacterForm.reset()
                     return;
                 }
 
-                $characterEditList.classList.remove("hide-edit-list")
+                removeClass($characterEditList, selectors.hideEditList)
 
                 let inputValue = $editCharacterForm.characterEditingName.value,
-                    $characterEditItem = d.querySelectorAll(".character-edit-item")
+                    $characterEditItem = selectAll(classSelectorMaker(selectors.characterEditItem))
                 
                 $characterEditItem.forEach(el=>el.remove())
 
@@ -384,13 +388,12 @@ export function formUtils(renderLogedPage, customAlert, loadingScreen, editProfi
             }
         })
 
-        d.addEventListener("click", (e)=>{
+        globalVariables.d.addEventListener("click", (e)=>{
             if(e.target.matches(".character-edit-item")){
                 let characterName = e.target.querySelector(".character-edit-name").innerHTML
                 
-                $characterEditList.classList.add("hide-edit-list")
+                addClass($characterEditList, selectors.hideEditList)
                 $editCharacterForm.characterEditingName.value = characterName
-                
 
                 let filteredArr = actualCharacters.filter(item =>{
                     return item.characterName.match(new RegExp(characterName, "i"));

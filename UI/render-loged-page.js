@@ -1,6 +1,12 @@
+import { loadScreen } from "./loading-screen.js"
+import { editProfile } from "./edit_profile.js"
+import { customAlert } from "./custom_alerts.js"
+import { miniGame } from "./mini-game.js"
+import { renderCharacterItems } from "./items-render-navigation.js"
+
 const d = document
 
-export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert, miniGame, renderCharacterItems, isRenderingFromForm)=>{
+export const renderLogedPage = (userObj, isRenderingFromForm)=>{
     
     if(userObj.type == "admin"){
         const $adminSections = d.querySelectorAll(".admin-option-hidden")
@@ -48,9 +54,9 @@ export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert
     
     // second step - render the favorite items
     if(isRenderingFromForm){
-        renderCharacterItems(customAlert, true, userObj)
+        renderCharacterItems(true, userObj)
     }else{
-        renderCharacterItems(customAlert, false, userObj)
+        renderCharacterItems(false, userObj)
     }
 
     // third step - render profile favorite Items (is renderind in renderCharacterItems)
@@ -59,5 +65,5 @@ export const renderLogedPage = (userObj, loadingScreen, editProfile, customAlert
     // fourth step - this render the HScore and time in the DOM, and the pfpsUnlocked
     miniGame(userObj, customAlert)
 
-    loadingScreen(false)
+    loadScreen(false)
 }
