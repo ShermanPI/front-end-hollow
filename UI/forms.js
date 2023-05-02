@@ -1,10 +1,10 @@
 import { customAlert } from "./custom_alerts.js"
 import { renderLogedPage } from "./render-loged-page.js"
-import { classSelectorMaker, createFragment, select, selectById, append, addClass, create, addInnerHtml, elementContainsClass, removeClass, removeElement, selectAll, setImgSrc } from "../utils/dom-functions.js"
+import { classSelectorMaker, createFragment, select, selectById, append, addClass, create, elementContainsClass, removeClass, removeElement, selectAll, fetchFromApi } from "../utils/dom-functions.js"
 import { selectors } from "../utils/selectors.js"
 import { globalVariables } from "../utils/global-variables.js"
 
-const d = document
+const d = globalVariables.d
 
 class editCharacterItem {
     constructor(name, img){
@@ -21,8 +21,8 @@ class editCharacterItem {
         addClass($characterEditItem, selectors.characterEditItem)
         addClass($characterEditImgContainer, selectors.characterEditImg)
         addClass($characterName, selectors.characterEditName)
-        setImgSrc($characterEditImg, `${globalVariables.apiURL}${this.img}`)
-        addInnerHtml($characterName, this.name)
+        $characterEditImg.src = `${globalVariables.apiURL}${this.img}`
+        $characterName.innerHTML = this.name
 
         append($characterEditImgContainer, $characterEditImg)
         append($characterEditItem, $characterEditImgContainer)
@@ -32,7 +32,7 @@ class editCharacterItem {
     }
 }
 
-export function formUtils(){
+export function forms(){
     const $registerForm = selectById(selectors.signUpForm),
         $loginForm = selectById(selectors.loginForm),
         $createCharacterForm = selectById(selectors.addCharacterForm),
@@ -69,7 +69,7 @@ export function formUtils(){
 
         const $errorFieldAlert = create('div')
         addClass($errorFieldAlert, selectors.errorField)
-        addInnerHtml($errorFieldAlert, errorMessage)
+        $errorFieldAlert.innerHTML = errorMessage
         
         const $errorFieldClone = $errorFieldAlert.cloneNode(true)
 
@@ -172,18 +172,10 @@ export function formUtils(){
                 })
             }
 
-            // fetch
-            if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){
-                fetch("http://127.0.0.1:5000/register",
-                {
-                    'method': "POST",
-                    'Content-type': 'application/x-www-form-urlencoded',
-                    credentials: 'include',
-                    body: new FormData($registerForm)
-                })
-                .then(res =>{
-                    return res.ok? res.json() : Promise.reject(res)
-                })
+            // send the information
+            if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){   
+                                
+                fetchFromApi(globalVariables.registerEndpoint, {method: 'POST', headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($registerForm)})
                 .then(json => {
                     removeAllErrorFields()
                     customAlert(undefined, `${json.message}`, {isFlashAlert: true})
@@ -230,14 +222,7 @@ export function formUtils(){
             }
 
             if(validateField(usernameRegex, $loginForm.username) && validateField(passwordRegex, $loginForm.password)){
-                fetch(`${globalVariables.apiURL}${globalVariables.loginEndpoint}`,
-                {
-                    'method': 'post',
-                    'Content-type': 'application/x-www-form-urlencoded',
-                    credentials: 'include',
-                    'body': new FormData($loginForm)
-                })
-                .then(res =>res.ok? res.json() : Promise.reject(res))
+                fetchFromApi(globalVariables.loginEndpoint, { method: 'POST', headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($loginForm) })
                 .then(json => {
                     if(select(classSelectorMaker(selectors.unloggedScreen)))  removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
                     renderLogedPage(json, true)
@@ -261,12 +246,7 @@ export function formUtils(){
         }
 
         if(e.target == $createCharacterForm){
-            fetch(`${globalVariables.apiURL}characters`, {
-                method: "POST",
-                credentials: 'include',
-                body: new FormData($createCharacterForm)
-            })
-            .then(res =>res.ok? res.json() : Promise.reject(res))
+            fetchFromApi(globalVariables.createCharacterEndPoint, {method: "POST", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($createCharacterForm)})
             .then(json => {
                 actualCharacters.push(json)
                 customAlert(undefined, `A new character has been added`, {isFlashAlert: true})
@@ -288,13 +268,7 @@ export function formUtils(){
         }
 
         if(e.target == $editCharacterForm){
-            fetch(`${globalVariables.apiURL}/character/${$editCharacterForm.characterEditingName.value}`, 
-            {
-                method: "PUT",
-                credentials: 'include',
-                body: new FormData($editCharacterForm)
-            })
-            .then(res =>res.ok? res.json() : Promise.reject(res))
+            fetchFromApi(`character/${$editCharacterForm.characterEditingName.value}`, {method: "PUT", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($editCharacterForm)})
             .then(json => {
                 actualCharacters.forEach((el, index)=>{
                     if(el._id.$oid == json._id.$oid){
@@ -353,13 +327,7 @@ export function formUtils(){
         }
     })
 
-    fetch("http://127.0.0.1:5000/characters",
-    {
-        'method': "GET",
-        'Content-type': 'application/x-www-form-urlencoded',
-        credentials: 'include'
-    })
-    .then(res => res.ok? res.json() : Promise.reject(res))
+    fetchFromApi(globalVariables.getCharacterEndPoint)
     .then(charactersJson => {
         actualCharacters = charactersJson
         const $characterEditList = select(classSelectorMaker(selectors.characterEditList))
@@ -389,8 +357,8 @@ export function formUtils(){
         })
 
         globalVariables.d.addEventListener("click", (e)=>{
-            if(e.target.matches(".character-edit-item")){
-                let characterName = e.target.querySelector(".character-edit-name").innerHTML
+            if(e.target.matches(classSelectorMaker(selectors.characterEditItem))){
+                let characterName = select(classSelectorMaker(selectors.characterEditName)).innerHTML
                 
                 addClass($characterEditList, selectors.hideEditList)
                 $editCharacterForm.characterEditingName.value = characterName

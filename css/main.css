@@ -734,7 +734,9 @@ input[type="submit"]:hover{
         z-index: 4;
         pointer-events: none;
     }
+    
     .corner-img{
+        user-select: none;
         width: 11%;
         position: absolute;
         z-index: 3;

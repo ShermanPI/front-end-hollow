@@ -11,12 +11,12 @@ export function firstLoadUser(){
     const $adminOption = selectAll(classSelectorMaker(selectors.adminOption))
     
     $adminOption.forEach(el=>{
-        addClass(el, 'admin-option-hidden')
+        addClass(el, selectors.adminOptionHidden)
     })
 
-    const loginUser = async (fetchFromApi)=>{
-        const response = await fetchFromApi
-
+    
+    fetchFromApi(globalVariables.loginEndpoint)
+    .then(response => {
         if(response.username){
             removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
 
@@ -29,9 +29,7 @@ export function firstLoadUser(){
             renderLogedPage(response, false)
         }else{
             loadScreen(false)
-            renderCharacterItems(false) //render without the favorite icons
+            renderCharacterItems(false) //render home items without the favorite icon
         }
-    }
-
-    loginUser(fetchFromApi(globalVariables.loginEndpoint), {credentials: 'include'})
+    })
 }

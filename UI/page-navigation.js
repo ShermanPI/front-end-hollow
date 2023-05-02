@@ -1,13 +1,17 @@
+import { addClass, classSelectorMaker, elementContainsClass, removeClass, select, selectAll, selectById } from "../utils/dom-functions.js"
+import { globalVariables } from "../utils/global-variables.js"
+import { selectors } from "../utils/selectors.js"
+
 const d = document,
     w = window
 
-export function navigatePages(leftArrowSelector, rightArrowSelector){
-    const $sections = document.querySelectorAll(".section-container"),
-        $leftArrow = d.querySelector(leftArrowSelector),
-        $rightArrow = d.querySelector(rightArrowSelector),
-        $nextPageIndicator = d.querySelector(".next-page"),
-        $prevPageIndicator = d.querySelector(".prev-page"),
-        $actualPageTitle = d.querySelector(".actual-page")
+export function navigatePages(){
+    const $sections = selectAll(classSelectorMaker(selectors.sectionContainer)),
+        $leftArrow = select(classSelectorMaker(selectors.leftFullArrow)),
+        $rightArrow = select(classSelectorMaker(selectors.rightFullArrow)),
+        $nextPageIndicator = select(classSelectorMaker(selectors.nextPageIndicator)),
+        $prevPageIndicator = select(classSelectorMaker(selectors.prevPageIndicator)),
+        $actualPageTitle = select(classSelectorMaker(selectors.actualPage))
 
     for(let i = 0; i <=$sections.length - 1; i++){
         $sections[i].setAttribute("data-page-number", i)
@@ -56,7 +60,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
     const showSideSections = ()=>{
         let $sections = document.querySelectorAll(".section-container")
 
-        if($sections[parseInt(currentIndex) + 1] && !$sections[(parseInt(currentIndex) + 1)].classList.contains("admin-option-hidden")){
+        if($sections[parseInt(currentIndex) + 1] && !elementContainsClass($sections[(parseInt(currentIndex) + 1)], selectors.adminOptionHidden)){
             $nextPageIndicator.innerHTML = 
             `${$sections[parseInt(currentIndex) + 1].id.charAt(0).toUpperCase() + $sections[parseInt(currentIndex) + 1].id.slice(1)}
             <img src="img/UI/Expandarrow.png" alt="">`
@@ -108,7 +112,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
 
     w.addEventListener("keydown", (e)=>{
         
-        if(e.key == "ArrowRight"){
+        if(e.key == globalVariables.keyBoardRightKey){
             if(localStorage.getItem("isFormActivated") == "false"){
                 e.preventDefault()
                 animateArrow($rightArrow)
@@ -116,7 +120,7 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
             }
         }
 
-        if(e.key == "ArrowLeft"){
+        if(e.key == globalVariables.keyBoardleftKey){
             if(localStorage.getItem("isFormActivated") == "false"){
                 e.preventDefault()
                 animateArrow($leftArrow)
@@ -125,22 +129,21 @@ export function navigatePages(leftArrowSelector, rightArrowSelector){
         }
 
     })
-
-    const menuItems = d.querySelectorAll(".page-menu-anchor") 
-
+    
+    
     d.addEventListener("click", (e)=>{
+        const menuItems = selectAll(classSelectorMaker(selectors.pageMenuAnchor))
 
-        if(e.target.matches(".page-menu-anchor")){
+        if(e.target.matches(classSelectorMaker(selectors.pageMenuAnchor))){
             e.preventDefault()
             
-            let pageToMoveInto = document.getElementById(e.target.getAttribute("href").slice(1))
+            let pageToMoveInto = selectById(e.target.getAttribute("href").slice(1))
 
-            // removing the hover from all items
             menuItems.forEach(el=>{
-                el.classList.remove("menu-item-selected")
+                removeClass(el, selectors.menuItemSelected)
             })
 
-            e.target.classList.add("menu-item-selected")
+            addClass(e.target, selectors.menuItemSelected)
             $sections[pageToMoveInto.getAttribute("data-page-number")].scrollIntoView();
         }
 

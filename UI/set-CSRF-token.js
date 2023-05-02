@@ -3,11 +3,7 @@ import { globalVariables } from "../utils/global-variables.js";
 import { fetchFromApi, create, append } from "../utils/dom-functions.js";
 
 export const getCSRFToken = ()=>{
-    fetch("http://127.0.0.1:5000/csrf_token",{
-        method: 'GET',
-        credentials: 'include'
-      })
-    .then(jsonRes=> jsonRes.json())
+    fetchFromApi(globalVariables.csrf_tokenEndpoint)
     .then(response =>{
         selectors.allForms.forEach(el =>{
             const csrfInput = create("input")
@@ -18,6 +14,5 @@ export const getCSRFToken = ()=>{
             append(el, csrfInput)
         })
     })
-    .catch(error=> console.error(error))
 
 }

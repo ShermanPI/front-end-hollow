@@ -9,16 +9,16 @@ import { resizeItemToHeight } from "./UI/resize-elem-height.js";
 import { bckChanger } from "./UI/background-changer.js";
 import { controlPlaylist } from "./UI/playlist.js";
 import { minigameExplodeParticles } from "./UI/minigame-particles.js"
-import { formUtils } from "./UI/forms.js";
+import { forms } from "./UI/forms.js";
 import { getCSRFToken } from "./UI/set-CSRF-token.js";
 import { firstLoadUser } from "./UI/first-load-user.js";
 
 
 window.addEventListener("DOMContentLoaded", ()=>{
-    getCSRFToken() // ✅ - (using fetch)
+    getCSRFToken() // ✅
     firstLoadUser() // ✅
-    formUtils() // ✅ (using fetch)
-    navigatePages(selectors.leftFullArrow, selectors.rightFullArrow)
+    forms() // ✅
+    navigatePages() // ✅
     changeForms(selectors.editFormBtn, selectors.addFormBtn, selectors.editForm, selectors.addForm);
     burgerMenu(selectors.menuBtn, selectors.menu)
     markAsFavorite(selectors.favoriteIcon)

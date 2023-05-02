@@ -1,22 +1,22 @@
 import { globalVariables } from "./global-variables.js";
 
-export const fetchFromApi = async (endpoint = "", options = {}, errorFunction= ()=>{} ) => {
-    // const {
-    //   method = "GET",
-    //   headers = {},
-    // } = options;
 
-    console.log(options)
-    try {
-        const response = await fetch(`${globalVariables.apiURL}${endpoint}`,
-            options
-        );
-        const json = await response.json();
-        return json;
-    } catch (err) {
-        errorFunction(err)
-        console.error(err);
-    }
+export const fetchFromApi = async (endpoint = "", options = {}) => {
+    const {
+        method = "GET",
+        headers = {},
+        body = null
+    } = options;
+
+    const response = await fetch(`${globalVariables.apiURL}/${endpoint}`, {
+        method,
+        'Content-Type': headers['Content-Type'] ? headers['Content-Type'] : null, // I make this inside options fetch's object because I need to put it mannually to use the FormData object type to the browser can parser it
+        credentials: 'include',
+        body: body
+    });
+    
+    const payload = response.ok ? response.json() : Promise.reject(response);
+    return payload;
 };
 
 export const classSelectorMaker = (selector) => {
@@ -65,14 +65,6 @@ export const removeClass = (element, className) => {
 
 export const toggleClass = (element, className) => {
     return element.classList.toggle(className);
-};
-
-export const addInnerHtml = (element, inner) => {
-    return element.innerHTML = inner;
-};
-
-export const setImgSrc = (imgElement, src) => {
-    return imgElement.src = src;
 };
 
 export const elementContainsClass = (element, elClass) => {

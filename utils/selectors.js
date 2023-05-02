@@ -20,8 +20,7 @@ export const selectors = Object.freeze({
     menuBtn: ".burger-icon",
     menu: ".menu",
 
-    leftFullArrow: ".left-full-arrow",
-    rightFullArrow: ".right-full-arrow",
+
     favoriteIcon: ".favorite-icon img",
     header: ".section-header",
     profileControlPanel: ".profile-control-panel",
@@ -54,6 +53,14 @@ export const selectors = Object.freeze({
     loginSpan: 'login-span',
     loginAnchor: 'login-anchor',
     loginUnloggedBtn: 'login-unlogged-btn',
-    hideEditList: 'hide-edit-list'
+    hideEditList: 'hide-edit-list',
+    leftFullArrow: "left-full-arrow",
+    rightFullArrow: "right-full-arrow",
+    sectionContainer: 'section-container',
+    nextPageIndicator: 'next-page',
+    prevPageIndicator: 'prev-page',
+    actualPage: 'actual-page',
+    pageMenuAnchor: 'page-menu-anchor',
+    menuItemSelected: "menu-item-selected"
 
 });
