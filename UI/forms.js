@@ -175,7 +175,7 @@ export function forms(){
             // send the information
             if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){   
                                 
-                fetchFromApi(globalVariables.registerEndpoint, {method: 'POST', headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($registerForm)})
+                fetchFromApi(globalVariables.registerEndpoint, {method: 'POST', body: new FormData($registerForm)})
                 .then(json => {
                     removeAllErrorFields()
                     customAlert(undefined, `${json.message}`, {isFlashAlert: true})
@@ -222,7 +222,7 @@ export function forms(){
             }
 
             if(validateField(usernameRegex, $loginForm.username) && validateField(passwordRegex, $loginForm.password)){
-                fetchFromApi(globalVariables.loginEndpoint, { method: 'POST', headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($loginForm) })
+                fetchFromApi(globalVariables.loginEndpoint, { method: 'POST', body: new FormData($loginForm) })
                 .then(json => {
                     if(select(classSelectorMaker(selectors.unloggedScreen)))  removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
                     renderLogedPage(json, true)
@@ -246,7 +246,7 @@ export function forms(){
         }
 
         if(e.target == $createCharacterForm){
-            fetchFromApi(globalVariables.createCharacterEndPoint, {method: "POST", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($createCharacterForm)})
+            fetchFromApi(globalVariables.createCharacterEndPoint, {method: "POST", body: new FormData($createCharacterForm)})
             .then(json => {
                 actualCharacters.push(json)
                 customAlert(undefined, `A new character has been added`, {isFlashAlert: true})
@@ -268,7 +268,8 @@ export function forms(){
         }
 
         if(e.target == $editCharacterForm){
-            fetchFromApi(`character/${$editCharacterForm.characterEditingName.value}`, {method: "PUT", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: new FormData($editCharacterForm)})
+            const formData = new FormData($editCharacterForm)
+            fetchFromApi(`character/${$editCharacterForm.characterEditingName.value}`, {method: "PUT", body: formData})
             .then(json => {
                 actualCharacters.forEach((el, index)=>{
                     if(el._id.$oid == json._id.$oid){
@@ -358,8 +359,9 @@ export function forms(){
 
         globalVariables.d.addEventListener("click", (e)=>{
             if(e.target.matches(classSelectorMaker(selectors.characterEditItem))){
-                let characterName = select(classSelectorMaker(selectors.characterEditName)).innerHTML
-                
+                console.log(e.target)
+                const characterName = e.target.querySelector(classSelectorMaker(selectors.characterEditName)).innerHTML
+                console.log(characterName)
                 addClass($characterEditList, selectors.hideEditList)
                 $editCharacterForm.characterEditingName.value = characterName
 

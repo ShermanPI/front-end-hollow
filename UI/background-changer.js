@@ -1,7 +1,10 @@
+import { classSelectorMaker, select, selectAll } from "../utils/dom-functions.js";
+import { selectors } from "../utils/selectors.js";
+
 export function bckChanger(){
     const biomeNames = ["Dirtmouth", "Howling Cliffs", "Forgotten Crossroads", "City of Tears", "Crystal Peak", "Resting Grounds", "The Hive", "Greenpath", "Kingdom's Edge", "Royal Waterways", "Incredible Zote"],
-        $background = document.querySelector(".general-background img"),
-        $backgroundName = document.querySelectorAll(".background-name")
+        $background = select(classSelectorMaker(selectors.generalBackgroundImg)),
+        $backgroundName = selectAll(classSelectorMaker(selectors.backgroundName))
     
     let actualBck = 0;
 
@@ -15,7 +18,7 @@ export function bckChanger(){
     $background.src = `img/background/background-${actualBck}.jpg`;
 
     document.addEventListener("click", (e)=>{
-        if(e.target.matches(".previous-bck-btn img")){
+        if(e.target.matches(classSelectorMaker(selectors.previousBckBtnImg))){
             if(actualBck > 0){
                 actualBck--;
             }else if(actualBck == 0){
@@ -24,13 +27,14 @@ export function bckChanger(){
 
             localStorage.setItem("background-id", actualBck.toString())
             $background.src = `img/background/background-${actualBck}.jpg`
+            $background.alt = biomeNames[actualBck]
             $backgroundName.forEach((el)=>{
                 el.innerHTML = biomeNames[actualBck]
             })
 
         }
 
-        if(e.target.matches(".next-bck-btn img")){
+        if(e.target.matches(classSelectorMaker(selectors.nextBckBtnImg))){
             if(actualBck == biomeNames.length - 1){
                 actualBck = 0;
             }else if(actualBck < biomeNames.length){

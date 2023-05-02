@@ -1,5 +1,0 @@
-export function markAsFavorite(btnSelector){
-
-
-    
-}

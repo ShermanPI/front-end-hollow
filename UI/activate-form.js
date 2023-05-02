@@ -1,28 +1,27 @@
-const d = document,
-    w = window;
+import { addClass, classSelectorMaker, removeClass, select } from "../utils/dom-functions.js";
+import { globalVariables } from "../utils/global-variables.js";
+import { selectors } from "../utils/selectors.js";
 
-export function changeForms(editFormBtn, addFormBtn, editForm, addForm){
-    const $editFormBtn = d.querySelector(editFormBtn),
-        $addFormBtn = d.querySelector(addFormBtn), 
-        $editForm = d.querySelector(editForm),
-        $addForm = d.querySelector(addForm)
+export function changeForms(){
+    const $editFormBtn = select(classSelectorMaker(selectors.editFormBtn)),
+        $addFormBtn = select(classSelectorMaker(selectors.addFormBtn)), 
+        $editForm = select(classSelectorMaker(selectors.editForm)),
+        $addForm = select(classSelectorMaker(selectors.addForm))
 
-    d.addEventListener("click", (e)=>{
+    globalVariables.d.addEventListener("click", (e)=>{
         if(e.target == $editFormBtn){
-            $editFormBtn.classList.add("btn-activated");
-            $editForm.classList.remove("hide-form");
+            addClass($editFormBtn, selectors.btnActivated)
+            removeClass($editForm, selectors.hideForm)
             
-            $addForm.classList.add("hide-form");
-            $addFormBtn.classList.remove("btn-activated");
+            addClass($addForm, selectors.hideForm)
+            removeClass($addFormBtn, selectors.btnActivated)
         }
         if(e.target == $addFormBtn){
-            $addFormBtn.classList.add("btn-activated");
-            $addForm.classList.remove("hide-form");
+            addClass($addFormBtn, selectors.btnActivated)
+            removeClass($addForm, selectors.hideForm)
             
-            $editForm.classList.add("hide-form");
-            $editFormBtn.classList.remove("btn-activated");
+            addClass($editForm, selectors.hideForm)
+            removeClass($editFormBtn, selectors.btnActivated)
         }
-
     })
-    
 }

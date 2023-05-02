@@ -10,7 +10,7 @@ export const fetchFromApi = async (endpoint = "", options = {}) => {
 
     const response = await fetch(`${globalVariables.apiURL}/${endpoint}`, {
         method,
-        'Content-Type': headers['Content-Type'] ? headers['Content-Type'] : null, // I make this inside options fetch's object because I need to put it mannually to use the FormData object type to the browser can parser it
+        headers, 
         credentials: 'include',
         body: body
     });

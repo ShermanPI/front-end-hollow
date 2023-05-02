@@ -1,54 +1,56 @@
-const d = document
+import { addClass, append, classSelectorMaker, create, removeElement, select } from "../utils/dom-functions.js"
+import { globalVariables } from "../utils/global-variables.js"
+import { selectors } from "../utils/selectors.js"
 
 export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️", alertOptions = {}){
     if(alertOptions.isFlashAlert){
 
-        if(d.querySelector(".flash-alert")){
-            d.querySelector(".flash-alert").remove()
+        if(select(classSelectorMaker(selectors.flashAlert))){
+            removeElement(select(classSelectorMaker(selectors.flashAlert)))
         }
 
-        const $flashAlertContainer = d.createElement("div"),
-            $flashAlertImgContainer = d.createElement("div"),
-            $flashAlertImg = d.createElement("img"),
-            $flashMessage = d.createElement("p")
+        const $flashAlertContainer = create('div'),
+            $flashAlertImgContainer = create("div"),
+            $flashAlertImg = create("img"),
+            $flashMessage = create("p")
         
-        $flashAlertContainer.classList.add("flash-alert")
-        $flashAlertImgContainer.classList.add("flash-alert-icon-container")
-        $flashAlertImgContainer.appendChild($flashAlertImg)
+        addClass($flashAlertContainer, selectors.flashAlert)
+        addClass($flashAlertImgContainer, selectors.flashAlertIconContainer)
+        append($flashAlertImgContainer, $flashAlertImg)
         $flashAlertImg.src = "img/icons/mask-shard.png"
-        $flashMessage.classList.add("flash-alert-message")
+        addClass($flashMessage, selectors.flashAlertMessage)
         $flashMessage.innerHTML = alertMsg
 
-        $flashAlertContainer.appendChild($flashAlertImgContainer)
-        $flashAlertContainer.appendChild($flashMessage)
-        $flashAlertContainer.appendChild($flashAlertImgContainer.cloneNode(true))
-        d.querySelector("body").prepend($flashAlertContainer)
-
+        append($flashAlertContainer, $flashAlertImgContainer)
+        append($flashAlertContainer, $flashMessage)
+        append($flashAlertContainer, $flashAlertImgContainer.cloneNode(true))
+        select(selectors.body).prepend($flashAlertContainer)
+        
         setTimeout(()=>{
-            if(d.querySelector(".flash-alert")){
-                d.querySelector(".flash-alert").remove()
+            if(select(classSelectorMaker(selectors.flashAlert))){
+                removeElement(select(classSelectorMaker(selectors.flashAlert)))
             }
         }, 3000)
         return;
     }
 
-    const $alertBackOverlay = d.createElement("div"),
-        $alertContainer = d.createElement("div"),
-        $alertTitle = d.createElement("b"),
-        $alertMsg = d.createElement("p"),
-        $alertImgTop = d.createElement("img"),
-        $alertImgBottom = d.createElement("img"),
-        $alertOkBtn = d.createElement("b"),
-        $body = d.querySelector("body")
+    const $alertBackOverlay = create("div"),
+        $alertContainer = create("div"),
+        $alertTitle = create("b"),
+        $alertMsg = create("p"),
+        $alertImgTop = create("img"),
+        $alertImgBottom = create("img"),
+        $alertOkBtn = create("b"),
+        $body = select(selectors.body)
 
     $alertImgTop.src = "img/icons/Dialogue_Top.png"
     $alertImgBottom.src = "img/icons/Dialogue_Bottom.png"
 
-    $alertBackOverlay.classList.add("page-overlay")
-    $alertContainer.classList.add("alert-container")
-    $alertTitle.classList.add("alert-title")
-    $alertMsg.classList.add("alert-msg")
-    $alertOkBtn.classList.add("alert-ok-btn")
+    addClass($alertBackOverlay, selectors.pageOverlay)
+    addClass($alertContainer, selectors.alertcontainer)
+    addClass($alertTitle, selectors.alertTitle)
+    addClass($alertMsg, selectors.alertMsg)
+    addClass($alertOkBtn, selectors.alertOkBtn)
     $alertOkBtn.innerHTML = "Accept"
 
     if(title){
@@ -56,32 +58,32 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
     }
     $alertMsg.innerHTML = alertMsg
 
-    $alertBackOverlay.appendChild($alertContainer)
+    append($alertBackOverlay, $alertContainer)
 
     let alertContainerChilds = [$alertImgTop, $alertImgBottom, $alertTitle, $alertMsg]
 
     if(alertOptions.isConfirmType){
         const $cancelBtnClone = $alertOkBtn.cloneNode()
-        const $btnsContainer = d.createElement("div")
+        const $btnsContainer = create("div")
         $alertOkBtn.innerHTML = "Yes"
         $cancelBtnClone.innerHTML = "No"
-        $btnsContainer.appendChild($alertOkBtn)
-        $btnsContainer.appendChild($cancelBtnClone)
-        $btnsContainer.classList.add("confirm-btn-container")
+        append($btnsContainer, $alertOkBtn)
+        append($btnsContainer, $cancelBtnClone)
+        addClass($btnsContainer, selectors.confirmBtnContainer)
 
         alertContainerChilds = [...alertContainerChilds, $btnsContainer]
         
-        d.addEventListener("click", (e)=>{
+        globalVariables.d.addEventListener("click", (e)=>{
             if(e.target == $alertOkBtn){
                 alertOptions.yesFunction()
-                $alertBackOverlay.remove()
+                removeElement($alertBackOverlay)
             }
 
             if(e.target == $cancelBtnClone){
                 if(alertOptions.noFunction){
                     alertOptions.noFunction()
                 }else{
-                    $alertBackOverlay.remove()
+                    removeElement($alertBackOverlay)
                 }
             }
         })
@@ -89,15 +91,15 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
     }else{
         alertContainerChilds = [...alertContainerChilds, $alertOkBtn]
 
-        d.addEventListener("click", (e)=>{
+        globalVariables.d.addEventListener("click", (e)=>{
             if(e.target == $alertOkBtn){
-                $alertBackOverlay.remove()
+                removeElement($alertBackOverlay)
             }
         })
     }
 
     alertContainerChilds.forEach(el=>{
-        $alertContainer.appendChild(el)
+        append($alertContainer, el)
     })
 
     $body.insertBefore($alertBackOverlay, $body.firstElementChild)

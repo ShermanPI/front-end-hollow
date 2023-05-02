@@ -926,3 +926,7 @@
     background-color: #000000;
     color: var(--pure-color);
 }
+
+.background-name{
+    text-align: center;
+}

@@ -1,4 +1,6 @@
-const d = document
+import { addClass, append, classSelectorMaker, create, elementContainsClass, fetchFromApi, removeClass, removeElement, select, selectAll, selectById } from "../utils/dom-functions.js"
+import { globalVariables } from "../utils/global-variables.js"
+import { selectors } from "../utils/selectors.js"
 
 export function editProfile(customAlert, userObj){
 
@@ -10,24 +12,23 @@ export function editProfile(customAlert, userObj){
         }
     
         createPfpElement(){
-            let pfpElement = d.createElement("div"),
-                pfpImgContainer = d.createElement("div"),
-                imgTag = d.createElement("img")
+            let pfpElement = create('div'),
+                pfpImgContainer = create('div'), 
+                imgTag = create('img')
         
             imgTag.src = this.imgSrc
     
-            pfpElement.classList.add("pfp-pic-container")
+            addClass(pfpElement, selectors.pfpPicContainer)
             pfpElement.setAttribute('data-pfp', this.id)
-            pfpImgContainer.classList.add("profile-pic")
-            pfpImgContainer.appendChild(imgTag)
-            pfpElement.appendChild(pfpImgContainer)
+            addClass(pfpImgContainer, selectors.profilePic)
+            append(pfpImgContainer, imgTag)
+            append(pfpElement, pfpImgContainer)
     
             if(this.blocked){
-                let $lockedProtector = d.createElement("div")        
-                $lockedProtector.classList.add("locked-pfp")
+                const $lockedProtector = create('div')
+                addClass($lockedProtector, selectors.lockedPfp)
                 $lockedProtector.innerHTML = `<img src="img/icons/padlock.png" alt="">`
-    
-                pfpImgContainer.appendChild($lockedProtector)
+                append(pfpImgContainer, $lockedProtector)                
             }
     
             this.pfpElement = pfpElement
@@ -37,25 +38,25 @@ export function editProfile(customAlert, userObj){
     
     }
 
-    const $editPfpBtn = d.querySelector(".change-pfp-text"),
-        $editPgpBtnIcon = d.querySelector(".edit-profile-icon"),
-        $editProfileContainer = d.querySelector(".edit-profile-container"),
-        $pfpPreview = d.querySelector(".pfp-preview"),
-        $saveBtn = d.querySelector(".save-profile-changes"),
-        $userPfp = d.querySelector("#user-pfp"),
-        $closeBtn = d.querySelector(".close-icon"),
-        $inUseBox = d.createElement("div"),
-        $inUseBoxTxt = d.createElement("div"),
-        $pfpGrid = d.querySelector(".pfps-grid"),
+    const $editPfpBtn = select(classSelectorMaker(selectors.changePfpText)),
+        $editPgpBtnIcon = select(classSelectorMaker(selectors.editProfileIcon)),
+        $editProfileContainer = select(classSelectorMaker(selectors.editProfileContainer)),
+        $pfpPreview = select(classSelectorMaker(selectors.pfpPreview)),
+        $saveBtn = select(classSelectorMaker(selectors.saveProfileChanges)),
+        $userPfp = selectById(selectors.userPfp),
+        $closeBtn = select(classSelectorMaker(selectors.closeIcon)),
+        $inUseBox = create("div"),
+        $inUseBoxTxt = create("div"),
+        $pfpGrid = select(classSelectorMaker(selectors.pfpsGrid)),
         PfpsLocked = 4,
-        $editUsernameInput = d.querySelector(".edit-username"),
-        $profileUsername = d.getElementById("user-username"),
-        $profilePicNotification = d.querySelector(".profile-pic-notification")
+        $editUsernameInput = select(classSelectorMaker(selectors.editUsername)),
+        $profileUsername = selectById(selectors.userUsername),
+        $profilePicNotification = select(classSelectorMaker(selectors.profilePicNotification))
 
     let initialPfpsUnlocked = userObj.unlockByTheUser
 
     const renderPfpsElement = (lockedPfps)=>{
-        const pfpsFragment = d.createDocumentFragment()
+        const pfpsFragment = globalVariables.d.createDocumentFragment()
 
         const pfpsInfo = [
             {
@@ -103,7 +104,7 @@ export function editProfile(customAlert, userObj){
         let idCounter = 0
         pfpsInfo.forEach(el=>{
             let newPfp = new ProfilePic(idCounter, el.src, el.blocked)
-            pfpsFragment.appendChild(newPfp.createPfpElement())
+            append(pfpsFragment, newPfp.createPfpElement())
             idCounter++
         })
 
@@ -112,7 +113,7 @@ export function editProfile(customAlert, userObj){
     
     renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
-    const $lockedDivs = d.querySelectorAll(".locked-pfp"),
+    const $lockedDivs = selectAll(classSelectorMaker(selectors.lockedPfp)),
         usernameRegex = /^[a-zA-Z0-9_-]{3,12}$/
     
     let pfpPointsId = PfpsLocked
@@ -121,30 +122,32 @@ export function editProfile(customAlert, userObj){
         pfpPointsId--;
     }
 
-    $inUseBoxTxt.classList.add("pfp-in-use-text")
+    addClass($inUseBoxTxt, selectors.pfpInUseText)
     $inUseBoxTxt.innerHTML = "<p>In use</p>"
-    $inUseBox.classList.add("pfp-in-use")
-    $inUseBox.appendChild($inUseBoxTxt)
+    addClass($inUseBox, selectors.pfpInUse)
+    append($inUseBox, $inUseBoxTxt)
 
     let actualImg = userObj.pfpId
 
-    const $pfps = d.querySelectorAll(".pfp-pic-container")
+    const $pfps = selectAll(classSelectorMaker(selectors.pfpPicContainer))
 
     const showPfpInUse = (imgIdSelected)=>{
-        let $selectedPfp = d.querySelector(`div[data-pfp="${imgIdSelected}"]`)
-        $pfps.forEach(el=> el.classList.remove("pfp-in-use-border"))
-        $selectedPfp.classList.add("pfp-in-use-border")
-        $selectedPfp.firstElementChild.appendChild($inUseBox)
+        let $selectedPfp = select(`div[data-pfp="${imgIdSelected}"]`)
+
+        $pfps.forEach(el=> removeClass(el, selectors.pfpInUseBorder))
+
+        addClass($selectedPfp, selectors.pfpInUseBorder)
+        append($selectedPfp.firstElementChild, $inUseBox)
     }
     
     const renderPfpInDOM = (idImg)=>{
-        let imgSrc = d.querySelector(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
+        let imgSrc = select(`div[data-pfp="${idImg}"]`).firstElementChild.firstElementChild.getAttribute("src")
         $pfpPreview.firstElementChild.src = imgSrc
         $userPfp.src = imgSrc
     }
 
     const removeSelected = () =>{
-        $pfps.forEach(el=> el.classList.remove("pfp-pic-selected"))
+        $pfps.forEach(el=> removeClass(el, selectors.pfpPicSelected))
     }
     
     const renderUsernameInDom = (username)=>{
@@ -156,31 +159,26 @@ export function editProfile(customAlert, userObj){
     showPfpInUse(userObj.pfpId)
     renderPfpInDOM(actualImg)
 
-    d.addEventListener("click", (e)=>{
-        if(e.target.matches(".locked-pfp")){
-            customAlert("Need Points to Unlock!", `You can unlock the different profile pictures by playing the mini game "The Last Call" (Available in the profile section from the PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this one`)
+    globalVariables.d.addEventListener("click", (e)=>{
+        if(e.target.matches(classSelectorMaker(selectors.lockedPfp))){
+            customAlert("Need Points to Unlock!", `Play the mini game "The Last Call" (Only available in PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this profile picture`)
         }
 
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
             localStorage.setItem("isFormActivated", true)
 
-            if(!$profilePicNotification.classList.contains("hide-notification")) $profilePicNotification.classList.add("hide-notification")
+            if(!elementContainsClass($profilePicNotification, selectors.hideNotification)) addClass($profilePicNotification, selectors.hideNotification)
 
-            // checkIfUnlockedPfps ↓↓↓↓↓
-            fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`,
-            {
-                credentials: 'include'
-            })
-            .then(res =>res.ok? res.json() : Promise.reject(res))
+            // checkIfUnlockedPfps ↓
+            fetchFromApi(`user/${userObj._id.$oid}`)
             .then(json=>{
                 if(initialPfpsUnlocked < json.unlockByTheUser){
                     let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
-                        $lockedDivs = d.querySelectorAll(".locked-pfp")
-                    
+                        $lockedDivs = selectAll(classSelectorMaker(selectors.lockedPfp))                    
     
                     if(pfpsToUnlock <= $lockedDivs.length){
                         for(let i = 0; i < pfpsToUnlock; i++){
-                            $lockedDivs[i].remove()
+                            removeElement($lockedDivs[i])
                         }
                     }
         
@@ -189,22 +187,22 @@ export function editProfile(customAlert, userObj){
                 showPfpInUse(json.pfpId)
 
                 $editUsernameInput.value = ""
-                $editProfileContainer.classList.remove("hide-edit-profile")
-                let imgSrc = d.querySelector(`div[data-pfp="${json.pfpId}"]`).firstElementChild.firstElementChild.getAttribute("src")
+                removeClass($editProfileContainer, selectors.hideEditProfile)
+                let imgSrc = select(`div[data-pfp="${json.pfpId}"]`).firstElementChild.firstElementChild.getAttribute("src")
                 $pfpPreview.firstElementChild.src = imgSrc
-                })
+            })
             .catch(err=>{
-                console.err(err)
+                console.error(err)
             })
 
         }
 
-        if(e.target.matches(".pfp-pic-container")){
-            const $lockedDivs = d.querySelectorAll(".locked-pfp")
+        if(e.target.matches(classSelectorMaker(selectors.pfpPicContainer))){
+            const $lockedDivs = selectAll(classSelectorMaker(selectors.lockedPfp)) 
             
             if(e.target.getAttribute("data-pfp") < ($pfps.length - $lockedDivs.length)){
                 removeSelected()
-                e.target.classList.add("pfp-pic-selected")
+                addClass(e.target, selectors.pfpPicSelected)
                 actualImg = e.target.getAttribute("data-pfp")
                 $pfpPreview.firstElementChild.src = e.target.firstElementChild.firstElementChild.getAttribute("src")
             }
@@ -229,20 +227,19 @@ export function editProfile(customAlert, userObj){
                 fetchBody.pfpId = actualImg
             }
 
-            fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`, {
+            fetchFromApi(`user/${userObj._id.$oid}`, 
+            {
                 method: "PUT",
-                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(fetchBody)
             })
-            .then(res => res.ok? res.json() : res)
             .then(json =>{
                 renderPfpInDOM(actualImg)
                 removeSelected()
                 showPfpInUse(json.pfpId)
-                $editProfileContainer.classList.add("hide-edit-profile")
+                addClass($editProfileContainer, selectors.hideEditProfile)
                 actualImg = json.pfpId
 
                 localStorage.setItem("isFormActivated", false)

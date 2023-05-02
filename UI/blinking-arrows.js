@@ -1,8 +1,9 @@
-const d = document,
-    w = window
+import { classSelectorMaker, selectAll } from "../utils/dom-functions.js";
+import { globalVariables } from "../utils/global-variables.js";
+import { selectors } from "../utils/selectors.js";
 
 export const makeThemBlink = ()=>{
-    const $mobileArrows = d.querySelectorAll(".mobile-arrow")
+    const $mobileArrows = selectAll(classSelectorMaker(selectors.mobileArrow))
 
     const blinkingAnimation = [
         {opacity: 0},
@@ -26,8 +27,7 @@ export const makeThemBlink = ()=>{
     const leftArrowAnimation = $mobileArrows[0].animate(blinkingAnimation, blinkTiming),
         rightArrowAnimation = $mobileArrows[1].animate(blinkingAnimation, blinkTiming)
 
-
-    d.addEventListener("click", (e)=>{
+    globalVariables.d.addEventListener("click", (e)=>{
         leftArrowAnimation.finish();
         rightArrowAnimation.finish();
     })

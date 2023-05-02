@@ -1,13 +1,17 @@
+import { classSelectorMaker, select } from "../utils/dom-functions.js";
+import { globalVariables } from "../utils/global-variables.js";
+
 export function resizeItemToHeight(itemToResize, ...elemToRest){
-    const $elemToResize = document.querySelector(itemToResize)
+    const $elemToResize = select(classSelectorMaker(itemToResize))
+    
     
 
     const resizeElement = ()=>{
-        if(window.innerWidth < 1024){
+        if(globalVariables.w.innerWidth < 1024){
             let totalHeightToRest = 0;
 
             elemToRest.forEach(el=>{
-                let $elem = document.querySelector(el);
+                const $elem = select((classSelectorMaker(el)))
                 totalHeightToRest += $elem.getBoundingClientRect().height;
             })
 
@@ -17,7 +21,6 @@ export function resizeItemToHeight(itemToResize, ...elemToRest){
                 $elemToResize.removeAttribute("style");
             }
         }
-    
     }
     resizeElement()
     
