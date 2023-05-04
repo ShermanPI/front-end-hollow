@@ -1,11 +1,12 @@
-const d = document
+import { removeClass, selectByClass, addClass } from "../utils/dom-functions.js"
+import { selectors } from "../utils/selectors.js"
 
 export const loadScreen = (isActivated = true)=>{
 
-    const $loadingScreen = d.querySelector(".loading-container")
+    const $loadingScreen = selectByClass(selectors.loadingContainer)
     if(isActivated){
-        $loadingScreen.classList.remove("logged-in")
+        removeClass($loadingScreen, selectors.loggedIn)
     }else{
-        $loadingScreen.classList.add("logged-in")
+        addClass($loadingScreen, selectors.loggedIn)
     }
 }

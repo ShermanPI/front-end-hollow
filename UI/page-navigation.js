@@ -1,17 +1,14 @@
-import { addClass, classSelectorMaker, elementContainsClass, removeClass, select, selectAll, selectById } from "../utils/dom-functions.js"
+import { addClass, classSelectorMaker, elementContainsClass, removeClass, selectByClass, selectAllByClass, selectById } from "../utils/dom-functions.js"
 import { globalVariables } from "../utils/global-variables.js"
 import { selectors } from "../utils/selectors.js"
 
-const d = document,
-    w = window
-
 export function navigatePages(){
-    const $sections = selectAll(classSelectorMaker(selectors.sectionContainer)),
-        $leftArrow = select(classSelectorMaker(selectors.leftFullArrow)),
-        $rightArrow = select(classSelectorMaker(selectors.rightFullArrow)),
-        $nextPageIndicator = select(classSelectorMaker(selectors.nextPageIndicator)),
-        $prevPageIndicator = select(classSelectorMaker(selectors.prevPageIndicator)),
-        $actualPageTitle = select(classSelectorMaker(selectors.actualPage))
+    const $sections = selectAllByClass((selectors.sectionContainer)),
+        $leftArrow = selectByClass((selectors.leftFullArrow)),
+        $rightArrow = selectByClass((selectors.rightFullArrow)),
+        $nextPageIndicator = selectByClass((selectors.nextPageIndicator)),
+        $prevPageIndicator = selectByClass((selectors.prevPageIndicator)),
+        $actualPageTitle = selectByClass((selectors.actualPage))
 
     for(let i = 0; i <=$sections.length - 1; i++){
         $sections[i].setAttribute("data-page-number", i)
@@ -58,7 +55,7 @@ export function navigatePages(){
     })
 
     const showSideSections = ()=>{
-        let $sections = document.querySelectorAll(".section-container")
+        let $sections = selectAllByClass(selectors.sectionContainer)
 
         if($sections[parseInt(currentIndex) + 1] && !elementContainsClass($sections[(parseInt(currentIndex) + 1)], selectors.adminOptionHidden)){
             $nextPageIndicator.innerHTML = 
@@ -80,7 +77,7 @@ export function navigatePages(){
     showSideSections()
 
     const movePages = (steps)=>{        
-        const $sections = document.querySelectorAll(".section-container")
+        const $sections = selectAllByClass(selectors.sectionContainer)
 
         if((steps + parseInt(currentIndex)) < 0) return;
         if(steps + parseInt(currentIndex) > $sections.length - 1)  return;
@@ -99,7 +96,7 @@ export function navigatePages(){
 
     }
 
-    d.addEventListener("click", (e)=>{
+    globalVariables.d.addEventListener("click", (e)=>{
         if(e.target == $rightArrow || e.target == $nextPageIndicator){
             animateArrow($rightArrow)
             movePages(1)
@@ -110,7 +107,7 @@ export function navigatePages(){
         }
     })
 
-    w.addEventListener("keydown", (e)=>{
+    addEventListener("keydown", (e)=>{
         
         if(e.key == globalVariables.keyBoardRightKey){
             if(localStorage.getItem("isFormActivated") == "false"){
@@ -131,8 +128,8 @@ export function navigatePages(){
     })
     
     
-    d.addEventListener("click", (e)=>{
-        const menuItems = selectAll(classSelectorMaker(selectors.pageMenuAnchor))
+    globalVariables.d.addEventListener("click", (e)=>{
+        const menuItems = selectAllByClass((selectors.pageMenuAnchor))
 
         if(e.target.matches(classSelectorMaker(selectors.pageMenuAnchor))){
             e.preventDefault()

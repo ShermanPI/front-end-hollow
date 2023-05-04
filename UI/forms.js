@@ -1,10 +1,8 @@
 import { customAlert } from "./custom_alerts.js"
 import { renderLogedPage } from "./render-loged-page.js"
-import { classSelectorMaker, createFragment, select, selectById, append, addClass, create, elementContainsClass, removeClass, removeElement, selectAll, fetchFromApi } from "../utils/dom-functions.js"
+import { classSelectorMaker, createFragment, selectByClass, selectById, append, addClass, create, elementContainsClass, removeClass, removeElement, selectAllByClass, fetchFromApi } from "../utils/dom-functions.js"
 import { selectors } from "../utils/selectors.js"
 import { globalVariables } from "../utils/global-variables.js"
-
-const d = globalVariables.d
 
 class editCharacterItem {
     constructor(name, img){
@@ -37,8 +35,8 @@ export function forms(){
         $loginForm = selectById(selectors.loginForm),
         $createCharacterForm = selectById(selectors.addCharacterForm),
         $editCharacterForm = selectById(selectors.editCharacterForm),
-        $registerFormContainer = select(classSelectorMaker(selectors.registerFormContainer)),
-        $loginFormContainer = select(classSelectorMaker(selectors.loginFormContainer))
+        $registerFormContainer = selectByClass((selectors.registerFormContainer)),
+        $loginFormContainer = selectByClass((selectors.loginFormContainer))
 
     let actualCharacters = []
 
@@ -50,7 +48,7 @@ export function forms(){
         })
 
     
-        append(select(classSelectorMaker(selectors.characterEditList)), $newEditListFragment)
+        append(selectByClass((selectors.characterEditList)), $newEditListFragment)
     }
 
     localStorage.setItem("isFormActivated", "false")
@@ -87,8 +85,8 @@ export function forms(){
     }
 
     const removeAllErrorFields = ()=>{
-        const $errorFields = selectAll(classSelectorMaker(selectors.error)) 
-        const $errorMessages = selectAll(classSelectorMaker(selectors.errorField))
+        const $errorFields = selectAllByClass((selectors.error)) 
+        const $errorMessages = selectAllByClass((selectors.errorField))
 
         $errorFields.forEach(el=>{
             removeClass(el, selectors.error)
@@ -112,65 +110,36 @@ export function forms(){
         return true
     }
 
-
-
     const usernameRegex = /^[a-zA-Z0-9_-]{2,12}$/,
         emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         passwordRegex = /^[a-zA-Z0-9_$#-]{8,}$/
+
+    const validateInputTyping = (regex, fieldToValidate, message)=>{
+        if(!validateField(regex, fieldToValidate, message)){
+            globalVariables.d.addEventListener("input", (e)=>{
+                if(e.target == fieldToValidate){
+                    if(validateField(regex, fieldToValidate, message)){
+                       removeErrorField(fieldToValidate)
+                    }
+                }
+            })
+        }
+    }
 
     globalVariables.d.addEventListener("submit", (e)=>{
         e.preventDefault()
 
         if(e.target == $registerForm){
-            // validations
-            
-            // username Input Validation
-
-            if(!validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                globalVariables.d.addEventListener("input", (e)=>{
-                    if(e.target == $registerForm.username){
-                        if(validateField(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                           removeErrorField($registerForm.username)
-                        }
-                    }
-                })
-            }
-
+            // username Input Validation while writing
+            validateInputTyping(usernameRegex, $registerForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)
             // email Validation
-
-            if(!validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
-                globalVariables.d.addEventListener("input", (e)=>{
-                    if(e.target == $registerForm.email){
-                        if(validateField(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)){
-                            removeErrorField($registerForm.email)
-                        }
-                    }
-                })
-            }
+            validateInputTyping(emailRegex, $registerForm.email, `The entered email is not valid, please enter a valid one`)
 
             // password Validation
-
-            if(!validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
-                globalVariables.d.addEventListener("input", (e)=>{
-                    if(e.target == $registerForm.password){
-                        if(validateField(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
-                            removeErrorField($registerForm.password)
-                        }
-                    }
-                })
-            }
+            validateInputTyping(passwordRegex, $registerForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)
 
             // confirm password Validation
-            
-            if(!validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-                globalVariables.d.addEventListener("input", (e)=>{
-                    if(e.target == $registerForm.confirm_password){
-                        if(validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)){
-                            removeErrorField($registerForm.confirm_password)
-                        }
-                    }
-                })
-            }
+            validateInputTyping(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password, `Needs to be equal to Password`)
 
             // send the information
             if(validateField(usernameRegex, $registerForm.username) && validateField(emailRegex, $registerForm.email) && validateField(passwordRegex, $registerForm.password) && validateField(new RegExp(`^${$registerForm.password.value}$`, "i"), $registerForm.confirm_password)){   
@@ -200,31 +169,15 @@ export function forms(){
 
         if(e.target == $loginForm){
             // username Input Validation
-            if(!validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                globalVariables.d.addEventListener("input", (e)=>{
-                    if(e.target == $loginForm.username){
-                        if(validateField(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)){
-                           removeErrorField($loginForm.username)
-                        }
-                    }
-                })
-            }
+            validateInputTyping(usernameRegex, $loginForm.username, `The username must have English alphabet letters, number and/or "-", "_"`)
 
             // password Validation
-            if(!validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
-                globalVariables.d.addEventListener("input", (e)=>{
-                    if(e.target == $loginForm.password){
-                        if(validateField(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)){
-                            removeErrorField($loginForm.password)
-                        }
-                    }
-                })
-            }
+            validateInputTyping(passwordRegex, $loginForm.password, `Passwords must contain at least 8 characters and can include letters, numbers and some common special characters (_, $, #, -)`)
 
             if(validateField(usernameRegex, $loginForm.username) && validateField(passwordRegex, $loginForm.password)){
                 fetchFromApi(globalVariables.loginEndpoint, { method: 'POST', body: new FormData($loginForm) })
                 .then(json => {
-                    if(select(classSelectorMaker(selectors.unloggedScreen)))  removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
+                    if(selectByClass((selectors.unloggedScreen)))  removeElement(selectByClass((selectors.unloggedScreen)))
                     renderLogedPage(json, true)
                     removeAllErrorFields()
                     hideLoginForm()
@@ -300,14 +253,14 @@ export function forms(){
 
     globalVariables.d.addEventListener("click",(e)=>{
 
-        if(e.target.matches(".exit-register-form-icon img")){
+        if(e.target.matches(classSelectorMaker(selectors.exitRegisterFormIconImg))){
             localStorage.setItem("isFormActivated", "false")
             removeAllErrorFields()
             hideLoginForm()
             hideRegisterForm()
         }
 
-        if(e.target.matches(".session-form-container")){
+        if(e.target.matches(classSelectorMaker(selectors.sessionFormContainer))){
             localStorage.setItem("isFormActivated", "false")
             addClass($registerFormContainer, selectors.hideForm)
             addClass($loginFormContainer, selectors.hideForm)
@@ -331,7 +284,7 @@ export function forms(){
     fetchFromApi(globalVariables.getCharacterEndPoint)
     .then(charactersJson => {
         actualCharacters = charactersJson
-        const $characterEditList = select(classSelectorMaker(selectors.characterEditList))
+        const $characterEditList = selectByClass((selectors.characterEditList))
         
         globalVariables.d.addEventListener("input", (e)=>{
             if(e.target == $editCharacterForm.characterEditingName){
@@ -345,9 +298,9 @@ export function forms(){
                 removeClass($characterEditList, selectors.hideEditList)
 
                 let inputValue = $editCharacterForm.characterEditingName.value,
-                    $characterEditItem = selectAll(classSelectorMaker(selectors.characterEditItem))
+                    $characterEditItem = selectAllByClass((selectors.characterEditItem))
                 
-                $characterEditItem.forEach(el=>el.remove())
+                $characterEditItem.forEach(el=>removeElement(el))
 
                 const filteredArr = actualCharacters.filter(item =>{
                     return item.characterName.match(new RegExp(inputValue, "i"));
@@ -359,9 +312,7 @@ export function forms(){
 
         globalVariables.d.addEventListener("click", (e)=>{
             if(e.target.matches(classSelectorMaker(selectors.characterEditItem))){
-                console.log(e.target)
                 const characterName = e.target.querySelector(classSelectorMaker(selectors.characterEditName)).innerHTML
-                console.log(characterName)
                 addClass($characterEditList, selectors.hideEditList)
                 $editCharacterForm.characterEditingName.value = characterName
 

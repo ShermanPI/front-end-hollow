@@ -1,9 +1,9 @@
-import { classSelectorMaker, selectAll } from "../utils/dom-functions.js";
+import { selectAllByClass } from "../utils/dom-functions.js";
 import { globalVariables } from "../utils/global-variables.js";
 import { selectors } from "../utils/selectors.js";
 
 export const makeThemBlink = ()=>{
-    const $mobileArrows = selectAll(classSelectorMaker(selectors.mobileArrow))
+    const $mobileArrows = selectAllByClass((selectors.mobileArrow))
 
     const blinkingAnimation = [
         {opacity: 0},

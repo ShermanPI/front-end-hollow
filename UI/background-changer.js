@@ -1,10 +1,10 @@
-import { classSelectorMaker, select, selectAll } from "../utils/dom-functions.js";
+import { classSelectorMaker, selectByClass, selectAllByClass } from "../utils/dom-functions.js";
 import { selectors } from "../utils/selectors.js";
 
 export function bckChanger(){
     const biomeNames = ["Dirtmouth", "Howling Cliffs", "Forgotten Crossroads", "City of Tears", "Crystal Peak", "Resting Grounds", "The Hive", "Greenpath", "Kingdom's Edge", "Royal Waterways", "Incredible Zote"],
-        $background = select(classSelectorMaker(selectors.generalBackgroundImg)),
-        $backgroundName = selectAll(classSelectorMaker(selectors.backgroundName))
+        $background = selectByClass((selectors.generalBackgroundImg)),
+        $backgroundName = selectAllByClass((selectors.backgroundName))
     
     let actualBck = 0;
 

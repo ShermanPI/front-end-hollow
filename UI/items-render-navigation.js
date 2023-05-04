@@ -1,8 +1,7 @@
+import { addClass, append, create, selectByClass, selectAllByClass, selectById, fetchFromApi, select, selectAll, removeClass, classSelectorMaker, removeElement } from "../utils/dom-functions.js"
+import { globalVariables } from "../utils/global-variables.js"
+import { selectors } from "../utils/selectors.js"
 import { customAlert } from "./custom_alerts.js"
-
-const d = document,
-    w = window,
-    backendAPIRestUrl = "http://127.0.0.1:5000"
 
 let itemsInfo = []
 
@@ -17,27 +16,27 @@ class HomeItem{
     }
 
     createItemNode(){
-        const $item = d.createElement("li"),
-            $listBorderContainer = d.createElement("div"),
-            $borderImg = d.createElement("img"),
-            $characterImgContainer = d.createElement("div"),
-            $characterImg = d.createElement("img"),
-            $characterName = d.createElement("p")
+        const $item = create('li'),
+            $listBorderContainer = create('div'),
+            $borderImg = create('img'),
+            $characterImgContainer = create('div'),
+            $characterImg = create('img'),
+            $characterName = create('p')
 
-        $item.classList.add("item")
-        $listBorderContainer.classList.add("list-border")
-        $characterImgContainer.classList.add("character-img")
-    
-        $item.appendChild($listBorderContainer)
-        $item.appendChild($characterImgContainer)
-        $item.appendChild($characterName)
-        $listBorderContainer.appendChild($borderImg)
-        $characterImgContainer.appendChild($characterImg)
+        addClass($item, selectors.item)
+        addClass($listBorderContainer, selectors.listBorder)
+        addClass($characterImgContainer, selectors.characterImg)
+
+        append($item, $listBorderContainer)
+        append($item, $characterImgContainer)
+        append($item, $characterName)
+        append($listBorderContainer, $borderImg)
+        append($characterImgContainer, $characterImg)
     
         $item.setAttribute("data-item-id", this.listIndex)
         $item.setAttribute("data-character-id", this.characterId)
         $borderImg.src = "img/UI/item-border.png"
-        $characterImg.src = backendAPIRestUrl + this.characterImgSrc
+        $characterImg.src = globalVariables.apiURL + this.characterImgSrc
         $characterName.innerHTML = this.characterName
 
         return $item
@@ -46,16 +45,16 @@ class HomeItem{
 
 export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined){
 
-    const $sections = document.querySelectorAll(".section-container"),
-        $itemList = d.getElementById("home-list"),
-        $arrowsDivisor = d.getElementById("actual-item-height"),
-        $homeItemList = d.getElementById("home-list"),
-        $characterNameContainer = d.querySelector(".character-name"),
-        $characterImgContainer = d.querySelector(".character-full-img"),
-        $favoriteIconContainer = d.querySelector(".home-favorite-icon"),
-        $bestiaryImgContainer = d.querySelector(".info-divisor-img"),
-        $characterTextInfo = d.getElementById("character-text-info"),
-        $characterExtraTextInfo = d.getElementById("character-more-text"),
+    const $sections = selectAllByClass((selectors.sectionContainer)),
+        $itemList = selectById(selectors.homeList), 
+        $arrowsDivisor = selectById(selectors.actualItemHeight),
+        $homeItemList = selectById(selectors.homeList),
+        $characterNameContainer = selectByClass((selectors.characterName)),
+        $characterImgContainer = selectByClass((selectors.characterFullImg)),
+        $favoriteIconContainer = selectByClass((selectors.homeFavoriteIcon)),
+        $bestiaryImgContainer = selectByClass((selectors.infoDivisorImg)),
+        $characterTextInfo = selectById(selectors.characterTextInfo),
+        $characterExtraTextInfo = selectById(selectors.charactermoreText),
         characterNumberToRender = 8
     
     let actualItem = 0,
@@ -65,21 +64,21 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
 
     const renderItemsList = (listToRender)=>{
 
-        const $itemsFragment = d.createDocumentFragment(),
-            itemsAlreadyRendered = d.querySelectorAll(".item-list .item") ? d.querySelectorAll(".item-list .item").length : 0
+        const $itemsFragment = globalVariables.d.createDocumentFragment(),
+            itemsAlreadyRendered = selectAllByClass(selectors.itemListItem) ? selectAllByClass(selectors.itemListItem).length : 0
         
         listToRender.forEach((el, index) =>{
             let newItem = new HomeItem(el._id.$oid, itemsAlreadyRendered + index, el.characterImgSrc, el.characterName, el.characterMainInfo, el.characterSecondaryInfo)
-            $itemsFragment.appendChild(newItem.createItemNode())
+            append($itemsFragment, newItem.createItemNode())
         })
 
-        $homeItemList.appendChild($itemsFragment)
-        $items = d.querySelectorAll(".item-list > .item") 
+        append($homeItemList, $itemsFragment)
+        $items = selectAllByClass(selectors.itemListItem)
     }
 
 
     const checkIsFavorite = (itemArrayIndex)=>{
-        const $items = d.querySelectorAll(".item-list > .item")
+        const $items = selectAllByClass(selectors.itemListItem)
 
         if(jsonUser){
             actualFavoriteItems = jsonUser.favoriteCharacters            
@@ -93,12 +92,11 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
 
     const renderItemInfo = (itemArrayIndex) =>{
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
-        $characterImgContainer.firstElementChild.src = backendAPIRestUrl + itemsInfo[itemArrayIndex].characterImgSrc
+        $characterImgContainer.firstElementChild.src = globalVariables.apiURL + itemsInfo[itemArrayIndex].characterImgSrc
         $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
 
         checkIsFavorite(itemArrayIndex)
         
-
         if(itemsInfo[itemArrayIndex].characterSecondaryInfo){
             $bestiaryImgContainer.style.display = "block"
             $characterExtraTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterSecondaryInfo
@@ -114,24 +112,15 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 itemsInfo.forEach(el=>{
                     itemsInfoId.push(el._id.$oid)
                 })
-    
-                fetch(`${backendAPIRestUrl}/charactersSample/${characterNumberToRender}`,
-                {
-                    method: "POST",
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({items: itemsInfoId})
-                })
-                .then(res => res.ok? res.json() : Promise.reject(res))
+
+                fetchFromApi(`charactersSample/${characterNumberToRender}`, {method: "POST", credentials: 'include', headers: {"Content-Type": "application/json"}, body: JSON.stringify({items: itemsInfoId})})
                 .then((json)=>{
                     if(json[0]){ //if the db still have items
                         
                         customAlert(undefined, "Loading...", {isFlashAlert: true})
                         itemsInfo = [...itemsInfo, ...json]
                         renderItemsList(json)
-                        $items = d.querySelectorAll(".item-list > .item")
+                        $items = selectAllByClass(selectors.itemListItem)
     
                         if(actualItem !== 0 && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600))){
                             $items[actualItem].style.marginBlock = "5rem";
@@ -163,16 +152,16 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
         $sections.forEach(el=>observer.observe(el));
 
         const resizeArrowDivisor = ()=>{
-            const $items = d.querySelectorAll(".item-list > .item")
+            const $items = selectAllByClass(selectors.itemListItem)
             $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
         }
         
         if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 600) ) {
             // navigate in "mobile"
-            $items = d.querySelectorAll(".item-list > .item")
+            $items = selectAllByClass(selectors.itemListItem)
 
             $arrowsDivisor.style.width = "100%"
-            $arrowsDivisor.classList.add("selected-item")
+            addClass($arrowsDivisor, selectors.selectedItem)
 
             let getTheMiddle = ()=>{
                 let itemHeight = $items[0].getBoundingClientRect().height,
@@ -203,7 +192,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
             })
 
             // Parent element to observe
-            const parentElement = document.getElementById("home-list");
+            const parentElement = selectById(selectors.homeList)
 
             // Create an instance of MutationObserver
             const observer = new MutationObserver(function(mutations) {
@@ -211,7 +200,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 // Check if new child elements were added
                 if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
                     itemsObserver.disconnect()
-                    $items = d.querySelectorAll("#home-list .item")
+                    $items = selectAll("#home-list .item")
 
                     $items.forEach(el=>{
                         itemsObserver.observe(el)
@@ -230,10 +219,10 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
             observer.observe(parentElement, mutationObserverConfig);
 
         } else {
-            $items = d.querySelectorAll("#home-list .item")
+            $items = selectAll('#home-list .item')
             
             // Parent element to observe
-            const parentElement = document.getElementById("home-list");
+            const parentElement = selectById(selectors.homeList)
 
             // Create an instance of MutationObserver
             const mutationObserver = new MutationObserver(function(mutations) {
@@ -241,7 +230,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 // Check if new child elements were added
                 if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
                     // itemsObserver.disconnect()
-                    $items = d.querySelectorAll("#home-list .item")
+                    $items = selectAll('#home-list .item')
                 }
             });    
             });
@@ -256,14 +245,15 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
 
 
             // navigate        
-            const $arrowUp = d.querySelector(".navigate-item-up"),
-                $arrowDown = d.querySelector(".navigate-item-down")
+            const $arrowUp = selectByClass(selectors.navigateItemUpArrow),
+                $arrowDown = selectByClass(selectors.navigateItemdownArrow)
             
             // actualItem
             if(isListAlreadyRendered){
-                actualItem = d.querySelector("#home-list > .selected-item").getAttribute("data-item-id")
-            }  
-            $items[actualItem].classList.add("selected-item")
+                actualItem = select(selectors.homeListItemSelected).getAttribute("data-item-id")
+            } 
+            
+            addClass($items[actualItem], selectors.selectedItem)
 
             resizeArrowDivisor()
 
@@ -288,9 +278,9 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 entries.forEach(entry => {
                     if(entry.isIntersecting){
                         if(entry.target.getAttribute("id") == "home"){
-                            w.addEventListener("keydown", navigateItems)
+                            globalVariables.w.addEventListener("keydown", navigateItems)
                         }else{
-                            w.removeEventListener("keydown", navigateItems)
+                            globalVariables.w.removeEventListener("keydown", navigateItems)
                         }
                     }
                 });        
@@ -316,8 +306,8 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     {transform: 'translate(0)'}], animationTiming)
 
                 $items[actualItem].scrollIntoView({block: "center"})
-                $items[actualItem].classList.add("selected-item")
-                $items[actualItem - 1].classList.remove("selected-item")
+                addClass($items[actualItem], selectors.selectedItem)
+                removeClass($items[actualItem - 1], selectors.selectedItem)
 
                 if(actualItem == 1){
                     $items[actualItem].style.marginBlock = "5rem";
@@ -346,8 +336,8 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     {transform: 'translate(0)'}], animationTiming)
 
                 $items[actualItem].scrollIntoView({block: "center"})
-                $items[actualItem].classList.add("selected-item")
-                $items[parseInt(actualItem) + 1].classList.remove("selected-item")
+                addClass($items[actualItem], selectors.selectedItem)
+                removeClass($items[parseInt(actualItem) + 1], selectors.selectedItem)
 
                 if(actualItem == $items.length - 2){
                     $items[$items.length - 1].style.marginTop = "1rem";
@@ -393,32 +383,28 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 }
             }
 
-            d.addEventListener("click", itemsClickNavigation)
+            globalVariables.d.addEventListener("click", itemsClickNavigation)
         }
     
     }
 
     //first time items render
     if(!isListAlreadyRendered){
-        fetch(`${backendAPIRestUrl}/charactersSample/${characterNumberToRender}`,
-        {
-            credentials: 'include'
-        })
-        .then(res => res.ok? res.json() : Promise.reject(res))
+        fetchFromApi(`charactersSample/${characterNumberToRender}`)
         .then((json)=>{
             
             itemsInfo = json
             renderItemsList(itemsInfo)
             renderItemInfo(actualItem)
 
-            $items = d.querySelectorAll(".item-list > .item")
+            $items = selectByClass(selectors.itemListItem)
 
             setItemListeners(renderItemInfo)
         })
         .catch(err=>console.error(err))
     }else{
-        if(isListAlreadyRendered && d.querySelector("#home-list > .selected-item")){
-            actualItem = d.querySelector("#home-list > .selected-item").getAttribute("data-item-id")
+        if(isListAlreadyRendered && select(selectors.homeListItemSelected)){
+            actualItem = select(selectors.homeListItemSelected).getAttribute("data-item-id")
         }
         checkIsFavorite(actualItem)
         setItemListeners(checkIsFavorite)
@@ -426,23 +412,20 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
     
     // Mark as favorite
     if(jsonUser){
-        document.addEventListener("click", (e)=>{
-            if(e.target.matches(".home-favorite-icon img")){
+        globalVariables.d.addEventListener("click", (e)=>{
+            if(e.target.matches(classSelectorMaker(selectors.homeFavoriteIconImg))){
                 const characterName = itemsInfo[actualItem].characterName,
-                    $items = d.querySelectorAll(".item-list > .item"),
+                    $items = selectAllByClass(selectors.itemListItem),
                     characterId = $items[actualItem].getAttribute('data-character-id')
                     
                     if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
                         localStorage.setItem("favoritesUpdated", "true")
                         e.target.src = "img/icons/favorite.png"
                         actualFavoriteItems.push(characterId)
-                    fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
-                    {
-                        credentials: 'include',
-                        method: 'POST'
-                    })
-                    .then(res => res.ok? res.json() : Promise.reject(res))
-                    .catch(err =>{
+                    
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterName}`, {method: 'POST'})                    
+                    .catch((err) =>{
+                        console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be favored", {isFlashAlert: true})
                         e.target.src = "img/icons/unfavorite.png"
                         const index = actualFavoriteItems.indexOf(characterName);
@@ -456,12 +439,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     const index = actualFavoriteItems.indexOf(characterId);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
                     
-                    fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
-                    {
-                        credentials: 'include',
-                        method: 'DELETE'
-                    })
-                    .then(res => res.ok? res.json() : Promise.reject(res))
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterName}`, {method: 'POST'})
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
@@ -482,36 +460,35 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 }
             
                 renderProfileItem(){
-                    const $item = d.createElement("li"),
-                        $itemInfo = d.createElement("div"),
-                        $listBorder = d.createElement("div"),
-                        $imgListBorder = d.createElement("img"),
-                        $characterImgContainer = d.createElement("div"),
-                        $characterImg = d.createElement("img"),
-                        $favoriteIconContainer = d.createElement("div"),
-                        $favoriteIcon = d.createElement("img"),
-                        $characterName = d.createElement("p")
+                    const $item = create('li'),
+                        $itemInfo = create('div'),
+                        $listBorder = create('div'),
+                        $imgListBorder = create('img'),
+                        $characterImgContainer = create('div'),
+                        $characterImg = create('img'),
+                        $favoriteIconContainer = create('div'),
+                        $favoriteIcon = create('img'),
+                        $characterName = create('p')
             
-                    $item.classList.add("item")
-                    $item.classList.add("favorite-item")
-                    $item.classList.add("selected-item")
-                    $itemInfo.classList.add("item-info")
-                    $listBorder.classList.add("list-border")
-                    $characterImgContainer.classList.add("character-img")
+                    addClass($item, selectors.item)
+                    addClass($item, selectors.favoriteItem)
+                    addClass($item, selectors.selectedItem)
+                    addClass($itemInfo, selectors.itemInfo)
+                    addClass($listBorder, selectors.listBorder)
+                    addClass($characterImgContainer, selectors.characterImg)
                     $imgListBorder.src = "img/UI/item-border.png"
                     $characterImg.src = this.characterImgSrc
-                    $favoriteIconContainer.classList.add("favorite-icon")
+                    addClass($favoriteIconContainer, selectors.favoriteIcon)
                     $favoriteIcon.src = "img/icons/favorite.png"
-                    
-                    $listBorder.appendChild($imgListBorder)
-                    $item.appendChild($itemInfo)
-                    $characterImgContainer.appendChild($characterImg)
-                    $itemInfo.appendChild($listBorder)
-                    $itemInfo.appendChild($characterImgContainer)
-                    $favoriteIconContainer.appendChild($favoriteIcon)
-                    $item.appendChild($favoriteIconContainer)
+                    append($listBorder, $imgListBorder)
+                    append($item, $itemInfo)
+                    append($characterImgContainer, $characterImg)
+                    append($itemInfo, $listBorder)
+                    append($itemInfo, $characterImgContainer)
+                    append($favoriteIconContainer, $favoriteIcon)
+                    append($item, $favoriteIconContainer)
                     $characterName.innerHTML = this.characterName
-                    $itemInfo.appendChild($characterName)
+                    append($itemInfo, $characterName)
                     $item.setAttribute("data-character-id", this.characterId)
                     
                     return $item
@@ -519,37 +496,32 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
             }
         
             const renderProfileFavoriteItems = ()=>{
-                fetch(`${backendAPIRestUrl}/user/favorites/${jsonUser._id.$oid}`, {
-                    credentials: 'include',
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => res.ok? res.json() : res)
+                fetchFromApi(`user/favorites/${jsonUser._id.$oid}`)
                 .then(json=>{
-                    const $FragmentProfileList = d.createDocumentFragment() 
+                    const $FragmentProfileList = globalVariables.d.createDocumentFragment() 
         
                     json.forEach(el=>{
-                        let newItem = new ProfileItem(el._id.$oid, el.characterName, `${backendAPIRestUrl}/static/characters-images/${el.characterImgSrc}`)
-                        $FragmentProfileList.appendChild(newItem.renderProfileItem())
+                        let newItem = new ProfileItem(el._id.$oid, el.characterName, `${globalVariables.apiURL}/static/characters-images/${el.characterImgSrc}`)
+                        append($FragmentProfileList, newItem.renderProfileItem())
                     })
                 
-                    if(json[0] && d.querySelector(".no-items-ready")) d.querySelector(".no-items-ready").remove()
+                    if(json[0] && selectByClass(selectors.noItemsReady)) removeElement(selectByClass(selectors.noItemsReady))
                     
-                    d.querySelector(".favorite-item-list").appendChild($FragmentProfileList)
+                    append(selectByClass(selectors.favoriteItemList), $FragmentProfileList)
+
                 })
                 .catch(err=> console.error(err))
             }
         
             renderProfileFavoriteItems()
             
-            const $section = d.getElementById("profile")
+            const $section = selectById(selectors.profile)
+
             const profileObserverCallback = (entries)=>{
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         if(localStorage.getItem("favoritesUpdated") == "true"){
-                            if(d.querySelectorAll(".profile-favorite-items .favorite-item")) d.querySelectorAll(".profile-favorite-items .favorite-item").forEach(el=>el.remove())
+                            if(selectAllByClass(selectors.profileFavoriteItemsItem)) selectAllByClass(selectors.profileFavoriteItemsItem).forEach(el => removeElement(el))
                             localStorage.setItem("favoritesUpdated", "false")
                             renderProfileFavoriteItems()
                         }
@@ -560,7 +532,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
             let profileObserver = new IntersectionObserver(profileObserverCallback, {threshold: 1})
             profileObserver.observe($section)
         
-            d.addEventListener("click", e=>{
+            globalVariables.d.addEventListener("click", e=>{
                 if(e.target.matches(".profile-favorite-items .favorite-icon img")){
                     const characterName = e.target.parentNode.parentNode.querySelector('p').innerHTML,
                         characterId =  e.target.parentNode.parentNode.getAttribute('data-character-id'),
@@ -568,14 +540,9 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                         index = actualFavoriteItems.indexOf(characterId)
 
                     if (index > -1) actualFavoriteItems.splice(index, 1);
-                    profileItemClicked.remove()
+                    removeElement(profileItemClicked)
 
-                    fetch(`${backendAPIRestUrl}/${jsonUser._id.$oid}/favorite/${characterName}`,
-                    {
-                        credentials: 'include',
-                        method: 'DELETE'
-                    })
-                    .then(res => res.ok? res.json() : Promise.reject(res))
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterName}`, {method: 'DELETE'})
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
@@ -585,6 +552,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 }
             })
         }
+        
         profileFavoritesRender(jsonUser)
         return;
     }

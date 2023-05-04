@@ -1,20 +1,21 @@
-const d = document
+import { addClass, fetchFromApi, removeClass, selectByClass, selectById } from "../utils/dom-functions.js";
+import { globalVariables } from "../utils/global-variables.js";
+import { selectors } from "../utils/selectors.js";
 
 export function miniGame(userObj, customAlert){
-    const $totemImg = d.querySelector(".game-icon img"),
-        $actualScoreContainer = d.querySelector(".actual-score"),
-        $highScoreContainer = d.getElementById("high-score"),
-        $gameTimeContainer = d.getElementById("game-time"),
-        $playBtn = d.getElementById("play-btn"),
-        $restartBtn = d.getElementById("restart-btn"),
-        $miniGameContainer = d.querySelector(".mini-game"),
-        $itemToClick = d.querySelector(".item-to-click"),
-        $multiplierTxt = d.querySelector(".multiplier-txt"),
-        $actualMultiplierContainer = d.querySelector(".actual-multiplier"),
-        $timeSum = d.querySelector(".time-sum"),
-        $gameIconContainer = d.querySelector(".icon-container"),
-        $profilePicNotification = d.querySelector(".profile-pic-notification")
-
+    const $totemImg = selectByClass(selectors.gameIconImg),
+        $actualScoreContainer = selectByClass(selectors.actualScore),
+        $highScoreContainer = selectById(selectors.highScore),
+        $gameTimeContainer = selectById(selectors.gameTime),
+        $playBtn = selectById(selectors.playBtn),
+        $restartBtn = selectById(selectors.restartBtn),
+        $miniGameContainer = selectByClass(selectors.miniGame),
+        $itemToClick = selectByClass(selectors.itemToClick),
+        $multiplierTxt = selectByClass(selectors.multiplierTxt),
+        $actualMultiplierContainer = selectByClass(selectors.actualMultiplier),
+        $timeSum = selectByClass(selectors.timeSum),
+        $gameIconContainer = selectByClass(selectors.iconContainer),
+        $profilePicNotification = selectByClass(selectors.profilePicNotification)
             
     const gameDuration = 20;
 
@@ -60,19 +61,17 @@ export function miniGame(userObj, customAlert){
             let unlockedByTheUser = Math.floor((highScore) / goalToNewPfp)
             fetchBody.unlockByTheUser = unlockedByTheUser
 
-            fetch(`http://127.0.0.1:5000/user/${userObj._id.$oid}`, {
+            fetchFromApi(`user/${userObj._id.$oid}`, {
                 method: "PUT",
-                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(fetchBody)
             })
-            .then(res => res.ok? res.json() : res)
             .then(json =>{
                 $highScoreContainer.innerHTML = addExtraZeros(highScore)
                 if(initialPfpsUnlocked < json.unlockByTheUser){
-                    $profilePicNotification.classList.remove("hide-notification")
+                    removeClass($profilePicNotification, selectors.hideNotification)
                     customAlert(undefined, "New profile picture unlocked!", {isFlashAlert: true})
                     initialPfpsUnlocked = json.unlockByTheUser
                 }
@@ -102,7 +101,7 @@ export function miniGame(userObj, customAlert){
         multiplierItemInterval;
     
     const hideItemToClick = ()=>{
-        $itemToClick.classList.add("hide-multiplier");
+        addClass($itemToClick, selectors.hideMultiplier)
         $itemToClick.firstElementChild.src = ""
 
     }
@@ -119,7 +118,7 @@ export function miniGame(userObj, customAlert){
         }
         $itemToClick.style.left = leftPxls;
         $itemToClick.style.top = topPxls;
-        $itemToClick.classList.remove("hide-multiplier");
+        removeClass($itemToClick, selectors.hideMultiplier)
     }
 
     const generateRandomCoord = ()=>{
@@ -131,7 +130,7 @@ export function miniGame(userObj, customAlert){
 
     let hideItemTimeOut;
 
-    d.addEventListener("click", (e)=>{
+    globalVariables.d.addEventListener("click", (e)=>{
 
         if(e.target == $playBtn){ // # when play btn is pressed
             restartGame()
@@ -151,12 +150,12 @@ export function miniGame(userObj, customAlert){
                     clearInterval(gameTimeInterval)
                     clearInterval(multiplierItemInterval)
                     isPlaying = false
-                    $gameTimeContainer.classList.remove("little-time")
+                    removeClass($gameTimeContainer, selectors.littleTime)
                     checkNewRecord(1000)
                 }else{
                     gameTime -= 1;
                     if(gameTime <= 5){
-                        $gameTimeContainer.classList.add("little-time")
+                        addClass($gameTimeContainer, selectors.littleTime)
                     }
 
                     if(gameTime < 10){
@@ -189,21 +188,21 @@ export function miniGame(userObj, customAlert){
         if(e.target == $itemToClick){
             if($itemToClick.getAttribute("data-item-type") == "addTime"){
                 gameTime+= 5
-                $gameTimeContainer.classList.remove("little-time")
-                $timeSum.classList.remove("hide-multiplier-txt")
+                removeClass($gameTimeContainer, selectors.littleTime)
+                removeClass($timeSum, selectors.hideMultiplierTxt)
 
                 setTimeout(()=>{
-                    $timeSum.classList.add("hide-multiplier-txt")
+                    addClass($timeSum, selectors.hideMultiplierTxt)
                 }, 700)
             }
             if($itemToClick.getAttribute("data-item-type") == "multiplier"){
                 scoreMultiplier += 1;
                 $multiplierTxt.innerHTML = `x${scoreMultiplier}`;
                 $actualMultiplierContainer.innerHTML = `x${scoreMultiplier}`;
-                $multiplierTxt.classList.remove("hide-multiplier-txt");
+                removeClass($multiplierTxt, selectors.hideMultiplierTxt)
 
                 setTimeout(()=>{
-                    $multiplierTxt.classList.add("hide-multiplier-txt");
+                    addClass($multiplierTxt, selectors.hideMultiplierTxt)
                 }, 700)
             }
 
@@ -217,7 +216,7 @@ export function miniGame(userObj, customAlert){
     let maxGradientValue = 53;
     let decreaseBackground;
 
-    d.addEventListener("click", function(e) {
+    globalVariables.d.addEventListener("click", function(e) {
         if(e.target == $totemImg && isPlaying){
             if(gradientSumGap <= maxGradientValue){
                 gradientSumGap+=3

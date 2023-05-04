@@ -1,4 +1,4 @@
-import { selectAll, classSelectorMaker, addClass, fetchFromApi, select, removeElement, removeClass } from "../utils/dom-functions.js"
+import { selectAllByClass, classSelectorMaker, addClass, fetchFromApi, removeElement, removeClass, selectByClass } from "../utils/dom-functions.js"
 import { globalVariables } from "../utils/global-variables.js"
 import { selectors } from "../utils/selectors.js"
 import { renderLogedPage } from "./render-loged-page.js"
@@ -8,7 +8,7 @@ import { renderCharacterItems } from "./items-render-navigation.js"
 
 export function firstLoadUser(){
     
-    const $adminOption = selectAll(classSelectorMaker(selectors.adminOption))
+    const $adminOption = selectAllByClass((selectors.adminOption))
     
     $adminOption.forEach(el=>{
         addClass(el, selectors.adminOptionHidden)
@@ -18,10 +18,10 @@ export function firstLoadUser(){
     fetchFromApi(globalVariables.loginEndpoint)
     .then(response => {
         if(response.username){
-            removeElement(select(classSelectorMaker(selectors.unloggedScreen)))
+            removeElement(selectByClass((selectors.unloggedScreen)))
 
             if(response.type == globalVariables.userAdminType){
-                selectAll(classSelectorMaker(selectors.adminOptionHidden)).forEach(el =>{
+                selectAllByClass((selectors.adminOptionHidden)).forEach(el =>{
                     removeClass(el, classSelectorMaker(selectors.adminOptionHidden))
                 })
             }

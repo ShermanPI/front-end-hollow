@@ -1,4 +1,4 @@
-import { addClass, append, classSelectorMaker, create, elementContainsClass, fetchFromApi, removeClass, removeElement, select, selectAll, selectById } from "../utils/dom-functions.js"
+import { selectByClass, addClass, append, classSelectorMaker, create, elementContainsClass, fetchFromApi, removeClass, removeElement, select, selectAllByClass, selectById } from "../utils/dom-functions.js"
 import { globalVariables } from "../utils/global-variables.js"
 import { selectors } from "../utils/selectors.js"
 
@@ -38,20 +38,20 @@ export function editProfile(customAlert, userObj){
     
     }
 
-    const $editPfpBtn = select(classSelectorMaker(selectors.changePfpText)),
-        $editPgpBtnIcon = select(classSelectorMaker(selectors.editProfileIcon)),
-        $editProfileContainer = select(classSelectorMaker(selectors.editProfileContainer)),
-        $pfpPreview = select(classSelectorMaker(selectors.pfpPreview)),
-        $saveBtn = select(classSelectorMaker(selectors.saveProfileChanges)),
+    const $editPfpBtn = selectByClass((selectors.changePfpText)),
+        $editPgpBtnIcon = selectByClass((selectors.editProfileIcon)),
+        $editProfileContainer = selectByClass((selectors.editProfileContainer)),
+        $pfpPreview = selectByClass((selectors.pfpPreview)),
+        $saveBtn = selectByClass((selectors.saveProfileChanges)),
         $userPfp = selectById(selectors.userPfp),
-        $closeBtn = select(classSelectorMaker(selectors.closeIcon)),
+        $closeBtn = selectByClass((selectors.closeIcon)),
         $inUseBox = create("div"),
         $inUseBoxTxt = create("div"),
-        $pfpGrid = select(classSelectorMaker(selectors.pfpsGrid)),
+        $pfpGrid = selectByClass((selectors.pfpsGrid)),
         PfpsLocked = 4,
-        $editUsernameInput = select(classSelectorMaker(selectors.editUsername)),
+        $editUsernameInput = selectByClass((selectors.editUsername)),
         $profileUsername = selectById(selectors.userUsername),
-        $profilePicNotification = select(classSelectorMaker(selectors.profilePicNotification))
+        $profilePicNotification = selectByClass((selectors.profilePicNotification))
 
     let initialPfpsUnlocked = userObj.unlockByTheUser
 
@@ -113,7 +113,7 @@ export function editProfile(customAlert, userObj){
     
     renderPfpsElement(PfpsLocked - initialPfpsUnlocked)
 
-    const $lockedDivs = selectAll(classSelectorMaker(selectors.lockedPfp)),
+    const $lockedDivs = selectAllByClass((selectors.lockedPfp)),
         usernameRegex = /^[a-zA-Z0-9_-]{3,12}$/
     
     let pfpPointsId = PfpsLocked
@@ -129,7 +129,7 @@ export function editProfile(customAlert, userObj){
 
     let actualImg = userObj.pfpId
 
-    const $pfps = selectAll(classSelectorMaker(selectors.pfpPicContainer))
+    const $pfps = selectAllByClass((selectors.pfpPicContainer))
 
     const showPfpInUse = (imgIdSelected)=>{
         let $selectedPfp = select(`div[data-pfp="${imgIdSelected}"]`)
@@ -174,7 +174,7 @@ export function editProfile(customAlert, userObj){
             .then(json=>{
                 if(initialPfpsUnlocked < json.unlockByTheUser){
                     let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
-                        $lockedDivs = selectAll(classSelectorMaker(selectors.lockedPfp))                    
+                        $lockedDivs = selectAllByClass((selectors.lockedPfp))                    
     
                     if(pfpsToUnlock <= $lockedDivs.length){
                         for(let i = 0; i < pfpsToUnlock; i++){
@@ -198,7 +198,7 @@ export function editProfile(customAlert, userObj){
         }
 
         if(e.target.matches(classSelectorMaker(selectors.pfpPicContainer))){
-            const $lockedDivs = selectAll(classSelectorMaker(selectors.lockedPfp)) 
+            const $lockedDivs = selectAllByClass((selectors.lockedPfp)) 
             
             if(e.target.getAttribute("data-pfp") < ($pfps.length - $lockedDivs.length)){
                 removeSelected()
@@ -241,6 +241,7 @@ export function editProfile(customAlert, userObj){
                 showPfpInUse(json.pfpId)
                 addClass($editProfileContainer, selectors.hideEditProfile)
                 actualImg = json.pfpId
+                userObj.pfpId = json.pfpId
 
                 localStorage.setItem("isFormActivated", false)
             })
@@ -262,12 +263,12 @@ export function editProfile(customAlert, userObj){
                 const alertOptions = {
                     isConfirmType: true,
                     yesFunction(){
-                        d.querySelector(".page-overlay").remove()
+                        removeElement(selectByClass((selectors.pageOverlay)))
                     },
                     noFunction(){
                         removeSelected()
-                        d.querySelector(".page-overlay").remove()
-                        $editProfileContainer.classList.add("hide-edit-profile")
+                        removeElement(selectByClass((selectors.pageOverlay)))
+                        addClass($editProfileContainer, selectors.hideEditProfile)
                     }
                 }
     
@@ -275,7 +276,7 @@ export function editProfile(customAlert, userObj){
 
             }else{
                 removeSelected()
-                $editProfileContainer.classList.add("hide-edit-profile")
+                addClass($editProfileContainer, selectors.hideEditProfile)
             }
         }
     })

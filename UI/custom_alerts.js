@@ -1,12 +1,12 @@
-import { addClass, append, classSelectorMaker, create, removeElement, select } from "../utils/dom-functions.js"
+import { addClass, append, create, removeElement, select, selectByClass } from "../utils/dom-functions.js"
 import { globalVariables } from "../utils/global-variables.js"
 import { selectors } from "../utils/selectors.js"
 
 export function customAlert(title = undefined, alertMsg = "There is no msg here ⚔️", alertOptions = {}){
     if(alertOptions.isFlashAlert){
 
-        if(select(classSelectorMaker(selectors.flashAlert))){
-            removeElement(select(classSelectorMaker(selectors.flashAlert)))
+        if(selectByClass((selectors.flashAlert))){
+            removeElement(selectByClass((selectors.flashAlert)))
         }
 
         const $flashAlertContainer = create('div'),
@@ -27,8 +27,8 @@ export function customAlert(title = undefined, alertMsg = "There is no msg here 
         select(selectors.body).prepend($flashAlertContainer)
         
         setTimeout(()=>{
-            if(select(classSelectorMaker(selectors.flashAlert))){
-                removeElement(select(classSelectorMaker(selectors.flashAlert)))
+            if(selectByClass((selectors.flashAlert))){
+                removeElement(selectByClass((selectors.flashAlert)))
             }
         }, 3000)
         return;

@@ -31,12 +31,20 @@ export const select = (selector) => {
     return globalVariables.d.querySelector(selector);
 };
 
+export const selectByClass = (className) =>{
+    return select(classSelectorMaker(className));
+}
+
 export const selectById = (selector) => {
     return globalVariables.d.getElementById(selector);
 };
 
 export const selectAll = (selector) => {
     return globalVariables.d.querySelectorAll(selector);
+};
+
+export const selectAllByClass = (className) => {
+    return selectAll(classSelectorMaker(className));
 };
 
 export const create = (element) => {

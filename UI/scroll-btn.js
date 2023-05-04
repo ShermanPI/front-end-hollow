@@ -1,11 +1,11 @@
-import { classSelectorMaker, removeClass, addClass,select } from "../utils/dom-functions.js"
+import { removeClass, addClass, selectByClass } from "../utils/dom-functions.js"
 import { globalVariables } from "../utils/global-variables.js"
 import { selectors } from "../utils/selectors.js"
 
 export function scrollsBtn() {
 
-    const $favoriteListContainer = select(classSelectorMaker(selectors.favoritesListContainer)),
-        $scrollBtn = select(classSelectorMaker(selectors.scrollBtn))
+    const $favoriteListContainer = selectByClass((selectors.favoritesListContainer)),
+        $scrollBtn = selectByClass((selectors.scrollBtn))
 
     $favoriteListContainer.addEventListener("scroll", (e)=>{
         if($favoriteListContainer.scrollTop > 300){

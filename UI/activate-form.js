@@ -1,12 +1,12 @@
-import { addClass, classSelectorMaker, removeClass, select } from "../utils/dom-functions.js";
+import { addClass, removeClass, selectByClass } from "../utils/dom-functions.js";
 import { globalVariables } from "../utils/global-variables.js";
 import { selectors } from "../utils/selectors.js";
 
 export function changeForms(){
-    const $editFormBtn = select(classSelectorMaker(selectors.editFormBtn)),
-        $addFormBtn = select(classSelectorMaker(selectors.addFormBtn)), 
-        $editForm = select(classSelectorMaker(selectors.editForm)),
-        $addForm = select(classSelectorMaker(selectors.addForm))
+    const $editFormBtn = selectByClass((selectors.editFormBtn)),
+        $addFormBtn = selectByClass((selectors.addFormBtn)), 
+        $editForm = selectByClass((selectors.editForm)),
+        $addForm = selectByClass((selectors.addForm))
 
     globalVariables.d.addEventListener("click", (e)=>{
         if(e.target == $editFormBtn){

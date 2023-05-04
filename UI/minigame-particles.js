@@ -1,10 +1,10 @@
-import { classSelectorMaker, select } from "../utils/dom-functions.js";
+import { selectByClass } from "../utils/dom-functions.js";
 import { selectors } from "../utils/selectors.js";
 
 export const minigameExplodeParticles = () => {
-  const $itemToClick = select(classSelectorMaker(selectors.itemToClick))
+  const $itemToClick = selectByClass((selectors.itemToClick))
 
-  const canvas = select(classSelectorMaker(selectors.particles))  
+  const canvas = selectByClass((selectors.particles))  
   const c = canvas.getContext("2d");
 
   canvas.width = innerWidth;
