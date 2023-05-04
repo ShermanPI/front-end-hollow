@@ -151,7 +151,8 @@ export const selectors = Object.freeze({
     littleTime: 'little-time',
     hideMultiplierTxt: 'hide-multiplier-txt',
     loggedOut: 'logged-out',
-    logOutBtn: 'log-out-btn'
+    logOutBtn: 'log-out-btn',
+    menuAnchor: 'menu-anchor'
 
 
 });
