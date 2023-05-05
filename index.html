@@ -659,7 +659,12 @@
                         <div class="form-container">
                             <div class="form-group character-to-edit-group">
                                 <label class="field-name">Character to edit:</label>
-                                <input id="characterEditingName" class ="form-input select-character-field" maxlength="22" minlength="2" name="characterEditingName" required type="text" value="" placeholder="Character's Name" autocomplete="off">
+                                <div class="characterEditingContainer">
+                                    <input id="characterEditingName" class ="form-input select-character-field" maxlength="22" minlength="2" name="characterEditingName" required type="text" value="" placeholder="Character's Name" autocomplete="off">
+                                    <div class="delete-character-btn">
+                                        <img src="img/icons/trash-can.png" alt="trash can icon">
+                                    </div>
+                                </div>
                                 <div class="character-edit-list hide-edit-list">
                                     <!--Edit items-->
                                 </div>
@@ -699,7 +704,7 @@
 
     <script src="index.js" type="module"></script>
 
-    <!-- firebase scrip auth
+    <!-- firebase scrip auth-->
     <!-- // Import the functions you need from the SDKs you need -->
     
     <!-- <script> import { initializeApp } from "firebase/app"; </script> -->

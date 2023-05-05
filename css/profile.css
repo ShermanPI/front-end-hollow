@@ -930,3 +930,42 @@
 .background-name{
     text-align: center;
 }
+
+.characterEditingContainer{
+    width: 100%;
+    display: flex;
+}
+
+.characterEditingContainer input{
+    width: 100%;
+}
+
+.delete-character-btn{
+    height: auto;
+    background-color: #dc354627;
+    min-width: 8%;
+    padding-inline: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    border: 2px solid #dc3545;
+    cursor: pointer;
+    user-select: none;
+}
+
+.delete-character-btn:hover{
+    background-color: #dc354663;
+}
+
+.delete-character-btn > *{
+    pointer-events: none;
+}
+
+#characterEditingName{
+    width: 100%;
+}
+
+.delete-character-btn > img{
+    width: 2rem;
+}
