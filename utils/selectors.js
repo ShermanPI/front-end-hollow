@@ -152,7 +152,10 @@ export const selectors = Object.freeze({
     hideMultiplierTxt: 'hide-multiplier-txt',
     loggedOut: 'logged-out',
     logOutBtn: 'log-out-btn',
-    menuAnchor: 'menu-anchor'
+    menuAnchor: 'menu-anchor',
+    characterEditingNameField: 'characterEditingName',
+    characterEditingContainer: 'characterEditingContainer',
+    deleteCharacterBtn: 'delete-character-btn'
 
 
 });

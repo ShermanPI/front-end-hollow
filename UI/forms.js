@@ -239,7 +239,11 @@ export function forms(){
                     error.json().then(json => {
                         let errorFields = Object.keys(json.errors)
                         errorFields.forEach(field =>{
-                            setErrorField($editCharacterForm[field], json.errors[field])
+                            if($editCharacterForm[field].getAttribute('id') !== selectors.characterEditingNameField){
+                                setErrorField($editCharacterForm[field], json.errors[field])
+                            }else{
+                                setErrorField(selectByClass(selectors.characterEditingContainer), json.errors[field])
+                            }
                         })
                     })
                 } else {
@@ -252,6 +256,43 @@ export function forms(){
 
 
     globalVariables.d.addEventListener("click",(e)=>{
+        if(e.target.matches(classSelectorMaker(selectors.deleteCharacterBtn))){
+            let deletedCharacterIndex = -1,
+                characterEditName = $editCharacterForm.characterEditingName.value
+
+            
+            let filteredArr = actualCharacters.filter((item, index)=>{
+                if(new RegExp(`^${characterEditName}$`).test(item.characterName)){
+                    deletedCharacterIndex = index
+                    return item;
+                }
+            })
+            let filteredCharacter = filteredArr[0]
+            if(filteredCharacter){
+                fetchFromApi(`character/${filteredCharacter._id.$oid}`, {method: 'DELETE'})
+                .then(json=>{
+                    customAlert(undefined, `${json.message}, ${characterEditName}`, {isFlashAlert: true})
+                    actualCharacters.splice(deletedCharacterIndex, 1)
+                    localStorage.setItem("favoritesUpdated", "true")
+                    $editCharacterForm.reset()
+                })
+                .catch(err => {
+                    err.json().then(json=>{
+                        setErrorField(selectByClass(selectors.characterEditingContainer), json.message)
+                    })
+                })
+            }else{
+                setErrorField(selectByClass(selectors.characterEditingContainer), 'There is no character with this name, please check and try again')
+                addClass(selectByClass((selectors.characterEditList)), selectors.hideEditList)
+
+                function deleteErrorField() {
+                    removeAllErrorFields()
+                    $editCharacterForm.characterEditingName.removeEventListener("input", deleteErrorField);
+                }
+
+                $editCharacterForm.characterEditingName.addEventListener("input", deleteErrorField);
+            }
+        }
 
         if(e.target.matches(classSelectorMaker(selectors.exitRegisterFormIconImg))){
             localStorage.setItem("isFormActivated", "false")
