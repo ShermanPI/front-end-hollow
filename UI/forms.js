@@ -267,20 +267,30 @@ export function forms(){
                     return item;
                 }
             })
+
             let filteredCharacter = filteredArr[0]
+            
             if(filteredCharacter){
-                fetchFromApi(`character/${filteredCharacter._id.$oid}`, {method: 'DELETE'})
-                .then(json=>{
-                    customAlert(undefined, `${json.message}, ${characterEditName}`, {isFlashAlert: true})
-                    actualCharacters.splice(deletedCharacterIndex, 1)
-                    localStorage.setItem("favoritesUpdated", "true")
-                    $editCharacterForm.reset()
-                })
-                .catch(err => {
-                    err.json().then(json=>{
-                        setErrorField(selectByClass(selectors.characterEditingContainer), json.message)
-                    })
-                })
+                const alertOptions = {
+                    isConfirmType: true,
+                    yesFunction(){
+                        fetchFromApi(`character/${filteredCharacter._id.$oid}`, {method: 'DELETE'})
+                        .then(json=>{
+                            customAlert(undefined, `${json.message}, ${characterEditName}`, {isFlashAlert: true})
+                            actualCharacters.splice(deletedCharacterIndex, 1)
+                            localStorage.setItem("favoritesUpdated", "true")
+                            $editCharacterForm.reset()
+                        })
+                        .catch(err => {
+                            err.json().then(json=>{
+                                setErrorField(selectByClass(selectors.characterEditingContainer), json.message)
+                            })
+                        })
+                    }
+                }
+
+                customAlert('Delete Item', `Are you sure you want to Delete ${filteredCharacter.characterName}?`, alertOptions)
+
             }else{
                 setErrorField(selectByClass(selectors.characterEditingContainer), 'There is no character with this name, please check and try again')
                 addClass(selectByClass((selectors.characterEditList)), selectors.hideEditList)
@@ -344,7 +354,7 @@ export function forms(){
                 $characterEditItem.forEach(el=>removeElement(el))
 
                 const filteredArr = actualCharacters.filter(item =>{
-                    return item.characterName.match(new RegExp(inputValue, "i"));
+                    return new RegExp(inputValue, "i").test(item.characterName)
                 })
 
                 renderEditCharacters(filteredArr)
