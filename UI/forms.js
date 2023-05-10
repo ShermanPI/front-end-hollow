@@ -19,7 +19,7 @@ class editCharacterItem {
         addClass($characterEditItem, selectors.characterEditItem)
         addClass($characterEditImgContainer, selectors.characterEditImg)
         addClass($characterName, selectors.characterEditName)
-        $characterEditImg.src = `${globalVariables.apiURL}${this.img}`
+        $characterEditImg.src = this.img
         $characterName.innerHTML = this.name
 
         append($characterEditImgContainer, $characterEditImg)
