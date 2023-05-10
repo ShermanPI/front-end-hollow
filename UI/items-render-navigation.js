@@ -92,7 +92,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
 
     const renderItemInfo = (itemArrayIndex) =>{
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
-        $characterImgContainer.firstElementChild.src = globalVariables.apiURL + itemsInfo[itemArrayIndex].characterImgSrc
+        $characterImgContainer.firstElementChild.src = itemsInfo[itemArrayIndex].characterImgSrc
         $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
 
         checkIsFavorite(itemArrayIndex)
@@ -501,7 +501,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     const $FragmentProfileList = globalVariables.d.createDocumentFragment() 
         
                     json.forEach(el=>{
-                        let newItem = new ProfileItem(el._id.$oid, el.characterName, `${globalVariables.apiURL}/static/characters-images/${el.characterImgSrc}`)
+                        let newItem = new ProfileItem(el._id.$oid, el.characterName, el.characterImgSrc)
                         append($FragmentProfileList, newItem.renderProfileItem())
                     })
                 
