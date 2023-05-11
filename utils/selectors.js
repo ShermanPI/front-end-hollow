@@ -155,7 +155,8 @@ export const selectors = Object.freeze({
     menuAnchor: 'menu-anchor',
     characterEditingNameField: 'characterEditingName',
     characterEditingContainer: 'characterEditingContainer',
-    deleteCharacterBtn: 'delete-character-btn'
+    deleteCharacterBtn: 'delete-character-btn',
+    homeListItem: '#home-list .item'
 
 
 });

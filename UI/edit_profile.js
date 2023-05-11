@@ -60,40 +60,40 @@ export function editProfile(customAlert, userObj){
 
         const pfpsInfo = [
             {
-                src: "img/character/Hornet_Idle.webp",
+                src: "img/profile-pictures/image-1.jpg",
             },
             {
-                src: "img/character/The_Knight.webp",
+                src: "img/profile-pictures/image-2.jpg",
             },
             {
-                src: "img/character/Lifeseed.webp",
+                src: "img/profile-pictures/image-3.jpg",
             },
             {
-                src: "img/character/Vengefly.webp",
+                src: "img/profile-pictures/image-4.jpg",
             },
             {
-                src: "img/character/The_Knight.webp",
+                src: "img/profile-pictures/image-5.jpg",
             },
             {
-                src: "img/character/Lifeseed.webp",
+                src: "img/profile-pictures/image-6.jpg",
             },
             {
-                src: "img/character/Vengefly.webp",
+                src: "img/profile-pictures/image-7.jpg",
             },
             {
-                src: "img/character/Vengefly.webp",
+                src: "img/profile-pictures/image-8.jpg",
             },
             {
-                src: "img/character/Vengefly.webp"
+                src: "img/profile-pictures/image-9.jpg"
             },
             {
-                src: "img/character/Hornet_Idle.webp"
+                src: "img/profile-pictures/image-10.jpg"
             },
             {
-                src: "img/character/Hornet_Idle.webp"
+                src: "img/profile-pictures/image-11.jpg"
             },
             {
-                src: "img/character/Hornet_Idle.webp"
+                src: "img/profile-pictures/image-12.jpg"
             }
         ]
     
@@ -170,30 +170,36 @@ export function editProfile(customAlert, userObj){
             if(!elementContainsClass($profilePicNotification, selectors.hideNotification)) addClass($profilePicNotification, selectors.hideNotification)
 
             // checkIfUnlockedPfps ↓
-            fetchFromApi(`user/${userObj._id.$oid}`)
-            .then(json=>{
-                if(initialPfpsUnlocked < json.unlockByTheUser){
-                    let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
-                        $lockedDivs = selectAllByClass((selectors.lockedPfp))                    
-    
-                    if(pfpsToUnlock <= $lockedDivs.length){
-                        for(let i = 0; i < pfpsToUnlock; i++){
-                            removeElement($lockedDivs[i])
-                        }
-                    }
+            if(localStorage.getItem('pictureUnlocked') == 'true'){
+                customAlert(undefined, `Loading...`, {isFlashAlert: true})
+                fetchFromApi(`user/${userObj._id.$oid}`)
+                .then(json=>{
+                    if(initialPfpsUnlocked < json.unlockByTheUser){
+                        let pfpsToUnlock = json.unlockByTheUser - initialPfpsUnlocked,
+                            $lockedDivs = selectAllByClass((selectors.lockedPfp))                    
         
-                    initialPfpsUnlocked = json.unlockByTheUser
-                }
-                showPfpInUse(json.pfpId)
+                        if(pfpsToUnlock <= $lockedDivs.length){
+                            for(let i = 0; i < pfpsToUnlock; i++){
+                                removeElement($lockedDivs[i])
+                            }
+                        }
+            
+                        initialPfpsUnlocked = json.unlockByTheUser
+                        localStorage.setItem('pictureUnlocked', 'false')
+                    }
 
-                $editUsernameInput.value = ""
-                removeClass($editProfileContainer, selectors.hideEditProfile)
-                let imgSrc = select(`div[data-pfp="${json.pfpId}"]`).firstElementChild.firstElementChild.getAttribute("src")
-                $pfpPreview.firstElementChild.src = imgSrc
-            })
-            .catch(err=>{
-                console.error(err)
-            })
+                })
+                .catch(err=>{
+                    console.error(err)
+                })
+            }
+
+            showPfpInUse(userObj.pfpId)
+
+            $editUsernameInput.value = ""
+            removeClass($editProfileContainer, selectors.hideEditProfile)
+            let imgSrc = select(`div[data-pfp="${userObj.pfpId}"]`).firstElementChild.firstElementChild.getAttribute("src")
+            $pfpPreview.firstElementChild.src = imgSrc
 
         }
 
@@ -227,6 +233,7 @@ export function editProfile(customAlert, userObj){
                 fetchBody.pfpId = actualImg
             }
 
+            console.log(fetchBody)
             fetchFromApi(`user/${userObj._id.$oid}`, 
             {
                 method: "PUT",

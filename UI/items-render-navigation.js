@@ -76,7 +76,6 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
         $items = selectAllByClass(selectors.itemListItem)
     }
 
-
     const checkIsFavorite = (itemArrayIndex)=>{
         const $items = selectAllByClass(selectors.itemListItem)
 
@@ -104,6 +103,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
             $bestiaryImgContainer.style.display = "none"
         }
 
+        $items[actualItem].scrollIntoView({block: "center"})
         //making bounding for the user dont keep fetching characters
         clearTimeout(fetchTimer);
         fetchTimer = setTimeout(() => {
@@ -152,7 +152,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
         $sections.forEach(el=>observer.observe(el));
 
         const resizeArrowDivisor = ()=>{
-            const $items = selectAllByClass(selectors.itemListItem)
+            $items = selectAllByClass(selectors.itemListItem)
             $arrowsDivisor.style.height = `calc(${$items[actualItem].getBoundingClientRect().height}px + 0.2rem)`
         }
         
@@ -219,7 +219,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
             observer.observe(parentElement, mutationObserverConfig);
 
         } else {
-            $items = selectAll('#home-list .item')
+            $items = selectAll(selectors.homeListItem)
             
             // Parent element to observe
             const parentElement = selectById(selectors.homeList)
@@ -230,7 +230,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 // Check if new child elements were added
                 if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
                     // itemsObserver.disconnect()
-                    $items = selectAll('#home-list .item')
+                    $items = selectAll(selectors.homeListItem)
                 }
             });    
             });
@@ -242,7 +242,6 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
 
             // Start observing
             mutationObserver.observe(parentElement, mutationObserverConfig);
-
 
             // navigate        
             const $arrowUp = selectByClass(selectors.navigateItemUpArrow),
@@ -305,7 +304,6 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     {transform: 'translateY(1rem)'},
                     {transform: 'translate(0)'}], animationTiming)
 
-                $items[actualItem].scrollIntoView({block: "center"})
                 addClass($items[actualItem], selectors.selectedItem)
                 removeClass($items[actualItem - 1], selectors.selectedItem)
 
@@ -335,7 +333,6 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     {transform: 'translateY(-1rem)'},
                     {transform: 'translate(0)'}], animationTiming)
 
-                $items[actualItem].scrollIntoView({block: "center"})
                 addClass($items[actualItem], selectors.selectedItem)
                 removeClass($items[parseInt(actualItem) + 1], selectors.selectedItem)
 
@@ -354,9 +351,10 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                 $items[actualItem].style.marginBlock = "5rem"
                 $items[actualItem].nextElementSibling.style.marginBlock = "1rem"
             }
-
             
-            $items[actualItem].style.marginBottom = "5rem"
+            if(!isListAlreadyRendered){
+                $items[actualItem].style.marginBottom = "5rem"
+            }
             
             const wheelNavigation = (e)=>{
                 e.preventDefault()

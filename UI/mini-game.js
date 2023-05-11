@@ -63,14 +63,13 @@ export function miniGame(userObj, customAlert){
 
             fetchFromApi(`user/${userObj._id.$oid}`, {
                 method: "PUT",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(fetchBody)
             })
             .then(json =>{
                 $highScoreContainer.innerHTML = addExtraZeros(highScore)
                 if(initialPfpsUnlocked < json.unlockByTheUser){
+                    localStorage.setItem('pictureUnlocked', 'true')
                     removeClass($profilePicNotification, selectors.hideNotification)
                     customAlert(undefined, "New profile picture unlocked!", {isFlashAlert: true})
                     initialPfpsUnlocked = json.unlockByTheUser
@@ -172,7 +171,6 @@ export function miniGame(userObj, customAlert){
         if(e.target == $totemImg){ // # when totem btn is pressed
             if(isPlaying){
                 actualScore += (3 * scoreMultiplier);
-                // checkNewRecord(1000)
                 if(actualScore > highScore){
                     $highScoreContainer.innerHTML = addExtraZeros(actualScore)
                 }
@@ -180,7 +178,7 @@ export function miniGame(userObj, customAlert){
             }
         }
 
-        if(e.target == $restartBtn){ // # when restart btn is pressed
+        if(e.target == $restartBtn){
             restartGame()
             showScoreInDOM(0)
         }
