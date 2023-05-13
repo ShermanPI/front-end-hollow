@@ -97,11 +97,11 @@ export function navigatePages(){
     }
 
     globalVariables.d.addEventListener("click", (e)=>{
-        if(e.target == $rightArrow || e.target == $nextPageIndicator){
+        if(e.target == $rightArrow || e.target == $nextPageIndicator || e.target == selectByClass(selectors.nextIconPageIndicator)){
             animateArrow($rightArrow)
             movePages(1)
         }
-        if(e.target == $leftArrow || e.target == $prevPageIndicator){
+        if(e.target == $leftArrow || e.target == $prevPageIndicator || e.target == selectByClass(selectors.prevIconPageIndicator)){
             animateArrow($leftArrow)
             movePages(-1)
         }

@@ -110,10 +110,10 @@ export function miniGame(userObj, customAlert){
 
         if(randomNum !== 2){
             $itemToClick.setAttribute("data-item-type", 'multiplier')
-            $itemToClick.firstElementChild.src = "../img/character/Vengefly.webp"
+            $itemToClick.firstElementChild.src = "../img/minigame-mobs/Vengefly.webp"
         }else{
             $itemToClick.setAttribute("data-item-type", 'addTime')
-            $itemToClick.firstElementChild.src = "../img/character/Lifeseed.webp"
+            $itemToClick.firstElementChild.src = "../img/minigame-mobs/Lifeseed.webp"
         }
         $itemToClick.style.left = leftPxls;
         $itemToClick.style.top = topPxls;

@@ -32,6 +32,7 @@
     border-style: solid;
     border-width: 3px;
     border-color: transparent;
+    user-select: none;
 }
 
 .item-list > .item:first-child{

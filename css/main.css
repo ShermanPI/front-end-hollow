@@ -814,6 +814,10 @@ input[type="submit"]:hover{
         pointer-events: initial;
     }
     
+    .burger-icon-container{
+        display: none;
+    }
+
     .page-indicator-container{
         position: fixed;
         display: flex;
@@ -832,6 +836,10 @@ input[type="submit"]:hover{
 
     .page-indicator:hover{
         opacity: 0.8;
+    }
+
+    .page-indicator img{
+        cursor: pointer;
     }
 
     .prev-page img{
@@ -929,4 +937,17 @@ input[type="submit"]:hover{
 
 .admin-option-hidden{
     display: none;
+}
+
+.non-selectable-item{
+    user-select: none;
+}
+
+.mini-game-title{
+    user-select: none;
+    font-family: trajan;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    text-shadow: var(--pure-color) 1px 0 10px;
 }

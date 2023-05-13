@@ -14,12 +14,12 @@
 
 </head>
 <body>
-    <section class="session-bar computer-design">
+    <section class="session-bar computer-design non-selectable-item">
         <div class="session-btn login-btn logged-out">Log in</div>
         <div class="session-btn signUp-btn logged-out">Sign Up</div>
     </section>
     <!--LOADING SCREEN-->
-    <div class="loading-container">
+    <div class="loading-container non-selectable-item">
         <img src="img/icons/loading.gif" alt="">
         <div class="loading-animation">
             Loading
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="session-form-container register-form-container hide-form">
+    <div class="session-form-container register-form-container hide-form non-selectable-item">
         <div class="session-section-form-container">
             <div class="form-icon">
                 <img src="img/icons/hollow-knight.png" alt="">
@@ -42,7 +42,7 @@
 
             <span class="form-title">Create Account</span>
 
-            <form method="POST" action = "#" class="session-form" id="sign-up-form" enctype="multipart/form-data">
+            <form method="POST" action = "#" class="session-form non-selectable-item" id="sign-up-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="field-name">Username:</label>
                     <input type="text" maxlength="12" minlength="2" name="username" required class="form-input" placeholder="Username" autocomplete="off">
@@ -75,13 +75,13 @@
                 <p>Already have an Account? <span class="fake-url login-span">Log In</span></p>
             </div>
 
-            <div class="under-form-img">
+            <div class="under-form-img non-selectable-item">
                 <img src="img/UI/under-page-img.png" alt="">
             </div>
         </div>
     </div>
 
-    <div class="session-form-container login-form-container hide-form">
+    <div class="session-form-container login-form-container hide-form non-selectable-item">
         <div class="session-section-form-container">
             <div class="form-icon">
                 <img src="img/icons/hollow-knight.png" alt="">
@@ -93,7 +93,7 @@
             <span class="form-title">Log In</span>
             
 
-            <form method="POST" action = "#" class="session-form" id="login-form" enctype="multipart/form-data">
+            <form method="POST" action = "#" class="session-form non-selectable-item" id="login-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="field-name">Username:</label>
                     <input type="text" name="username" required autocomplete="off" class="form-input" placeholder="Username">
@@ -119,7 +119,7 @@
                 <p>Don't have an Account? <span class="fake-url create-account-span">Create One</span></p>
             </div>
 
-            <div class="under-form-img">
+            <div class="under-form-img non-selectable-item">
                 <img src="img/UI/under-page-img.png" alt="">
             </div>
         </div>
@@ -184,7 +184,7 @@
         </a>
     </div>
 
-    <div class="borders-container">
+    <div class="borders-container non-selectable-item">
         <div class="corner-img">
             <img src="img/UI/corner.png" alt="">
         </div>
@@ -197,7 +197,7 @@
         <div class="corner-img">
             <img src="img/UI/corner.png" alt="">
         </div>
-        <div class="under-page-img">
+        <div class="under-page-img non-selectable-item">
             <img src="img/UI/under-page-img.png" alt="">
         </div>
         <div class="content-container-hover">
@@ -209,12 +209,12 @@
 
     </div>
 
-    <div class="general-background">
+    <div class="general-background non-selectable-item">
         <div class="background-overlay"></div>
         <img src="img/background/background-0.jpg" alt="">
     </div>
     
-    <div class="page-indicator-container computer-design">
+    <div class="page-indicator-container computer-design non-selectable-item">
         <div class="page-indicator prev-page computer-design">
             <img src="img/UI/Expandarrow.png" alt="">
             Previous
@@ -372,14 +372,12 @@
         <section class = "section-container" id="home">
 
             <header class="section-header">
-                <!-- <div class="logo-icon">
-                    <img src="img/icons/hollow-knight.png" alt="">
-                </div> -->
+
                 <h1 class="container-name">Home</h1>
 
                 <div class="divisor header-divisor"></div>
                 
-                <div class="under-title-img"> <!--this item is absolute, doesn't affect other in the general header div-->
+                <div class="under-title-img non-selectable-item">
                     <img src="img/UI/image.png" alt="">
                 </div>
 
@@ -388,11 +386,11 @@
             <div class="home-container">
 
                 <div class="item-list item-arrows-overlay">
-                    <div class="navigate-item-arrow">
+                    <div class="navigate-item-arrow non-selectable-item">
                         <img src="img/icons/arrow-item-navigation.png" class = "navigate-item navigate-item-up" alt="">
                     </div>
                     <div id="actual-item-height"></div>
-                    <div class="navigate-item-arrow">
+                    <div class="navigate-item-arrow non-selectable-item">
                         <img src="img/icons/arrow-item-navigation-down.png" class = "navigate-item navigate-item-down" alt="">
                     </div>
                 </div>
@@ -424,7 +422,7 @@
 
                         <p id = "character-text-info"><!--primary info--></p>
                         
-                        <div class="info-divisor-img">
+                        <div class="info-divisor-img non-selectable-item">
                             <img src="img/UI/Bestiary.webp" alt="">
                         </div>
 
@@ -448,7 +446,7 @@
             
             <section class="profile-container">
                 
-                <div class="unlogged-screen">
+                <div class="unlogged-screen non-selectable-item">
                     <img src="img/icons/logInScreenIcon.png" alt="">
                     <br>
                     <h1 class="unlogged-screen-title">Welcome to Hollow Wiki</h1>
@@ -464,7 +462,7 @@
                             <div class="profile-pic-notification hide-notification"></div>
 
                             <div class="pfp">
-                                <img src="img/character/Hornet_Idle.webp" alt="" id="user-pfp">
+                                <img src="" alt="" id="user-pfp">
                                 <div class="change-pfp-text">
                                     <p class="edit-pfp">Edit Profile</p>
                                 </div>
@@ -530,7 +528,8 @@
                     
                     <div class="horizontal-divisor computer-design"></div>
                     
-                    <div class="minigame-container computer-design ">
+                    <div class="minigame-container computer-design">
+                        <p class="mini-game-title">SOUL <br>COLLECTOR</p>
                         <div class="scores">
                             <span>
                                 AS: <span class="actual-score">000</span>
@@ -581,21 +580,6 @@
                     <div class="favorite-list-container">
                         <ul class="favorite-item-list">
                             <div class="no-items-ready">No favorites yet!</div>
-
-                            <!-- <li class="item favorite-item selected-item" id = "1">
-                                <div class="item-info">
-                                    <div class="list-border">
-                                        <img src="img/UI/item-border.png">
-                                    </div>
-                                    <div class="character-img">
-                                        <img src="img/character/The_Knight.webp">
-                                    </div>
-                                    <p>Item 2</p>
-                                </div>
-                                <div class="favorite-icon">
-                                    <img src="img/icons/favorite.png" alt="">
-                                </div>
-                            </li> -->
                             <!-- SVG for arrow in items <svg viewBox="0 0 24 24" aria-hidden="true" class="r-1bwzh9t r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr"><g><path d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"></path></g></svg> -->
                         </ul>
                         <img src="img/UI/Expandarrow.png" alt="" class="scroll-btn hide-scroll-btn">
@@ -625,7 +609,7 @@
                     </div>
                 </header>
                 <section class="forms-container">
-                    <form action class="form add-form" id="add-character-form" enctype="multipart/form-data">
+                    <form action class="form add-form non-selectable-item" id="add-character-form" enctype="multipart/form-data">
                         <div class="form-container">
                             <div class="form-group">
                                 <label class="field-name">Character's Name:</label>
@@ -655,7 +639,7 @@
 
                     </form>
 
-                    <form class="form edit-form hide-form" id="edit-character-form" enctype="multipart/form-data">
+                    <form class="form edit-form hide-form non-selectable-item" id="edit-character-form" enctype="multipart/form-data">
                         <div class="form-container">
                             <div class="form-group character-to-edit-group">
                                 <label class="field-name">Character to edit:</label>

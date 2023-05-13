@@ -764,7 +764,6 @@
 
     .game-btn::before{
         content: "";
-    
         opacity: 0;
         background-image: url("../img/icons/Hk_left_arrow.webp");
         background-size: contain;
@@ -968,4 +967,8 @@
 
 .delete-character-btn > img{
     width: 2rem;
+}
+
+.mini-game-title{
+    text-align: center;
 }
