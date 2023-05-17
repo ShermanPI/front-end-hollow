@@ -35,6 +35,7 @@ class HomeItem{
     
         $item.setAttribute("data-item-id", this.listIndex)
         $item.setAttribute("data-character-id", this.characterId)
+        $characterImg.setAttribute("alt", this.characterName)
         $borderImg.src = "img/UI/item-border.png"
         $characterImg.src = this.characterImgSrc
         $characterName.innerHTML = this.characterName
@@ -92,6 +93,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
     const renderItemInfo = (itemArrayIndex) =>{
         $characterNameContainer.firstElementChild.innerHTML = itemsInfo[itemArrayIndex].characterName
         $characterImgContainer.firstElementChild.src = itemsInfo[itemArrayIndex].characterImgSrc
+        $characterImgContainer.firstElementChild.setAttribute('alt', itemsInfo[itemArrayIndex].characterName)
         $characterTextInfo.innerHTML = itemsInfo[itemArrayIndex].characterMainInfo
 
         checkIsFavorite(itemArrayIndex)

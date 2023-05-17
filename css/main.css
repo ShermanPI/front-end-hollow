@@ -349,10 +349,13 @@ input[type="submit"]:hover{
     width: 100%;
     height: 100%;
     z-index: -1;
+    overflow: hidden;
 }
 
 .general-background img{
+    height: 100%;
     width: 100%;
+    max-width: none;
 }
 
 .background-overlay{

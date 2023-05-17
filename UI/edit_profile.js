@@ -233,7 +233,6 @@ export function editProfile(customAlert, userObj){
                 fetchBody.pfpId = actualImg
             }
 
-            console.log(fetchBody)
             fetchFromApi(`user/${userObj._id.$oid}`, 
             {
                 method: "PUT",
