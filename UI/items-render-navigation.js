@@ -418,12 +418,12 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     $items = selectAllByClass(selectors.itemListItem),
                     characterId = $items[actualItem].getAttribute('data-character-id')
                     
-                    if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
-                        localStorage.setItem("favoritesUpdated", "true")
-                        e.target.src = "img/icons/favorite.png"
-                        actualFavoriteItems.push(characterId)
+                if(e.target.getAttribute("src") == "img/icons/unfavorite.png"){
+                    localStorage.setItem("favoritesUpdated", "true")
+                    e.target.src = "img/icons/favorite.png"
+                    actualFavoriteItems.push(characterId)
                     
-                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterName}`, {method: 'POST'})                    
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterId}`, {method: 'POST'})                    
                     .catch((err) =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be favored", {isFlashAlert: true})
@@ -439,7 +439,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     const index = actualFavoriteItems.indexOf(characterId);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
                     
-                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterName}`, {method: 'POST'})
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterId}`, {method: 'POST'})
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
