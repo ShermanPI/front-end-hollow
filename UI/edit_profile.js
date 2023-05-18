@@ -222,7 +222,7 @@ export function editProfile(customAlert, userObj){
             }
 
             const fetchBody = {},
-                pfpsUnlocked = $pfps.length - (PfpsLocked - userObj.unlockByTheUser) - 1
+                pfpsUnlocked = $pfps.length - (PfpsLocked - initialPfpsUnlocked) - 1
 
             if ($editUsernameInput.value !== ''){ // validate if the user only want to edit the pfp
                 fetchBody.username = $editUsernameInput.value
