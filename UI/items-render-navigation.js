@@ -439,7 +439,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     const index = actualFavoriteItems.indexOf(characterId);
                     if (index > -1) actualFavoriteItems.splice(index, 1);
                     
-                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterId}`, {method: 'POST'})
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterId}`, {method: 'DELETE'})
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
