@@ -542,7 +542,7 @@ export function renderCharacterItems(isListAlreadyRendered, jsonUser = undefined
                     if (index > -1) actualFavoriteItems.splice(index, 1);
                     removeElement(profileItemClicked)
 
-                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterName}`, {method: 'DELETE'})
+                    fetchFromApi(`${jsonUser._id.$oid}/favorite/${characterId}`, {method: 'DELETE'})
                     .catch(err =>{
                         console.error(err)
                         customAlert(undefined, "A mistake has occurred that does not allow the character to be unfavored", {isFlashAlert: true})
