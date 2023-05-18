@@ -161,7 +161,7 @@ export function editProfile(customAlert, userObj){
 
     globalVariables.d.addEventListener("click", (e)=>{
         if(e.target.matches(classSelectorMaker(selectors.lockedPfp))){
-            customAlert("Need Points to Unlock!", `Play the mini game "The Last Call" (Only available in PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this profile picture`)
+            customAlert("Need Points to Unlock!", `Play the mini game "Soul Collector" (Only available in PC platform). You must get <span class = "points-required">${e.target.getAttribute("data-locked-pfp-id") * 1000}</span> points to be able to unlock this profile picture`)
         }
 
         if(e.target == $editPfpBtn || e.target == $editPgpBtnIcon){
